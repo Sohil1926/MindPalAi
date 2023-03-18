@@ -2,19 +2,21 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@rneui/themed';
 import { Input } from '@rneui/themed';
+import { createCompletion } from './openAI';
+import { useEffect, useState } from 'react';
 
 export default function App() {
+  const [input, setInput] = useState('');
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
 
-    <Input
-      placeholder='write'
-    />
- <Button title="submit" />
-
-
+      <Input
+        placeholder='write'
+        onChange={(e) => setInput(e.target.toString())}
+      />
+      <Button title='submit' onPress={() => console.log(input)} />
     </View>
   );
 }
@@ -27,4 +29,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
