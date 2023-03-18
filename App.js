@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@rneui/themed';
+import { Input } from '@rneui/themed';
 
 export default function App() {
   return (
@@ -8,7 +9,11 @@ export default function App() {
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
 
- <Button title="Solid" />
+    <Input
+      placeholder='write'
+    />
+ <Button title="submit" />
+
 
     </View>
   );
@@ -22,3 +27,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
