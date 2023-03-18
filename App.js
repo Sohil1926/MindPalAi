@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@rneui/themed';
 import { Input } from '@rneui/themed';
-import { createCompletion } from './openAI';
+// import { createCompletion } from './openAI';
 import { useEffect, useState } from 'react';
 
 export default function App() {
@@ -14,7 +14,9 @@ export default function App() {
 
       <Input
         placeholder='write'
-        onChange={(e) => setInput(e.target.toString())}
+        onChangeText={(txt) => {
+          setInput(txt);
+        }}
       />
       <Button title='submit' onPress={() => console.log(input)} />
     </View>
