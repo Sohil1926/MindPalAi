@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import { createCompletion } from './openAI';
 import { useEffect, useState } from 'react';
@@ -34,15 +35,40 @@ export default function App() {
         console.log(error);
       });
   };
+  const saveText = async () => {
+    try {
+      // remove everything in storage
+      await AsyncStorage.clear();
+      const date = new Date();
+      // YYYY-MM-DD HH:MM:SS
+      await AsyncStorage.setItem(date.toUTCString(), input);
+    } catch {
+      console.error(error);
+    }
+  };
+  const getStored = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const result = await AsyncStorage.multiGet(keys);
+      console.log(keys);
+      console.log(result);
+      // return result.map((req) => JSON.parse(req)).forEach(console.log);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
-    <View className='flex-1 items-center justify-center bg-black'>
+    <View className='flex-1 justify-top py-20 gap-5 bg-black'>
       <Input
         placeholder='write'
+        className='text-white '
         onChangeText={(txt) => {
           setInput(txt);
         }}
       />
-      <Button title='submit' onPress={callAPI} />
+      <Button className='my-1' title='Submit' onPress={callAPI} />
+      <Button className='my-1' title='Save' onPress={saveText} />
+      <Button className='mt-1' title='getStored' onPress={getStored} />
       <Text>{aiResponse}</Text>
     </View>
   );
