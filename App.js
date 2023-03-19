@@ -35,16 +35,24 @@ export default function App() {
       });
   };
   return (
-    <View className="flex-1 items-center justify-center bg-black">  
+    <View className='flex-1 items-center justify-center bg-black'>
       <Input
-      placeholder='write'
-      onChangeText={(txt) => {
-        setInput(txt);
-      }}
-    />
+        placeholder='write'
+        onChangeText={(txt) => {
+          setInput(txt);
+        }}
+      />
       <Button title='submit' onPress={callAPI} />
       <Text>{aiResponse}</Text>
     </View>
   );
 }
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
