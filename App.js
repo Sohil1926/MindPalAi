@@ -1,84 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import { Button, Input } from '@rneui/themed';
-import axios from 'axios';
-import qs from 'qs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Homepage from './Homepage';
+import JournalArchive from './JournalArchive';
+import JournalEntry from './JournalEntry';
 
-// import { createCompletion } from './openAI';
-import { useEffect, useState } from 'react';
+const Stack = createNativeStackNavigator()
 
-export default function App() {
-  const [input, setInput] = useState('');
-  const [aiResponse, setAiResponse] = useState(null);
-  const callAPI = async () => {
-    let data = qs.stringify({
-      input,
-    });
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://openaibackend-nt11.onrender.com/gpt',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data,
-    };
-
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setAiResponse(response.data.response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const saveText = async () => {
-    try {
-      // remove everything in storage
-      await AsyncStorage.clear();
-      const date = new Date();
-      // YYYY-MM-DD HH:MM:SS
-      await AsyncStorage.setItem(date.toUTCString(), input);
-    } catch {
-      console.error(error);
-    }
-  };
-  const getStored = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      const result = await AsyncStorage.multiGet(keys);
-      console.log(keys);
-      console.log(result);
-      // return result.map((req) => JSON.parse(req)).forEach(console.log);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+const App = () => {
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-black'>
-      <Input
-        placeholder='write'
-        className='text-white '
-        onChangeText={(txt) => {
-          setInput(txt);
-        }}
-      />
-      <Button className='my-1' title='Submit' onPress={callAPI} />
-      <Button className='my-1' title='Save' onPress={saveText} />
-      <Button className='mt-1' title='getStored' onPress={getStored} />
-      <Text>{aiResponse}</Text>
-    </View>
-  );
-}
+    <NavigationContainer>
+      <Stack.Navigator>
+      <Stack.Screen
+          name="Home"
+          component={Homepage}
+        />
+        <Stack.Screen name="JournalArchive" component={JournalArchive} />   
+        <Stack.Screen name="JournalEntry" component={JournalEntry} />   
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
