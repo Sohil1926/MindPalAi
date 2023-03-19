@@ -1,38 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button } from '@rneui/themed';
-import { Input } from '@rneui/themed';
+import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
+import qs from 'qs';
 
 // import { createCompletion } from './openAI';
 import { useEffect, useState } from 'react';
 
 export default function App() {
   const [input, setInput] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
+  const callAPI = async () => {
+    let data = qs.stringify({
+      input,
+    });
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://openaibackend-nt11.onrender.com/gpt',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setAiResponse(response.data.response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style='auto' />
-
       <Input
         placeholder='write'
         onChangeText={(txt) => {
           setInput(txt);
         }}
       />
-      <Button title='submit' onPress={() => 
-      { 
-        axios.post('https://openaibackend-nt11.onrender.com/gpt', {
-          input: input,
-        })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }
-      } />
+      <Button title='submit' onPress={callAPI} />
+      <Text>{aiResponse}</Text>
     </View>
   );
 }
