@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
   const [input, setInput] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [aiResponse, setAiResponse] = useState(null);
   const callAPI = async () => {
     let data = qs.stringify({
       input,
@@ -35,24 +35,16 @@ export default function App() {
       });
   };
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center bg-black">  
       <Input
-        placeholder='write'
-        onChangeText={(txt) => {
-          setInput(txt);
-        }}
-      />
+      placeholder='write'
+      onChangeText={(txt) => {
+        setInput(txt);
+      }}
+    />
       <Button title='submit' onPress={callAPI} />
       <Text>{aiResponse}</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
