@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { createCompletion } from './openAI';
 import { useEffect, useState } from 'react';
 
-export default function Homepage({navigation}) {
+export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const callAPI = async () => {
@@ -38,7 +38,7 @@ export default function Homepage({navigation}) {
   const saveText = async () => {
     try {
       // remove everything in storage
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
       const date = new Date();
       // YYYY-MM-DD HH:MM:SS
       await AsyncStorage.setItem(date.toUTCString(), input);
@@ -46,7 +46,7 @@ export default function Homepage({navigation}) {
       console.error(error);
     }
   };
-  
+
   return (
     <View className='flex-1 justify-top py-20 gap-5 bg-black'>
       <Input
@@ -58,11 +58,13 @@ export default function Homepage({navigation}) {
       />
       <Button className='my-1' title='Submit' onPress={callAPI} />
       <Button className='my-1' title='Save' onPress={saveText} />
-      <Button className='mt-1' title='Go to Archive' onPress={() =>
-        navigation.navigate('JournalArchive')
-      } />
-      
-      <Text className = 'text-white'>{aiResponse}</Text>
+      <Button
+        className='mt-1'
+        title='Go to Archive'
+        onPress={() => navigation.navigate('JournalArchive')}
+      />
+
+      <Text className='text-white'>{aiResponse}</Text>
     </View>
   );
 }
