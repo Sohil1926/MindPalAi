@@ -13,7 +13,9 @@ export default function Homepage({ navigation }) {
   const [aiResponse, setAiResponse] = useState(null);
   const callAPI = async () => {
     let data = qs.stringify({
-      input,
+      input: `"${input}"
+      This is someone's journal entry, ask a question to this person as if you were a therapist.
+      `,
     });
     let config = {
       method: 'post',
