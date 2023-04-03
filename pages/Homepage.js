@@ -1,16 +1,23 @@
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import { Button, Input } from '@rneui/themed';
+import { Text, Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// import { createCompletion } from './openAI';
-import { useEffect, useState } from 'react';
+import SplashScreen from './SplashScreen';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 3000); // Change the time (in milliseconds) as desired
+  }, []);
+
   const callAPI = async () => {
     let data = qs.stringify({
       input: `This is someone's journal entry: "${input}"
@@ -48,8 +55,13 @@ export default function Homepage({ navigation }) {
     }
   };
 
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
   return (
     <View className='flex-1 justify-top py-20 gap-5 bg-black'>
+      <StatusBar style="auto" />
       <Input
         placeholder='write'
         className='text-white '
@@ -57,7 +69,7 @@ export default function Homepage({ navigation }) {
           setInput(txt);
         }}
       />
-      <Button className='my-1' title='Submit' onPress={callAPI} />
+      <Button className='my-1' color='black' title='Submit' onPress={callAPI} />
       <Button className='my-1' title='Save' onPress={saveText} />
       <Button
         className='mt-1'
@@ -70,11 +82,6 @@ export default function Homepage({ navigation }) {
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+Homepage.navigationOptions = {
+  headerShown: false,
+};
