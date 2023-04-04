@@ -15,7 +15,7 @@ export default function Homepage({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
-    }, 3000); // Change the time (in milliseconds) as desired
+    }, 1); // Change the time (in milliseconds) as desired
   }, []);
 
   const callAPI = async () => {
@@ -69,8 +69,13 @@ export default function Homepage({ navigation }) {
           setInput(txt);
         }}
       />
-      <Button className='my-1' color='black' title='Submit' onPress={callAPI} />
-      <Button className='my-1' title='Save' onPress={saveText} />
+      <View className='flex flex-row justify-between'>
+
+      <Button className='my-2' color='black' title='Submit' onPress={callAPI} />
+
+      <Button className='my-4' title='Save' onPress={saveText} />
+      </View>
+
       <Button
         className='mt-1'
         title='Go to Archive'
