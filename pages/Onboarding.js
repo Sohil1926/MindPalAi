@@ -21,73 +21,74 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
   if (!fontsLoaded) return null;
 
   return (
-    <View className='bg-black h-screen p-5'>
+    <View style={styles.container}>
       <View>
-        <Text
-          style={{
-            fontFamily: 'Manrope_800ExtraBold',
-            fontSize: 30,
-            fontWeight: 'bold',
-          }}
-          className='text-2xl font-semibold pr-24 pb-4 text-white	'
-        >
-          we’re only going to show this once.{' '}
-        </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal pb-4 pr-24 text-white	'
-        >
+        <Text style={styles.heading}>we’re only going to show this once. </Text>
+        <Text style={styles.text}>
           think of this app like BeReal but for journalling.{' '}
         </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal  pb-4 pr-24 text-white	'
-        >
+        <Text style={styles.text}>
           its going to prompt you randomly 3 times a day to type how ur feeling
           in.{' '}
         </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal  pb-4 pr-24 text-white	'
-        >
-          think of it like writing a tweet or smth{' '}
+        <Text style={styles.text}>
+          think of it like writing a tweet or smth
         </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal  pr-24 text-white	'
-        >
+        <Text style={styles.text}>
           you’ll have a assistant to help you write till you have explored your
           thoughts{' '}
         </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal pb-4 pr-24 text-white	'
-        >
-          each time you submit you build your streak{' '}
+        <Text style={styles.text}>
+          each time you submit you build your streak
         </Text>
-        <Text
-          style={{ fontFamily: 'Manrope_400Regular', fontSize: 15 }}
-          className='text-xl font-normal pb-4 pr-24 text-white	'
-        >
+        <Text style={styles.text}>
           all the stuff you write is stored locally on your device.{' '}
         </Text>
-        <View className='border'>
-          <Button
-            styles={{ fontFamily: 'Manrope_400Regular' }}
-            className='rounded-full border-white'
-            title='Get Started'
-            onPress={goToHome}
-          />
-        </View>
+        <TouchableOpacity style={styles.button} onPress={goToHome}>
+          <Text style={styles.buttonText}>Get Started</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  btn: {
-    borderColor: 'white',
-    borderWidth: 1,
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    padding: 20,
+    justifyContent: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingRight: 24,
+    paddingBottom: 4,
+    color: 'white',
+    fontFamily: 'Manrope_800ExtraBold',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'normal',
+    paddingBottom: 4,
+    paddingRight: 24,
+    color: 'white',
+    fontFamily: 'Manrope_400Regular',
+  },
+  button: {
+    width: 300,
+    backgroundColor: '#F4B400',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
