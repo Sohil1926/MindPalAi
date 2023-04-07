@@ -17,7 +17,7 @@ export default function Homepage({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
-      setShowOnboarding(false); // set the state to show Onboarding
+      setShowOnboarding(true); // set the state to show Onboarding
       // console.log('changed');
     }, 3000);
   }, []);
@@ -61,7 +61,12 @@ export default function Homepage({ navigation }) {
   }
 
   if (showOnboarding) {
-    return <Onboarding navigation={navigation} />;
+    return (
+      <Onboarding
+        navigation={navigation}
+        setShowOnboarding={setShowOnboarding}
+      />
+    );
   }
 
   return (
