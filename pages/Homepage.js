@@ -6,16 +6,19 @@ import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
+import Onboarding from './Onboarding'; // import the Onboarding component
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
-
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
-    }, 1); // Change the time (in milliseconds) as desired
+      setShowOnboarding(true); // set the state to show Onboarding
+    }, 3000);
   }, []);
 
   const callAPI = async () => {
@@ -45,10 +48,7 @@ export default function Homepage({ navigation }) {
   };
   const saveText = async () => {
     try {
-      // remove everything in storage
-      // await AsyncStorage.clear();
       const date = new Date();
-      // YYYY-MM-DD HH:MM:SS
       await AsyncStorage.setItem(date.toUTCString(), input);
     } catch {
       console.error(error);
@@ -58,9 +58,13 @@ export default function Homepage({ navigation }) {
   if (showSplash) {
     return <SplashScreen />;
   }
+  
+  if (showOnboarding) {
+    return <Onboarding navigation={navigation} />;
+  }
 
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-black'>
+    <View className='flex-1 justify-top py-20 gap-5 bg-white'>
       <StatusBar style="auto" />
       <Input
         placeholder='write'
@@ -69,19 +73,17 @@ export default function Homepage({ navigation }) {
           setInput(txt);
         }}
       />
-      <View className='flex flex-row justify-between'>
+      <View className = ' rounded-full flex flex-col space-y-4'> 
+        <Button className='gap-4 rounded-t-full	 my-2 space-y-4' color='black' title='Submit' onPress={callAPI} />
 
-      <Button className='my-2' color='black' title='Submit' onPress={callAPI} />
+        <Button className='my-4' title='Save' onPress={saveText} />
 
-      <Button className='my-4' title='Save' onPress={saveText} />
+        <Button
+          className='mt-1'
+          title='Go to Archive'
+          onPress={() => navigation.navigate('JournalArchive')}
+        />
       </View>
-
-      <Button
-        className='mt-1'
-        title='Go to Archive'
-        onPress={() => navigation.navigate('JournalArchive')}
-      />
-
       <Text className='text-white'>{aiResponse}</Text>
     </View>
   );
