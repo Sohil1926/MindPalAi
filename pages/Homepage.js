@@ -8,6 +8,7 @@ import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
+import { TouchableOpacity } from 'react-native'; // import TouchableOpacity
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
@@ -77,32 +78,43 @@ export default function Homepage({ navigation }) {
   }
 
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-white'>
+    <View
+      className='flex-1 justify-top py-20 gap-5 bg-black'
+      style={{ fontFamily: 'Manrope_400Regular' }}
+      >
       <StatusBar style='auto' />
       <Input
-        style={styles.input}
-        multiline={true} // make the input box extend down as you type
+        style={styles.input}      
+        multiline={true}
         placeholder='write'
         className='text-white '
         onChangeText={(txt) => {
           setInput(txt);
         }}
       />
-      <View className=' rounded-full flex flex-col space-y-4'>
-        <Button
-          className='gap-4 rounded-t-full	 my-2 space-y-4'
-          color='black'
-          title='Submit'
-          onPress={callAPI}
-        />
-
-        <Button className='my-4' title='Save' onPress={saveText} />
-
-        <Button
-          className='mt-1'
-          title='Go to Archive'
+      <View className='flex flex-col space-y-4'>
+        <View className='flex flex-row space-x-4'>
+          <TouchableOpacity // replace Button with TouchableOpacity
+            style={[styles.button, styles.submitButton]} // add custom styles
+            onPress={callAPI}
+          >
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+  
+          <TouchableOpacity // replace Button with TouchableOpacity
+            style={[styles.button, styles.saveButton]} // add custom styles
+            onPress={saveText}
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+  
+        <TouchableOpacity // replace Button with TouchableOpacity
+          style={[styles.button, styles.archiveButton]} // add custom styles
           onPress={() => navigation.navigate('JournalArchive')}
-        />
+        >
+          <Text style={styles.buttonText}>Go to Archive</Text>
+        </TouchableOpacity>
       </View>
       <Text className='text-white'>{aiResponse}</Text>
     </View>
@@ -116,8 +128,35 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 10,
     marginBottom: 20,
-    borderBottomWidth: 2, // add this to remove the thin line
-    fontFamily: 'Manrope_400Regular',
+    borderBottomWidth: 2,
+    color:'white',
+    marginHorizontal: 20,
+
+  },
+  button: {
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+
+  },
+  submitButton: {
+    backgroundColor: '#fff',
+    color: 'black',
+  },
+  saveButton: {
+    backgroundColor: '#6c757d',
+  },
+  archiveButton: {
+    backgroundColor: '#007bff',
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
