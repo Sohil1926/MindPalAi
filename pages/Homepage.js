@@ -13,11 +13,12 @@ export default function Homepage({ navigation }) {
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  
+
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
-      setShowOnboarding(true); // set the state to show Onboarding
+      setShowOnboarding(false); // set the state to show Onboarding
+      // console.log('changed');
     }, 3000);
   }, []);
 
@@ -58,14 +59,14 @@ export default function Homepage({ navigation }) {
   if (showSplash) {
     return <SplashScreen />;
   }
-  
+
   if (showOnboarding) {
     return <Onboarding navigation={navigation} />;
   }
 
   return (
     <View className='flex-1 justify-top py-20 gap-5 bg-white'>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
       <Input
         placeholder='write'
         className='text-white '
@@ -73,8 +74,13 @@ export default function Homepage({ navigation }) {
           setInput(txt);
         }}
       />
-      <View className = ' rounded-full flex flex-col space-y-4'> 
-        <Button className='gap-4 rounded-t-full	 my-2 space-y-4' color='black' title='Submit' onPress={callAPI} />
+      <View className=' rounded-full flex flex-col space-y-4'>
+        <Button
+          className='gap-4 rounded-t-full	 my-2 space-y-4'
+          color='black'
+          title='Submit'
+          onPress={callAPI}
+        />
 
         <Button className='my-4' title='Save' onPress={saveText} />
 
