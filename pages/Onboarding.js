@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
@@ -8,39 +8,69 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
   };
 
   return (
-    <View className='bg-black'>
+    <View style={styles.container}>
       <View>
-        <Text className='text-2xl font-semibold pr-24 pb-4 text-white	'>
+        <Text style={styles.heading}>
           we’re only going to show this once.{' '}
         </Text>
-        <Text className='text-xl font-normal pb-4 pr-24 text-white	'>
+        <Text style={styles.text}>
           think of this app like BeReal but for journalling.{' '}
         </Text>
-        <Text className='text-xl font-normal  pb-4 pr-24 text-white	'>
+        <Text style={styles.text}>
           its going to prompt you randomly 3 times a day to type how ur feeling
           in.{' '}
         </Text>
-        <Text className='text-xl font-normal  pb-4 pr-24 text-white	'>
-          think of it like writing a tweet or smth{' '}
-        </Text>
-        <Text className='text-xl font-normal  pr-24 text-white	'>
+        <Text style={styles.text}>think of it like writing a tweet or smth</Text>
+        <Text style={styles.text}>
           you’ll have a assistant to help you write till you have explored your
           thoughts{' '}
         </Text>
-        <Text className='text-xl font-normal pb-4 pr-24 text-white	'>
-          each time you submit you build your streak{' '}
-        </Text>
-        <Text className='text-xl font-normal pb-4 pr-24 text-white	'>
+        <Text style={styles.text}>each time you submit you build your streak</Text>
+        <Text style={styles.text}>
           all the stuff you write is stored locally on your device.{' '}
         </Text>
-        <Button
-          className='rounded-full'
-          title='Get Started'
-          onPress={goToHome}
-        />
+        <TouchableOpacity style={styles.button} onPress={goToHome}>
+          <Text style={styles.buttonText}>Get Started</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    padding: 20,
+    justifyContent: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingRight: 24,
+    paddingBottom: 4,
+    color: 'white',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'normal',
+    paddingBottom: 4,
+    paddingRight: 24,
+    color: 'white',
+  },
+  button: {
+    backgroundColor: '#F4B400',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default Onboarding;
