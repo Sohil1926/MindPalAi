@@ -82,6 +82,8 @@ export default function Homepage({ navigation }) {
     >
       <StatusBar style='auto' />
       <Input
+        style={styles.input}      
+        multiline={true} // make the input box extend down as you type
         placeholder='write'
         className='text-white '
         onChangeText={(txt) => {
@@ -108,6 +110,17 @@ export default function Homepage({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+    borderBottomWidth: 2, // add this to remove the thin line
+  },
+});
 
 Homepage.navigationOptions = {
   headerShown: false,
