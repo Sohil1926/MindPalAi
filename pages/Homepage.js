@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
-import { useFonts } from 'expo-font';
+import { useFonts, Manrope_400Regular } from '@expo-google-fonts/manrope';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +16,7 @@ export default function Homepage({ navigation }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    Manrope: require('../assets/fonts/Manrope.ttf'),
+    Manrope_400Regular,
   });
 
   useEffect(() => {
