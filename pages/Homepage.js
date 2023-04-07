@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
+import { useFonts } from 'expo-font';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,12 +15,16 @@ export default function Homepage({ navigation }) {
   const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    Manrope: require('../assets/fonts/Manrope.ttf'),
+  });
+
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
       setShowOnboarding(true); // set the state to show Onboarding
       // console.log('changed');
-    }, 3000);
+    }, 500);
   }, []);
 
   const callAPI = async () => {
@@ -55,6 +60,7 @@ export default function Homepage({ navigation }) {
       console.error(error);
     }
   };
+  if (!fontsLoaded) return null;
 
   if (showSplash) {
     return <SplashScreen />;
@@ -70,7 +76,10 @@ export default function Homepage({ navigation }) {
   }
 
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-white'>
+    <View
+      className='flex-1 justify-top py-20 gap-5 bg-white'
+      style={{ fontFamily: 'Manrope' }}
+    >
       <StatusBar style='auto' />
       <Input
         placeholder='write'
