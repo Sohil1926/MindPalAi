@@ -19,6 +19,8 @@ export default function Homepage({ navigation }) {
     Manrope_400Regular,
   });
 
+  if (!fontsLoaded) return null;
+
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
@@ -76,13 +78,10 @@ export default function Homepage({ navigation }) {
   }
 
   return (
-    <View
-      className='flex-1 justify-top py-20 gap-5 bg-white'
-      style={{ fontFamily: 'Manrope' }}
-    >
+    <View className='flex-1 justify-top py-20 gap-5 bg-white'>
       <StatusBar style='auto' />
       <Input
-        style={styles.input}      
+        style={styles.input}
         multiline={true} // make the input box extend down as you type
         placeholder='write'
         className='text-white '
@@ -119,6 +118,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     borderBottomWidth: 2, // add this to remove the thin line
+    fontFamily: 'Manrope_400Regular',
   },
 });
 
