@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
@@ -23,34 +23,22 @@ export default function JournalArchive({navigation}) {
 
       useEffect(() => {
         getStored();
-      });
+      }, []);
 
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-black'>
+    <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10, backgroundColor: 'black' }}>
       <FlatList
         data={keys}
-        renderItem={({item}) => 
-        
-        
-        <Button onPress={() =>
-            navigation.navigate('JournalEntry', {key: item})
-          }>{item}</Button>} //{name: 'Jane'}
+        keyExtractor={(item) => item}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JournalEntry', {key: item})}
+            style={{ borderWidth: 2, borderColor: 'white', padding: 10, borderRadius: 10, marginVertical: 5 }}
+          >
+            <Text style={{ color: 'white', fontSize: 16 }}>{item}</Text>
+          </TouchableOpacity>
+        )}
       />
     </View>
-
-    
-
-
-
-    
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
