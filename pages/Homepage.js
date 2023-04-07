@@ -19,8 +19,6 @@ export default function Homepage({ navigation }) {
     Manrope_400Regular,
   });
 
-  if (!fontsLoaded) return null;
-
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
@@ -63,18 +61,19 @@ export default function Homepage({ navigation }) {
     }
   };
   if (!fontsLoaded) return null;
+  else {
+    if (showSplash) {
+      return <SplashScreen />;
+    }
 
-  if (showSplash) {
-    return <SplashScreen />;
-  }
-
-  if (showOnboarding) {
-    return (
-      <Onboarding
-        navigation={navigation}
-        setShowOnboarding={setShowOnboarding}
-      />
-    );
+    if (showOnboarding) {
+      return (
+        <Onboarding
+          navigation={navigation}
+          setShowOnboarding={setShowOnboarding}
+        />
+      );
+    }
   }
 
   return (
