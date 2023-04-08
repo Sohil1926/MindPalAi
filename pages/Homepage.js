@@ -71,7 +71,7 @@ export default function Homepage({ navigation }) {
   };
   const saveJournal = async () => {
     if (input === '') {
-      return console.log("You can't save an empty journal");
+      return Alert.alert('Wait...', 'Please write a journal entry first');
     }
     try {
       const date = new Date();
