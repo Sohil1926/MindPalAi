@@ -5,7 +5,10 @@ import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { delValueFromKey, getValueFromKey } from '../utils/asyncStorageUtils';
+import {
+  deleteValueFromArr,
+  getValueFromKey,
+} from '../utils/asyncStorageUtils';
 
 // import { createCompletion } from './openAI';
 export default function JournalArchive({ navigation, route }) {
@@ -28,7 +31,7 @@ export default function JournalArchive({ navigation, route }) {
 
   const delEntry = async () => {
     try {
-      await delValueFromKey('journals', 'date', route.params.key);
+      await deleteValueFromArr('journals', 'date', route.params.key);
       navigation.navigate('JournalArchive');
     } catch (e) {
       // error reading value

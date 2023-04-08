@@ -24,6 +24,7 @@ const appendDataToKey = async (key, value) => {
   } catch (e) {
     // saving error
     console.log(e);
+    throw new Error(e);
   }
 };
 
@@ -44,6 +45,7 @@ const setFieldToKey = async (key, field, value) => {
     }
   } catch (e) {
     console.log(e);
+    throw new Error(e);
   }
 };
 
@@ -71,7 +73,7 @@ const getAllValuesFromKey = async (key) => {
   }
 };
 
-const delValueFromKey = async (key, field, value) => {
+const deleteValueFromArr = async (key, field, value) => {
   try {
     let values = await AsyncStorage.getItem(key);
     values = JSON.parse(values);
@@ -126,7 +128,7 @@ export {
   setFieldToKey,
   getValueFromKey,
   getAllValuesFromKey,
-  delValueFromKey,
+  deleteValueFromArr,
   getObjFromKey,
   clearObjFromKey,
   deleteFieldFromObj,
