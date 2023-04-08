@@ -5,27 +5,30 @@ import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { delValueFromKey, getValueFromKey } from '../utils/asyncStorageUtils';
 
 // import { createCompletion } from './openAI';
 export default function JournalArchive({ navigation, route }) {
-  const [JournalEntry, setJournalEntry] = useState('');
+  const [journalEntry, setJournalEntry] = useState('');
 
   const getJournalEntry = async () => {
     try {
-      const value = await AsyncStorage.getItem(route.params.key);
-      setJournalEntry(value);
+      const journal = await getValueFromKey(
+        'journals',
+        'date',
+        route.params.key
+      );
+      // console.log(journal);
+      setJournalEntry(journal.entry);
     } catch (e) {
       // error reading value
-      Alert.alert(
-        'Error',
-        'Something unexpected happened. Please try again later.'
-      );
+      Alert.alert('Error', 'Something unexpected happened. Please try again.');
     }
   };
 
   const delEntry = async () => {
     try {
-      await AsyncStorage.removeItem(route.params.key);
+      await delValueFromKey('journals', 'date', route.params.key);
       navigation.navigate('JournalArchive');
     } catch (e) {
       // error reading value
@@ -42,7 +45,7 @@ export default function JournalArchive({ navigation, route }) {
 
   return (
     <View className='flex-1 justify-top py-20 gap-5 bg-black'>
-      <Text>{JournalEntry}</Text>
+      <Text className='text-white'>{journalEntry}</Text>
       <Button title={'Delete'} onPress={delEntry} />
     </View>
   );

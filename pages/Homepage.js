@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
 import { useFonts, Manrope_400Regular } from '@expo-google-fonts/manrope';
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
 import { TouchableOpacity } from 'react-native'; // import TouchableOpacity
+import { appendDataToKey } from '../utils/asyncStorageUtils';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
@@ -23,7 +24,7 @@ export default function Homepage({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
-      setShowOnboarding(true); // set the state to show Onboarding
+      setShowOnboarding(false); // set the state to show Onboarding
       // console.log('changed');
     }, 500);
   }, []);
@@ -53,12 +54,16 @@ export default function Homepage({ navigation }) {
         console.log(error);
       });
   };
-  const saveText = async () => {
+  const saveJournal = async () => {
+    if (input === '') {
+      return console.log("You can't save an empty journal");
+    }
     try {
       const date = new Date();
-      await AsyncStorage.setItem(date.toUTCString(), input);
+      appendDataToKey('journals', { date: date.toString(), entry: input });
+      Alert.alert('Success', 'Journal saved successfully');
     } catch {
-      console.error(error);
+      Alert.alert('Error', 'Something went wrong');
     }
   };
   if (!fontsLoaded) return null;
@@ -81,10 +86,10 @@ export default function Homepage({ navigation }) {
     <View
       className='flex-1 justify-top py-20 gap-5 bg-black'
       style={{ fontFamily: 'Manrope_400Regular' }}
-      >
+    >
       <StatusBar style='auto' />
       <Input
-        style={styles.input}      
+        style={styles.input}
         multiline={true}
         placeholder='write'
         className='text-white '
@@ -100,15 +105,15 @@ export default function Homepage({ navigation }) {
           >
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
-  
+
           <TouchableOpacity // replace Button with TouchableOpacity
             style={[styles.button, styles.saveButton]} // add custom styles
-            onPress={saveText}
+            onPress={saveJournal}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>
-  
+
         <TouchableOpacity // replace Button with TouchableOpacity
           style={[styles.button, styles.archiveButton]} // add custom styles
           onPress={() => navigation.navigate('JournalArchive')}
@@ -129,9 +134,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     borderBottomWidth: 2,
-    color:'white',
+    color: 'white',
     marginHorizontal: 20,
-
   },
   button: {
     borderRadius: 30,
@@ -140,7 +144,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
-
   },
   submitButton: {
     backgroundColor: '#fff',
