@@ -27,15 +27,19 @@ export default function Homepage({ navigation }) {
   });
 
   useEffect(() => {
-    //for debugging
+    //for debugging onboarding screen, comment this line out else it will show every time.
     // deleteFieldFromObj('misc', 'showOnboarding');
     setTimeout(async () => {
       setShowSplash(false);
       const misc = await getObjFromKey('misc');
 
-      if (misc['showOnboarding'] === undefined) {
+      if (
+        misc === null ||
+        misc['showOnboarding'] === undefined ||
+        misc['showOnboarding'] === true
+      ) {
         setShowOnboarding(true);
-        await setFieldToKey('misc', 'showOnboarding', false);
+        await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
       }
     }, 3000);
   }, []);

@@ -88,7 +88,7 @@ const getObjFromKey = async (key) => {
   try {
     let values = await AsyncStorage.getItem(key);
     if (values === null) {
-      return {};
+      return null;
     }
     values = JSON.parse(values);
     return values;
