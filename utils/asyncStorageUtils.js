@@ -84,4 +84,50 @@ const delValueFromKey = async (key, field, value) => {
   }
 };
 
-export { appendDataToKey, setFieldToKey, getValueFromKey, getAllValuesFromKey, delValueFromKey };
+const getObjFromKey = async (key) => {
+  try {
+    let values = await AsyncStorage.getItem(key);
+    if (values === null) {
+      return {};
+    }
+    values = JSON.parse(values);
+    return values;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
+const clearObjFromKey = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+    await AsyncStorage.setItem(key, JSON.stringify({}));
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
+const deleteFieldFromObj = async (key, field) => {
+  try {
+    const obj = await getObjFromKey(key);
+    delete obj[field];
+    await AsyncStorage.setItem(key, JSON.stringify(obj));
+  } catch (e) {
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
+export {
+  appendDataToKey,
+  setFieldToKey,
+  getValueFromKey,
+  getAllValuesFromKey,
+  delValueFromKey,
+  getObjFromKey,
+  clearObjFromKey,
+  deleteFieldFromObj,
+};

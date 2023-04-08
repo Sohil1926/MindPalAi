@@ -9,7 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
 import { TouchableOpacity } from 'react-native'; // import TouchableOpacity
-import { appendDataToKey } from '../utils/asyncStorageUtils';
+import {
+  appendDataToKey,
+  deleteFieldFromObj,
+  getObjFromKey,
+  setFieldToKey,
+} from '../utils/asyncStorageUtils';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
@@ -22,11 +27,17 @@ export default function Homepage({ navigation }) {
   });
 
   useEffect(() => {
-    setTimeout(() => {
+    //for debugging
+    // deleteFieldFromObj('misc', 'showOnboarding');
+    setTimeout(async () => {
       setShowSplash(false);
-      setShowOnboarding(false); // set the state to show Onboarding
-      // console.log('changed');
-    }, 500);
+      const misc = await getObjFromKey('misc');
+
+      if (misc['showOnboarding'] === undefined) {
+        setShowOnboarding(true);
+        await setFieldToKey('misc', 'showOnboarding', false);
+      }
+    }, 3000);
   }, []);
 
   const callAPI = async () => {
