@@ -8,19 +8,25 @@ import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
-import { TouchableOpacity } from 'react-native'; // import TouchableOpacity
 import {
   appendDataToKey,
   deleteFieldFromObj,
   getObjFromKey,
   setFieldToKey,
 } from '../utils/asyncStorageUtils';
+import PillButton from '../components/PillButton';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+
+  const BTNCOLOR = {
+    save: '#6c757d',
+    archive: '#007bff',
+    submit: '#fff',
+  };
 
   const [fontsLoaded] = useFonts({
     Manrope_400Regular,
@@ -41,7 +47,7 @@ export default function Homepage({ navigation }) {
         setShowOnboarding(true);
         await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
       }
-    }, 3000);
+    }, 500);
   }, []);
 
   const callAPI = async () => {
@@ -113,28 +119,44 @@ export default function Homepage({ navigation }) {
         }}
       />
       <View className='flex flex-col space-y-4'>
-        <View className='flex flex-row space-x-4'>
-          <TouchableOpacity // replace Button with TouchableOpacity
+        <View className='flex flex-row justify-between mb-5'>
+          {/* <TouchableOpacity // replace Button with TouchableOpacity
             style={[styles.button, styles.submitButton]} // add custom styles
             onPress={callAPI}
           >
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+            <Text style={styles.buttonText}>Request Insight</Text>
+          </TouchableOpacity> */}
 
-          <TouchableOpacity // replace Button with TouchableOpacity
+          <PillButton
+            onPress={callAPI}
+            text={'Request Insight'}
+            bgColor={BTNCOLOR.submit}
+          />
+
+          {/* <TouchableOpacity // replace Button with TouchableOpacity
             style={[styles.button, styles.saveButton]} // add custom styles
             onPress={saveJournal}
           >
             <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <PillButton
+            onPress={saveJournal}
+            text={'Save'}
+            bgColor={BTNCOLOR.save}
+          />
         </View>
 
-        <TouchableOpacity // replace Button with TouchableOpacity
+        {/* <TouchableOpacity // replace Button with TouchableOpacity
           style={[styles.button, styles.archiveButton]} // add custom styles
           onPress={() => navigation.navigate('JournalArchive')}
         >
           <Text style={styles.buttonText}>Go to Archive</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <PillButton
+          onPress={() => navigation.navigate('JournalArchive')}
+          text={'See My Archive'}
+          bgColor={BTNCOLOR.archive}
+        />
       </View>
       <Text className='text-white'>{aiResponse}</Text>
     </View>
@@ -159,16 +181,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
-  },
-  submitButton: {
-    backgroundColor: '#fff',
-    color: 'black',
-  },
-  saveButton: {
-    backgroundColor: '#6c757d',
-  },
-  archiveButton: {
-    backgroundColor: '#007bff',
   },
   buttonText: {
     color: 'black',
