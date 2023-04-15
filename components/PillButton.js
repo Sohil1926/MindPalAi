@@ -1,7 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'; // import TouchableOpacity
 
-export default function PillButton({ onPress, text, bgColor, textColor }) {
+export default function PillButton({
+  onPress,
+  text,
+  bgColor,
+  textColor = 'black',
+}) {
   return (
     <TouchableOpacity // replace Button with TouchableOpacity
       style={{ ...styles.button, backgroundColor: bgColor }} // add custom styles

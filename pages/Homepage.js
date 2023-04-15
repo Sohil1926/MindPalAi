@@ -15,12 +15,15 @@ import {
   setFieldToKey,
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
+import CustomModal from '../components/Modal';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showGPTInsight, setShowGPTInsight] = useState(false);
+  const [loadingGPT, setLoadingGPT] = useState(false);
 
   const BTNCOLOR = {
     save: '#6c757d',
@@ -51,6 +54,7 @@ export default function Homepage({ navigation }) {
   }, []);
 
   const callAPI = async () => {
+    setLoadingGPT(true);
     let data = qs.stringify({
       input: `This is someone's journal entry: "${input}"
       Ask a question to this person as if you were a therapist.`,
@@ -70,6 +74,8 @@ export default function Homepage({ navigation }) {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         setAiResponse(response.data.response);
+        setShowGPTInsight(true);
+        setLoadingGPT(false);
       })
       .catch((error) => {
         console.log(error);
@@ -158,7 +164,17 @@ export default function Homepage({ navigation }) {
           bgColor={BTNCOLOR.archive}
         />
       </View>
-      <Text className='text-white'>{aiResponse}</Text>
+      <CustomModal
+        modalVisible={showGPTInsight}
+        setModalVisible={setShowGPTInsight}
+        text={aiResponse}
+      />
+      <CustomModal
+        modalVisible={loadingGPT}
+        showHideButton={false}
+        text={'Loading...'}
+      />
+      {/* <Text className='text-white'>{aiResponse}</Text> */}
     </View>
   );
 }

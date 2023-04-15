@@ -6,6 +6,7 @@ import {
   Manrope_800ExtraBold,
   Manrope_400Regular,
 } from '@expo-google-fonts/manrope';
+import PillButton from '../components/PillButton';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
@@ -44,6 +45,7 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
         <Text style={styles.text}>
           all the stuff you write is stored locally on your device.{' '}
         </Text>
+        <PillButton text='Get Started' onPress={goToHome} bgColor={'#F4B400'} />
         <TouchableOpacity style={styles.button} onPress={goToHome}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
