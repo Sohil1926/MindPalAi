@@ -34,30 +34,35 @@ export default function JournalArchive({ navigation, route }) {
 
   const generateImage = async () => {
     setImageUrl('loading');
-    let data = qs.stringify({
-      input: `This is my's journal entry: "${journalEntry}"
-      I want an image that represents my mood.`,
-    });
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://openaibackend-nt11.onrender.com/dalle',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data,
-    };
+    setTimeout(() => {
+      setImageUrl(
+        'https://upload.wikimedia.org/wikipedia/commons/a/ab/Gentau_Pic_du_Midi_Ossau.jpg'
+      );
+    }, 2000);
+    // let data = qs.stringify({
+    //   input: `This is my's journal entry: "${journalEntry}"
+    //   I want an image that represents my mood.`,
+    // });
+    // let config = {
+    //   method: 'post',
+    //   maxBodyLength: Infinity,
+    //   url: 'https://openaibackend-nt11.onrender.com/dalle',
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   data,
+    // };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setImageUrl(response.data.response);
-      })
-      .catch((error) => {
-        Alert.alert('Error', String(error));
-        console.error(error);
-      });
+    // axios
+    //   .request(config)
+    //   .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    //     setImageUrl(response.data.response);
+    //   })
+    //   .catch((error) => {
+    //     Alert.alert('Error', String(error));
+    //     console.error(error);
+    //   });
   };
 
   const delEntry = async () => {
@@ -82,7 +87,7 @@ export default function JournalArchive({ navigation, route }) {
       <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
         {journalEntry}
       </Text>
-      <View className='flex flex-1 gap-4'>
+      <View>
         <PillButton
           text={'Show my mood'}
           onPress={generateImage}
@@ -97,7 +102,7 @@ export default function JournalArchive({ navigation, route }) {
         />
       </View>
       {imageUrl === 'loading' && (
-        <Text>loading your mood as a painting...</Text>
+        <Text className='text-white'>loading your mood as a painting...</Text>
       )}
       {imageUrl !== '' && imageUrl !== 'loading' && (
         <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />
