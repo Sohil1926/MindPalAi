@@ -79,7 +79,9 @@ export default function JournalArchive({ navigation, route }) {
 
   return (
     <View className='flex-1 justify-top py-20 gap-5 bg-black'>
-      <Text className='text-white mx-5'>{journalEntry}</Text>
+      <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
+        {journalEntry}
+      </Text>
       <View className='flex flex-1 gap-4'>
         <PillButton
           text={'Show my mood'}
