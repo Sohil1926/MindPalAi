@@ -25,6 +25,8 @@ export default function Homepage({ navigation }) {
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
 
+  const LOAD_TIME = 2000;
+
   const BTNCOLOR = {
     save: '#6c757d',
     archive: '#007bff',
@@ -50,7 +52,7 @@ export default function Homepage({ navigation }) {
         setShowOnboarding(true);
         await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
       }
-    }, 500);
+    }, LOAD_TIME);
   }, []);
 
   const callAPI = async () => {

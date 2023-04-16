@@ -12,9 +12,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='Home' component={Homepage} />
         <Stack.Screen name='Onboarding' component={Onboarding} />
+        <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
     </NavigationContainer>
