@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage';
 import JournalArchive from './pages/JournalArchive';
 import JournalEntry from './pages/JournalEntry';
 import Onboarding from './pages/Onboarding';
+import Name from './pages/Name';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
       <Stack.Screen name='Onboarding' component={Onboarding} />
-
+      <Stack.Screen name='Name' component={Name} />
         <Stack.Screen name='Home' component={Homepage} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />

@@ -8,11 +8,9 @@ import {
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 
-const Onboarding = ({ navigation, setShowOnboarding }) => {
-  const gotoName = () => { alert("zzzz");
-    // setShowOnboarding(false);
-   
-    navigation.navigate('Name');
+const Name = ({ navigation, setShowOnboarding }) => {
+  const goToHome = () => { alert("zzzz");   
+    navigation.navigate('Home');
   };
 
   const [fontsLoaded] = useFonts({
@@ -48,7 +46,7 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
         </Text>
         <PillButton
           text='Get Started'
-          onPress={gotoName}
+          onPress={goToHome}
           bgColor={'#F4B400'}
           textColor='white'
         />
@@ -97,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Onboarding;
+export default Name;
