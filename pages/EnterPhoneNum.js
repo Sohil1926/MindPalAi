@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
 import { Button } from '@rneui/base';
 import {
   useFonts,
@@ -12,13 +12,11 @@ import {
   Manrope_700Bold, 
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
+import { FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import { firebaseConfig } from '../firebaseConfig';
+import firebase from 'firebase/compat/app';
 
-const PhoneNumber = ({ navigation, setShowOnboarding }) => {
-  const goToHome = () => {
-    if (textEntered) {
-      navigation.navigate('VerifyCode');
-    }
-  };
+const PhoneNumber = ({ navigation, setShowOnboarding }) => {  
 
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
@@ -32,25 +30,46 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
 
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationId, setVerificationId] = useState(null);
+
+  const recaptchaVerifier = useRef(null);
+
+  const sendVerification = () => {
+
+    if (textEntered) {
+      navigation.navigate('VerifyCode');
+    }
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    
+    phoneProvider
+        .verifyPhoneNumber (phoneNumber, recaptchaVerifier.current)
+       .then(setVerificationId);
+       setPhoneNumber('');
+
+    
+  };
+
+  
+     
 
   const formatPhoneNumber = (input) => {
     // Strip all characters from the input except digits
     let phoneNumber = input.replace(/\D/g, '');
 
     // Trim the remaining input to ten characters, to preserve phone number format
-    phoneNumber = phoneNumber.substring(0, 10);
-
+    phoneNumber = phoneNumber.substring(0, 15);
     // Based upon the length of the string, we add formatting as necessary
     let size = phoneNumber.length;
     if (size == 0) {
       phoneNumber = '';
-    } else if (size < 4) {
+    } else if (size < 5) {
       phoneNumber = phoneNumber;
-    } else if (size < 7) {
-      phoneNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    } else if (size < 8) {
+      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(1, 4)}-${phoneNumber.slice(4)}`;
     } else {
-      phoneNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(1, 4)}-${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7)}`;
     }
+    
 
     // Return the formatted phone number
     return phoneNumber;
@@ -60,14 +79,18 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
 
   return (
     <View style={styles.container}>
+      <FirebaseRecaptchaVerifierModal
+         ref={recaptchaVerifier}
+         firebaseConfig={firebaseConfig}
+         />
+
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
         <Text style={styles.subHeading}>Create your account using your phone number</Text>
         <TextInput
           style={styles.input}
-          placeholder="555-029-2932"
+          placeholder="1-555-029-2932"
           placeholderTextColor="#444444" 
-
           onChangeText={(text) => {
             const formattedPhoneNumber = formatPhoneNumber(text);
             setPhoneNumber(formattedPhoneNumber);
@@ -75,7 +98,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
           }}
           value={phoneNumber}
           keyboardType="phone-pad"
-          maxLength={12} // limit the length of input
+          maxLength={15} // limit the length of input
         />
 
 <View style={styles.termsContainer}>
@@ -92,7 +115,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text="continue"
-          onPress={goToHome}
+          onPress={sendVerification}
           disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
           textColor={textEntered ? '#333333' : '#ffffff'}
@@ -133,7 +156,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     input: {
-        fontSize: 35,
+        fontSize: 30,
         fontFamily: 'Manrope_800ExtraBold',
         color: 'white',
         backgroundColor: '#020202',

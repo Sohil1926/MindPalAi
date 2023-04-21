@@ -12,6 +12,9 @@ import {
   Manrope_700Bold, 
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
+import { FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import { firebaseConfig } from '../firebaseConfig';
+import firebase from 'firebase/compat/app';
 
 const VerifyCode = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
@@ -30,13 +33,34 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
     Manrope_600SemiBold, 
     Manrope_700Bold, 
   });
+  if (!fontsLoaded) return null;
 
   const [textEntered, setTextEntered] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationId, setVerificationId] = useState(null);
+  const recaptchaVerifier = useRef(null);
 
-  if (!fontsLoaded) return null;
+  const confirmCode = () => { 
+    const credential = firebase.auth.PhoneAuthProvider.credential(
+        verificationId,
+        code
+    );
+    firebase.auth().signInWithCredential(credential)
+    .then(() => {
+      setCode('');
+    })
+    .catch((error) => { 
+        //show an alert in case of error
+        alert(error);
+    })
+    Alert.alert(
+      'Login Successful. Welcome',
+    );
+}
 
   return (
     <View style={styles.container}>
+        
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
         <Text style={styles.subHeading}>Enter the code we sent to +16478045565</Text>
@@ -44,7 +68,7 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
           style={styles.input}
           placeholderTextColor="#444444" 
           placeholder="292910"
-          onChangeText={(text) => setTextEntered(text.length > 0)}
+          onChangeText={setCode}
           underlineColorAndroid="transparent"
           maxLength={6} // add this to limit the length of input
           keyboardType="phone-pad"
@@ -54,7 +78,7 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text="continue"
-          onPress={goToHome}
+          onPress={confirmCode}
           disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
           textColor={textEntered ? '#333333' : '#ffffff'}

@@ -15,7 +15,8 @@ import PillButton from '../components/PillButton';
 
 const Name = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
-    if (textEntered) {
+    if (textEntered) {      
+           
     navigation.navigate('PhoneNumber');
     }
   };
