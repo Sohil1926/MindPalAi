@@ -17,7 +17,7 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
     if (textEntered) {
 
-    navigation.navigate('SMSSignIn');
+    navigation.navigate('Home');
     }
   };
 
