@@ -9,9 +9,10 @@ import {
 import PillButton from '../components/PillButton';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
-  const goToHome = () => {
-    setShowOnboarding(false);
-    navigation.navigate('Home');
+  const gotoName = () => { alert("zzzz");
+    // setShowOnboarding(false);
+   
+    navigation.navigate('Name');
   };
 
   const [fontsLoaded] = useFonts({
@@ -47,7 +48,7 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
         </Text>
         <PillButton
           text='Get Started'
-          onPress={goToHome}
+          onPress={gotoName}
           bgColor={'#F4B400'}
           textColor='white'
         />

@@ -174,7 +174,6 @@ export default function Homepage({ navigation }) {
         showHideButton={false}
         text={'Loading...'}
       />
-      {/* <Text className='text-white'>{aiResponse}</Text> */}
     </View>
   );
 }
