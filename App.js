@@ -8,7 +8,7 @@ import Onboarding from './pages/Onboarding';
 import Name from './pages/Name';
 import SMSSignIn from './pages/SMSSignIn';
 import VerifyCode from './pages/VerifyCode';
-
+import EnterPhoneNumber from './pages/EnterPhoneNum';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +18,7 @@ const App = () => {
       <Stack.Navigator screenOptions = {{headerShown:false}}>
       <Stack.Screen name='Onboarding' component={Onboarding} />
       <Stack.Screen name='Name' component={Name} />
+      <Stack.Screen name='PhoneNumber' component={EnterPhoneNumber} />
       <Stack.Screen name='VerifyCode' component={VerifyCode} />
       <Stack.Screen name='SMSSignIn' component={SMSSignIn} />
       <Stack.Screen name='Home' component={Homepage} />

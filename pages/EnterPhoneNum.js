@@ -13,10 +13,11 @@ import {
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 
-const Name = ({ navigation, setShowOnboarding }) => {
+const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
     if (textEntered) {
-    navigation.navigate('PhoneNumber');
+
+    navigation.navigate('VerifyCode');
     }
   };
 
@@ -38,12 +39,13 @@ const Name = ({ navigation, setShowOnboarding }) => {
     <View style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
-        <Text style={styles.subHeading}>let’s get started, what’s your name?</Text>
+        <Text style={styles.subHeading}>Create your account using your phone number</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your name"
           onChangeText={(text) => setTextEntered(text.length > 0)}
           underlineColorAndroid="transparent"
+          maxLength={11} // add this to limit the length of input
         />
       </View>
       <View style={styles.bottomSection}>
@@ -109,4 +111,4 @@ const styles = StyleSheet.create({
   });
   
 
-export default Name;
+export default PhoneNumber;
