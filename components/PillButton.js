@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'; // import TouchableOpacity
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useFonts, Manrope_600SemiBold } from '@expo-google-fonts/manrope';
 
 export default function PillButton({
   onPress,
@@ -7,9 +8,17 @@ export default function PillButton({
   bgColor,
   textColor = 'black',
 }) {
+  const [fontsLoaded] = useFonts({
+    Manrope_600SemiBold,
+  });
+
+  if (!fontsLoaded) {
+    return null; // or a loading indicator
+  }
+
   return (
-    <TouchableOpacity // replace Button with TouchableOpacity
-      style={{ ...styles.button, backgroundColor: bgColor }} // add custom styles
+    <TouchableOpacity
+      style={{ ...styles.button, backgroundColor: bgColor, fontFamily: 'Manrope_600SemiBold' }}
       onPress={onPress}
     >
       <Text style={{ ...styles.buttonText, color: textColor }}>{text}</Text>
@@ -18,16 +27,6 @@ export default function PillButton({
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    color: 'white',
-    marginHorizontal: 20,
-  },
   button: {
     borderRadius: 30,
     paddingVertical: 12,
@@ -35,14 +34,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
-  },
-  submitButton: {
-    backgroundColor: '#fff',
-    color: 'black',
+    fontFamily: 'Manrope_600SemiBold',
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Manrope_600SemiBold',
     textAlign: 'center',
   },
 });

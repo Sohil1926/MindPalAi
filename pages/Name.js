@@ -51,6 +51,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
           disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
           textColor={textEntered ? '#333333' : '#ffffff'}
+          style={styles.button}
         />
       </View>
     </View>
@@ -72,14 +73,14 @@ const styles = StyleSheet.create({
     },
     heading: {
       fontSize: 20,
-      marginTop: 30,
+      marginTop: 10,
       marginBottom: 20,
       color: 'white',
       fontFamily: 'Manrope_800ExtraBold',
       textAlign: 'center',
     },
     subHeading: {
-      fontSize: 20,
+      fontSize: 18,
       paddingBottom: 20,
       color: 'white',
       fontFamily: 'Manrope_600SemiBold',
@@ -95,10 +96,14 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       textAlign: 'center',
       marginBottom: 20,
+      marginTop: 5,
     },
     bottomSection: {
       marginBottom: 50, // add this to create space for the button
     },
+    button: { 
+        fontFamily: 'Manrope_600SemiBold',
+    }
   });
   
 
