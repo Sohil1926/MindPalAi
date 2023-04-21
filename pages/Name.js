@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    padding: 20,
-    justifyContent: 'center',
+  
   },
   heading: {
-    fontSize: 40,
+    fontSize: 20,
     fontWeight: 'bold',
-    paddingBottom: 20,
+    marginTop: 30,
+    marginBottom: 20,
     color: 'white',
     fontFamily: 'Manrope_800ExtraBold',
     textAlign: 'center',
