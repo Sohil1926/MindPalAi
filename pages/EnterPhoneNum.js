@@ -16,8 +16,7 @@ import PillButton from '../components/PillButton';
 const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
     if (textEntered) {
-
-    navigation.navigate('VerifyCode');
+      navigation.navigate('VerifyCode');
     }
   };
 
@@ -32,6 +31,30 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   });
 
   const [textEntered, setTextEntered] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const formatPhoneNumber = (input) => {
+    // Strip all characters from the input except digits
+    let phoneNumber = input.replace(/\D/g, '');
+
+    // Trim the remaining input to ten characters, to preserve phone number format
+    phoneNumber = phoneNumber.substring(0, 10);
+
+    // Based upon the length of the string, we add formatting as necessary
+    let size = phoneNumber.length;
+    if (size == 0) {
+      phoneNumber = '';
+    } else if (size < 4) {
+      phoneNumber = phoneNumber;
+    } else if (size < 7) {
+      phoneNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    } else {
+      phoneNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+    }
+
+    // Return the formatted phone number
+    return phoneNumber;
+  };
 
   if (!fontsLoaded) return null;
 
@@ -42,10 +65,15 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         <Text style={styles.subHeading}>Create your account using your phone number</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your name"
-          onChangeText={(text) => setTextEntered(text.length > 0)}
-          underlineColorAndroid="transparent"
-          maxLength={11} // add this to limit the length of input
+          placeholder="Enter your phone number"
+          onChangeText={(text) => {
+            const formattedPhoneNumber = formatPhoneNumber(text);
+            setPhoneNumber(formattedPhoneNumber);
+            setTextEntered(formattedPhoneNumber.length === 12);
+          }}
+          value={phoneNumber}
+          keyboardType="phone-pad"
+          maxLength={12} // limit the length of input
         />
       </View>
       <View style={styles.bottomSection}>
@@ -60,8 +88,9 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       </View>
     </View>
   );
-  
 };
+
+
 
 const styles = StyleSheet.create({
     container: {
