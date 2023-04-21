@@ -7,6 +7,8 @@ import JournalEntry from './pages/JournalEntry';
 import Onboarding from './pages/Onboarding';
 import Name from './pages/Name';
 import SMSSignIn from './pages/SMSSignIn';
+import VerifyCode from './pages/VerifyCode';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -16,10 +18,11 @@ const App = () => {
       <Stack.Navigator screenOptions = {{headerShown:false}}>
       <Stack.Screen name='Onboarding' component={Onboarding} />
       <Stack.Screen name='Name' component={Name} />
+      <Stack.Screen name='VerifyCode' component={VerifyCode} />
+      <Stack.Screen name='SMSSignIn' component={SMSSignIn} />
       <Stack.Screen name='Home' component={Homepage} />
-        <Stack.Screen name='JournalArchive' component={JournalArchive} />
-        <Stack.Screen name='SMSSignIn' component={SMSSignIn} />
-        <Stack.Screen name='JournalEntry' component={JournalEntry} />
+      <Stack.Screen name='JournalArchive' component={JournalArchive} />
+      <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
     </NavigationContainer>
   );
