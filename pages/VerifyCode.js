@@ -47,6 +47,8 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
           onChangeText={(text) => setTextEntered(text.length > 0)}
           underlineColorAndroid="transparent"
           maxLength={6} // add this to limit the length of input
+          keyboardType="phone-pad"
+
         />
       </View>
       <View style={styles.bottomSection}>
@@ -68,13 +70,13 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: 'black',
-      paddingTop: 50, // add this to push the content down
-      paddingHorizontal: 20, // add this for some horizontal padding
+      paddingTop: 50, 
+      paddingHorizontal: 20,
     },
     topSection: {
       flex: 1, // add this to take up remaining space
       justifyContent: 'flex-start', // add this to align content to top
-      alignItems: 'center', // center horizontally
+      alignItems: 'center', 
     },
     heading: {
       fontSize: 20,
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
       width: '100%',
     },
     bottomSection: {
-      marginBottom: 50, // add this to create space for the button
+      marginBottom: 50, 
     },
     button: { 
         fontFamily: 'Manrope_600SemiBold',
