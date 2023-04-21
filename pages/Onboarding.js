@@ -5,11 +5,16 @@ import {
   useFonts,
   Manrope_800ExtraBold,
   Manrope_400Regular,
+  Manrope_200ExtraLight,
+  Manrope_300Light,
+  Manrope_500Medium,
+  Manrope_600SemiBold, 
+  Manrope_700Bold, 
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
-  const gotoName = () => { alert("zzzz");
+  const gotoName = () => { 
     // setShowOnboarding(false);
    
     navigation.navigate('Name');
@@ -18,6 +23,11 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
+    Manrope_200ExtraLight,
+    Manrope_300Light,
+    Manrope_500Medium,
+    Manrope_600SemiBold, 
+    Manrope_700Bold, 
   });
 
   if (!fontsLoaded) return null;
@@ -30,28 +40,25 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
           think of this app like BeReal but for journalling.{' '}
         </Text>
         <Text style={styles.text}>
-          its going to prompt you randomly 3 times a day to type how ur feeling
-          in.{' '}
-        </Text>
-        <Text style={styles.text}>
-          think of it like writing a tweet or smth
-        </Text>
+        you select one time to journal everyday for 10 min        </Text>
         <Text style={styles.text}>
           you’ll have a assistant to help you write till you have explored your
           thoughts{' '}
         </Text>
         <Text style={styles.text}>
-          each time you submit you build your streak
+          each time you submit you build your streak. You can also generate cool artwork to share with friends.
         </Text>
         <Text style={styles.text}>
           all the stuff you write is stored locally on your device.{' '}
         </Text>
-        <PillButton
-          text='Get Started'
-          onPress={gotoName}
-          bgColor={'#F4B400'}
-          textColor='white'
-        />
+         <View style={styles.buttonContainer}>
+    <PillButton
+      text='Get Started'
+      onPress={gotoName}
+      bgColor={'#F4B400'}
+      textColor='white'
+    />
+  </View>
       </View>
     </View>
   );
@@ -61,40 +68,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    padding: 20,
-    justifyContent: 'center',
+    paddingHorizontal: 40,
+    paddingRight:70,
+    paddingTop: 40,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
     paddingRight: 24,
-    paddingBottom: 4,
+    paddingBottom: 20,
     color: 'white',
     fontFamily: 'Manrope_800ExtraBold',
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'normal',
-    paddingBottom: 4,
+    paddingBottom: 20,
     paddingRight: 24,
     color: 'white',
     fontFamily: 'Manrope_400Regular',
   },
-  button: {
-    width: 300,
-    backgroundColor: '#F4B400',
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginTop: 20,
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+
 });
 
 export default Onboarding;
