@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { Button } from '@rneui/base';
 import {
   useFonts,
@@ -77,6 +77,17 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
           keyboardType="phone-pad"
           maxLength={12} // limit the length of input
         />
+
+<View style={styles.termsContainer}>
+  <Text style={styles.termsText}>
+    By tapping “Continue,” you agree to our <TouchableOpacity onPress={() => console.log('Privacy Policy pressed')}>
+      <Text style={styles.link}>Privacy Policy</Text>
+    </TouchableOpacity> and <TouchableOpacity onPress={() => console.log('Terms of Service pressed')}>
+      <Text style={styles.link}>Terms of Service.</Text>
+    </TouchableOpacity>
+  </Text>
+</View>
+
       </View>
       <View style={styles.bottomSection}>
         <PillButton
@@ -140,7 +151,34 @@ const styles = StyleSheet.create({
     },
     button: { 
         fontFamily: 'Manrope_600SemiBold',
-    }
+    },
+
+    termsText: {
+        fontSize: 16,
+        color: '#666666',
+        textAlign: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingHorizontal: 0,
+        fontFamily: 'Manrope_500Medium',
+        alignItems: 'center'
+
+      },
+      link: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontFamily: 'Manrope_600SemiBold',
+        alignItems: 'center',
+
+      },
+
+      termsContainer: { 
+        position: 'absolute',
+        bottom: 50, 
+        width: '100%',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }
   });
   
 
