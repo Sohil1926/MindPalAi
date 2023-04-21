@@ -65,7 +65,9 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         <Text style={styles.subHeading}>Create your account using your phone number</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your phone number"
+          placeholder="555-029-2932"
+          placeholderTextColor="#444444" // Add this line
+
           onChangeText={(text) => {
             const formattedPhoneNumber = formatPhoneNumber(text);
             setPhoneNumber(formattedPhoneNumber);
@@ -120,19 +122,21 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     input: {
-      fontSize: 35,
-      fontFamily: 'Manrope_800ExtraBold',
-      color: 'white',
-      backgroundColor: '#020202',
-      borderRadius: 10,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      textAlign: 'center',
-      marginBottom: 20,
-      marginTop: 5,
-    },
+        fontSize: 35,
+        fontFamily: 'Manrope_800ExtraBold',
+        color: 'white',
+        backgroundColor: '#020202',
+        borderRadius: 10,
+        paddingHorizontal: 30,
+        paddingVertical: 10,
+        textAlign: 'center',
+        marginBottom: 20,
+        marginTop: 5,
+        width: '100%'
+      },
+      
     bottomSection: {
-      marginBottom: 50, // add this to create space for the button
+      marginBottom: 50, 
     },
     button: { 
         fontFamily: 'Manrope_600SemiBold',
