@@ -42,7 +42,8 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
         <Text style={styles.subHeading}>Enter the code we sent to +16478045565</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your name"
+          placeholderTextColor="#444444" 
+          placeholder="292910"
           onChangeText={(text) => setTextEntered(text.length > 0)}
           underlineColorAndroid="transparent"
           maxLength={6} // add this to limit the length of input
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginBottom: 20,
       marginTop: 5,
+      width: '100%',
     },
     bottomSection: {
       marginBottom: 50, // add this to create space for the button

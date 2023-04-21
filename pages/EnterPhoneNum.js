@@ -66,7 +66,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         <TextInput
           style={styles.input}
           placeholder="555-029-2932"
-          placeholderTextColor="#444444" // Add this line
+          placeholderTextColor="#444444" 
 
           onChangeText={(text) => {
             const formattedPhoneNumber = formatPhoneNumber(text);

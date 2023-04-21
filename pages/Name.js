@@ -42,6 +42,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
         <TextInput
           style={styles.input}
           placeholder="Enter your name"
+          placeholderTextColor="#444444" 
           onChangeText={(text) => setTextEntered(text.length > 0)}
           underlineColorAndroid="transparent"
         />
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginBottom: 20,
       marginTop: 5,
+      width: '100%',
     },
     bottomSection: {
       marginBottom: 50, // add this to create space for the button
