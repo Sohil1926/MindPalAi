@@ -17,6 +17,11 @@ import { firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
 
 const PhoneNumber = ({ navigation, setShowOnboarding }) => {  
+  const [textEntered, setTextEntered] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationId, setVerificationId] = useState(null);
+  const recaptchaVerifier = useRef(null);
+  const attemptInvisibleVerification = true;
 
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
@@ -28,26 +33,18 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
     Manrope_700Bold, 
   });
 
-  const [textEntered, setTextEntered] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [verificationId, setVerificationId] = useState(null);
-
-  const recaptchaVerifier = useRef(null);
-
-  const sendVerification = () => {
-
-    if (textEntered) {
+  const sendVerification = async () => {
+    try {
+      const phoneProvider = new firebase.auth.PhoneAuthProvider();
+      const id = await phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier.current);
+      setVerificationId(id);
       navigation.navigate('VerifyCode');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', error.message);
     }
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    
-    phoneProvider
-        .verifyPhoneNumber (phoneNumber, recaptchaVerifier.current)
-       .then(setVerificationId);
-       setPhoneNumber('');
-
-    
   };
+  
 
   
      
@@ -82,6 +79,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       <FirebaseRecaptchaVerifierModal
          ref={recaptchaVerifier}
          firebaseConfig={firebaseConfig}
+        //  attemptInvisibleVerification={true}
          />
 
       <View style={styles.topSection}>

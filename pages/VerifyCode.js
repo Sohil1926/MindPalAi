@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -19,11 +19,13 @@ import firebase from 'firebase/compat/app';
 const VerifyCode = ({ navigation, setShowOnboarding }) => {
   const goToHome = () => {
     if (textEntered) {
-
-    navigation.navigate('Home');
+      navigation.navigate('Home');
     }
   };
 
+  const [textEntered, setTextEntered] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationId, setVerificationId] = useState(null);
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -33,13 +35,8 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
     Manrope_600SemiBold, 
     Manrope_700Bold, 
   });
-  if (!fontsLoaded) return null;
-
-  const [textEntered, setTextEntered] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [verificationId, setVerificationId] = useState(null);
   const recaptchaVerifier = useRef(null);
-
+  
   const confirmCode = () => { 
     const credential = firebase.auth.PhoneAuthProvider.credential(
         verificationId,
@@ -89,6 +86,7 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
   );
   
 };
+
 
 const styles = StyleSheet.create({
     container: {
