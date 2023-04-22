@@ -43,18 +43,19 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   });
 
   const sendVerification = async () => {
-    try {
-      const phoneProvider = new firebase.auth.PhoneAuthProvider();
-      const id = await phoneProvider.verifyPhoneNumber(
-        phoneNumber,
-        recaptchaVerifier.current
-      );
-      setVerificationId(id);
-      navigation.navigate('VerifyCode', { id });
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', error.message);
-    }
+    // try {
+    //   const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    //   const id = await phoneProvider.verifyPhoneNumber(
+    //     phoneNumber,
+    //     recaptchaVerifier.current
+    //   );
+    //   setVerificationId(id);
+    //   navigation.navigate('VerifyCode', { id });
+    // } catch (error) {
+    //   console.log(error);
+    //   Alert.alert('Error', error.message);
+    // }
+    navigation.navigate('VerifyCode', { id: '123456' });
   };
 
   const formatPhoneNumber = (input) => {

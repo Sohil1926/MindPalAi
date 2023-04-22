@@ -8,15 +8,15 @@ import {
   Manrope_200ExtraLight,
   Manrope_300Light,
   Manrope_500Medium,
-  Manrope_600SemiBold, 
-  Manrope_700Bold, 
+  Manrope_600SemiBold,
+  Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
-  const gotoName = () => { 
+  const gotoName = () => {
     // setShowOnboarding(false);
-   
+
     navigation.navigate('Name');
   };
 
@@ -26,8 +26,8 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
     Manrope_200ExtraLight,
     Manrope_300Light,
     Manrope_500Medium,
-    Manrope_600SemiBold, 
-    Manrope_700Bold, 
+    Manrope_600SemiBold,
+    Manrope_700Bold,
   });
 
   if (!fontsLoaded) return null;
@@ -40,25 +40,27 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
           think of this app like BeReal but for journalling.{' '}
         </Text>
         <Text style={styles.text}>
-        you select one time to journal everyday for 10 min        </Text>
+          you select one time to journal everyday for 10 min{' '}
+        </Text>
         <Text style={styles.text}>
           you’ll have a assistant to help you write till you have explored your
           thoughts{' '}
         </Text>
         <Text style={styles.text}>
-          each time you submit you build your streak. You can also generate cool artwork to share with friends.
+          each time you submit you build your streak. You can also generate cool
+          artwork to share with friends.
         </Text>
         <Text style={styles.text}>
           all the stuff you write is stored locally on your device.{' '}
         </Text>
-         <View style={styles.buttonContainer}>
-    <PillButton
-      text='Get Started'
-      onPress={gotoName}
-      bgColor={'#F4B400'}
-      textColor='white'
-    />
-  </View>
+        <View style={styles.buttonContainer}>
+          <PillButton
+            text='Get Started'
+            onPress={gotoName}
+            bgColor={'#F4B400'}
+            textColor='white'
+          />
+        </View>
       </View>
     </View>
   );
@@ -69,10 +71,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     paddingHorizontal: 40,
-    paddingRight:70,
+    paddingRight: 70,
     paddingTop: 40,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    justifyContent: 'flex-center',
+    alignItems: 'flex-center',
   },
   heading: {
     fontSize: 24,
@@ -89,7 +91,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Manrope_400Regular',
   },
-
 });
 
 export default Onboarding;
