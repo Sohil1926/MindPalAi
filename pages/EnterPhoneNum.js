@@ -92,7 +92,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
-        //  attemptInvisibleVerification={true}
+        attemptInvisibleVerification={true}
       />
 
       <View style={styles.topSection}>
