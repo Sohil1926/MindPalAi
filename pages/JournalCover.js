@@ -48,10 +48,12 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     <View style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.subHeading}>
+        say hello to your journal cover        </Text>
         {imageUrl !== null && (
           <Image
             source={{ uri: imageUrl }}
-            style={{ width: 319, height: 403, resizeMode: 'cover' }}
+            style={{ width: 319, height: 403, resizeMode: 'cover', borderRadius: 10, }}
           />
         )}
       </View>
@@ -85,6 +87,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'white',
     fontFamily: 'Manrope_800ExtraBold',
+    textAlign: 'center',
+  },
+  subHeading: {
+    fontSize: 18,
+    paddingBottom: 20,
+    color: 'white',
+    fontFamily: 'Manrope_600SemiBold',
     textAlign: 'center',
   },
   input: {
