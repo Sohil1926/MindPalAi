@@ -24,9 +24,9 @@ import { firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
 
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
-  const goToHome = () => {
+  const goToWriteJournal = () => {
     if (textEntered) {
-      navigation.navigate('Home');
+      navigation.navigate('WriteJournal');
     }
   };
 
@@ -97,7 +97,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={() => navigation.navigate('Home')}          disabled={!textEntered}
+          onPress={() => navigation.navigate('WriteJournal')}          disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
           textColor={textEntered ? '#333333' : '#ffffff'}
           style={styles.button}

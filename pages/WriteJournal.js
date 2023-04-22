@@ -17,7 +17,7 @@ import {
 import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
 
-export default function Homepage({ navigation }) {
+export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
   },
 });
 
-Homepage.navigationOptions = {
+WriteJournal.navigationOptions = {
   headerShown: false,
 };

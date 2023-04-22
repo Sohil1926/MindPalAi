@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Homepage from './pages/Homepage';
+import WriteJournal from './pages/WriteJournal';
 import JournalArchive from './pages/JournalArchive';
 import JournalEntry from './pages/JournalEntry';
 import Onboarding from './pages/Onboarding';
@@ -16,11 +16,10 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='PhoneNumber' component={EnterPhoneNumber} />
-
         <Stack.Screen name='Onboarding' component={Onboarding} />
         <Stack.Screen name='Name' component={Name} />
         <Stack.Screen name='VerifyCode' component={VerifyCode} />
-        <Stack.Screen name='Home' component={Homepage} />
+        <Stack.Screen name='WriteJournal' component={WriteJournal} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
