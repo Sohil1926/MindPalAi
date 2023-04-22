@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
@@ -16,7 +17,6 @@ import {
 } from '@expo-google-fonts/manrope';
 import axios from 'axios';
 import qs from 'qs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
 import {
@@ -107,17 +107,20 @@ export default function WriteJournal({ navigation }) {
     }
     try {
       const date = new Date();
-      appendDataToKey('journals', { date: date.toString(), entry: input });
+      const newJournalEntry = { date: date.toString(), entry: input };
+      await AsyncStorage.setItem('newJournalEntry', JSON.stringify(newJournalEntry));
+      appendDataToKey('journals', newJournalEntry);
       Alert.alert('Success', 'Journal saved successfully', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('JournalCover'),
+          onPress: () => navigation.navigate('JournalCover', { journalEntry: input }),
         },
       ]);
     } catch {
       Alert.alert('Error', 'Something went wrong');
     }
   };
+  
   
   
   
