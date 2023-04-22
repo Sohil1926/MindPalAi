@@ -56,7 +56,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
 
       if (accountData?.loggedIn) {
         alert('You are already logged in');
-        navigation.navigate('Home');
+        navigation.navigate('WriteJournal');
       }
     };
 

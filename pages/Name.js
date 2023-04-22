@@ -36,7 +36,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
 
       if (accountData?.loggedIn) {
         alert('You are already logged in');
-        navigation.navigate('Home');
+        navigation.navigate('WriteJournal');
       }
 
       let registrationData = await getObjFromKey('registrationData');

@@ -56,7 +56,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   }, [refreshCountdown]);
 
   const confirmCode = async () => {
-    if (DEBUGMODE) return navigation.navigate('Home');
+    if (DEBUGMODE) return navigation.navigate('WriteJournal');
     if (!codeInput || codeInput.length < 6) {
       alert('Please enter the verification code.');
       return;
@@ -70,7 +70,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
     signInWithCredential(auth, credential)
       .then(() => {
         alert('Signed in successfully');
-        navigation.navigate('Home');
+        navigation.navigate('WriteJournal');
       })
       .catch((error) => {
         alert(error);
