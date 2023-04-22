@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -25,11 +25,16 @@ import { auth, firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
 import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
 
+const DEBUGMODE = true;
+
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [codeInput, setCodeInput] = useState('');
-  const [verificationId, setVerificationId] = useState(route.params.id);
+  const [refreshCountdown, setRefreshCountdown] = useState(30);
+  const [verificationId, setVerificationId] = useState(
+    DEBUGMODE ? '123456' : route.params.id
+  );
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -40,6 +45,14 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
     Manrope_700Bold,
   });
   const recaptchaVerifier = useRef(null);
+
+  useEffect(() => {
+    if (refreshCountdown > 0) {
+      setTimeout(() => {
+        setRefreshCountdown(refreshCountdown - 1);
+      }, 1000);
+    }
+  }, [refreshCountdown]);
 
   const confirmCode = async () => {
     if (!codeInput || codeInput.length < 6) {
@@ -88,8 +101,17 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
           alignItems: 'center',
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate('PhoneNumber')}>
-          <Text style={styles.link}>Change Phone Number.</Text>
+        <TouchableOpacity
+          disabled={refreshCountdown === 0}
+          onPress={() => navigation.navigate('PhoneNumber')}
+        >
+          {refreshCountdown === 0 ? (
+            <Text style={styles.link}>Change Phone Number/Send Again.</Text>
+          ) : (
+            <Text style={styles.link}>
+              Please wait {refreshCountdown} seconds
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.bottomSection}>
