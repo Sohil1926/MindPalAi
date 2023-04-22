@@ -58,6 +58,7 @@ export default function WriteJournal({ navigation }) {
               user.uid
             );
             if (!userObjExistInDB) {
+              // add user to db
               await addData('users', user.uid, {
                 name: registrationData['name'],
                 phoneNumber: registrationData['phoneNumber'],
