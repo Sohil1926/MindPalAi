@@ -34,7 +34,13 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Text style={styles.heading}>we’re only going to show this once. </Text>
         <Text style={styles.text}>
           think of this app like BeReal but for journalling.{' '}
