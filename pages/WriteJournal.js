@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
-import { useFonts, Manrope_400Regular } from '@expo-google-fonts/manrope';
+import {
+  useFonts,
+  Manrope_800ExtraBold,
+  Manrope_400Regular,
+  Manrope_200ExtraLight,
+  Manrope_300Light,
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+} from '@expo-google-fonts/manrope';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,15 +33,22 @@ export default function WriteJournal({ navigation }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
+  const [inputFilled, setInputFilled] = useState(false);
 
   const BTNCOLOR = {
-    save: '#6c757d',
+    save: '#fff',
     archive: '#007bff',
-    submit: '#fff',
+    submit: '#6c757d',
   };
 
   const [fontsLoaded] = useFonts({
+    Manrope_800ExtraBold,
     Manrope_400Regular,
+    Manrope_200ExtraLight,
+    Manrope_300Light,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
   });
 
   useEffect(() => {
@@ -93,6 +109,7 @@ export default function WriteJournal({ navigation }) {
       Alert.alert('Error', 'Something went wrong');
     }
   };
+  
   if (!fontsLoaded) return null;
   else {
     if (showSplash) {
@@ -111,18 +128,24 @@ export default function WriteJournal({ navigation }) {
 
   return (
     <View
-      className='flex-1 justify-top py-20 gap-5 bg-black'
-      style={{ fontFamily: 'Manrope_400Regular' }}
+    style={styles.container}
     >
+      <View style={styles.topSection}>
+        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.subHeading}>
+        try writing a journal         </Text>
+      </View>
       <StatusBar style='auto' />
       <Input
         style={styles.input}
         multiline={true}
-        placeholder='write'
+        placeholder='ex. today i learned how to cook spaghetti. it was such a nice experience and i felt really calm afterwards'
         className='text-white '
         onChangeText={(txt) => {
           setInput(txt);
+          setInputFilled(txt !== '');
         }}
+        
       />
       <View className='flex flex-col space-y-4'>
         <View className='flex flex-row justify-between mb-5'>
@@ -136,7 +159,8 @@ export default function WriteJournal({ navigation }) {
           <PillButton
             onPress={callAPI}
             text={'Request Insight'}
-            bgColor={BTNCOLOR.submit}
+            bgColor={BTNCOLOR.save}
+            
           />
 
           {/* <TouchableOpacity // replace Button with TouchableOpacity
@@ -145,11 +169,7 @@ export default function WriteJournal({ navigation }) {
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity> */}
-          <PillButton
-            onPress={saveJournal}
-            text={'Save'}
-            bgColor={BTNCOLOR.save}
-          />
+         
         </View>
 
         {/* <TouchableOpacity // replace Button with TouchableOpacity
@@ -158,11 +178,11 @@ export default function WriteJournal({ navigation }) {
         >
           <Text style={styles.buttonText}>Go to Archive</Text>
         </TouchableOpacity> */}
-        <PillButton
+        {/* <PillButton
           onPress={() => navigation.navigate('JournalArchive')}
           text={'See My Archive'}
           bgColor={BTNCOLOR.archive}
-        />
+        /> */}
       </View>
       <CustomModal
         modalVisible={showGPTInsight}
@@ -174,36 +194,74 @@ export default function WriteJournal({ navigation }) {
         showHideButton={false}
         text={'Loading...'}
       />
+
+<View style={styles.bottomSection}>
+        <PillButton
+          text='save journal'
+          style={styles.button}
+          bgColor={inputFilled ? BTNCOLOR.save : BTNCOLOR.submit}
+          
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    color: 'white',
-    marginHorizontal: 20,
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    paddingTop: 50,
+    paddingHorizontal: 20,
   },
-  button: {
-    borderRadius: 30,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+  topSection: {
+    // marginTop: '20%',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
   },
-  buttonText: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: 'bold',
+  heading: {
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 20,
+    color: 'white',
+    fontFamily: 'Manrope_800ExtraBold',
     textAlign: 'center',
   },
+  subHeading: {
+    fontSize: 18,
+    paddingBottom: 20,
+    color: 'white',
+    fontFamily: 'Manrope_600SemiBold',
+    textAlign: 'center',
+  },
+  input: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    height: 200,
+    color: '#FFFFFF',
+    textAlignVertical: 'top', 
+    paddingLeft: 10, 
+    paddingRight: 10,
+    paddingTop: 5,
+    borderRadius: 8,
+    fontFamily: 'Manrope_600SemiBold',
+   
+  },  
+  
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    width: '40%',
+    height: 40,
+  },
+  bottomSection: {
+    marginBottom: '4%',
+    flex: 1,
+    // justifyContent: 'flex-end'
+  },
+
 });
+
 
 WriteJournal.navigationOptions = {
   headerShown: false,
