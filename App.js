@@ -20,7 +20,7 @@ const App = () => {
         <Stack.Screen name='VerifyCode' component={VerifyCode} />
 
         <Stack.Screen name='Onboarding' component={Onboarding} />
-        <Stack.Screen name='Home' component={Homepage} />
+        <Stack.Screen name='Home' component={WriteJournal} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
