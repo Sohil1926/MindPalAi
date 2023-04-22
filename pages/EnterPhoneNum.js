@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
+  Keyboard,
 } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -78,6 +79,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         1,
         4
       )}-${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7)}`;
+      Keyboard.dismiss();
     }
 
     // Return the formatted phone number
