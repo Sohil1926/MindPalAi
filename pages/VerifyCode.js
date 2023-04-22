@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   bottomSection: {
-    marginBottom: 300,
+    marginBottom: '15%',
   },
   button: {
     fontFamily: 'Manrope_600SemiBold',
