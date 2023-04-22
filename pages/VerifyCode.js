@@ -96,9 +96,9 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
         <PillButton
           text='continue'
           onPress={confirmCode}
-          disabled={!textEntered}
-          bgColor={textEntered ? '#ffffff' : '#333333'}
-          textColor={textEntered ? '#333333' : '#ffffff'}
+          disabled={codeInput.length < 6}
+          bgColor={codeInput.length < 6 ? '#ffffff' : '#333333'}
+          textColor={codeInput.length < 6 ? '#333333' : '#ffffff'}
           style={styles.button}
         />
       </View>

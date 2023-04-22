@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Homepage from './pages/Homepage';
+import WriteJournal from './pages/WriteJournal';
 import JournalArchive from './pages/JournalArchive';
 import JournalEntry from './pages/JournalEntry';
 import Onboarding from './pages/Onboarding';
