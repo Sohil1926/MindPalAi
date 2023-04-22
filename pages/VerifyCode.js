@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -83,6 +84,16 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
           keyboardType='phone-pad'
         />
       </View>
+      <View
+        style={{
+          margin: 20,
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity onPress={() => navigation.navigate('PhoneNumber')}>
+          <Text style={styles.link}>Change Phone Number.</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
@@ -142,6 +153,12 @@ const styles = StyleSheet.create({
   },
   button: {
     fontFamily: 'Manrope_600SemiBold',
+  },
+  link: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontFamily: 'Manrope_600SemiBold',
+    alignItems: 'center',
   },
 });
 
