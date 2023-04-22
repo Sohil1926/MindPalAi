@@ -24,9 +24,9 @@ const App = () => {
           component={VerifyCode}
           options={{ gestureEnabled: false }}
         />
+        <Stack.Screen name='VerifyCode' component={VerifyCode} />
 
         <Stack.Screen name='WriteJournal' component={WriteJournal} />
-        <Stack.Screen name='VerifyCode' component={VerifyCode} />
         <Stack.Screen name='JournalCover' component={JournalCover} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
