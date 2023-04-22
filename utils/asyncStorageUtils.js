@@ -132,6 +132,9 @@ const clearObjFromKey = async (key) => {
 };
 
 const deleteFieldFromObj = async (key, field) => {
+  /* 
+    storage[key] = object with field field
+  */
   try {
     const obj = await getObjFromKey(key);
     delete obj[field];
@@ -167,6 +170,16 @@ const getJsonFromKey = async (key) => {
   }
 };
 
+const deleteKey = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
 export {
   appendDataToKey,
   setFieldToKey,
@@ -177,4 +190,5 @@ export {
   clearObjFromKey,
   deleteFieldFromObj,
   setKeyToJson,
+  deleteKey,
 };
