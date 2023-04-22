@@ -29,6 +29,9 @@ const appendDataToKey = async (key, value) => {
 };
 
 const setFieldToKey = async (key, field, value) => {
+  /*
+      key: {field: value}
+  */
   try {
     // get all keys
     const keys = await AsyncStorage.getAllKeys();
@@ -49,7 +52,30 @@ const setFieldToKey = async (key, field, value) => {
   }
 };
 
+const getObjFromKey = async (key) => {
+  /*
+      key: {field: value}
+      returns {field: value}
+  */
+  try {
+    let values = await AsyncStorage.getItem(key);
+    if (values === null) {
+      return null;
+    }
+    values = JSON.parse(values);
+    return values;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
 const getValueFromKey = async (key, field, value) => {
+  /* 
+    key: [{field: value}, {field: not_this_value}]
+    returns {field: value}
+  */
   try {
     let values = await AsyncStorage.getItem(key);
     values = JSON.parse(values);
@@ -63,6 +89,10 @@ const getValueFromKey = async (key, field, value) => {
 };
 
 const getAllValuesFromKey = async (key) => {
+  /* 
+    key: {field: value, field2: value2}
+    returns {field: value, field2: value2}
+  */
   try {
     let values = await AsyncStorage.getItem(key);
     values = JSON.parse(values);
@@ -74,26 +104,15 @@ const getAllValuesFromKey = async (key) => {
 };
 
 const deleteValueFromArr = async (key, field, value) => {
+  /* 
+    key: [{field: value}, {field: not_this_value}]
+    delete {field: value}
+  */
   try {
     let values = await AsyncStorage.getItem(key);
     values = JSON.parse(values);
     const res = values.filter((j) => j[field] !== value);
     await AsyncStorage.setItem(key, JSON.stringify(res));
-  } catch (e) {
-    // error reading value
-    console.error(e);
-    throw new Error(e);
-  }
-};
-
-const getObjFromKey = async (key) => {
-  try {
-    let values = await AsyncStorage.getItem(key);
-    if (values === null) {
-      return null;
-    }
-    values = JSON.parse(values);
-    return values;
   } catch (e) {
     // error reading value
     console.error(e);
@@ -123,6 +142,31 @@ const deleteFieldFromObj = async (key, field) => {
   }
 };
 
+const setKeyToJson = async (key, jsonData) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(jsonData));
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
+const getJsonFromKey = async (key) => {
+  try {
+    let values = await AsyncStorage.getItem(key);
+    if (values === null) {
+      return null;
+    }
+    values = JSON.parse(values);
+    return values;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
 export {
   appendDataToKey,
   setFieldToKey,
@@ -132,4 +176,5 @@ export {
   getObjFromKey,
   clearObjFromKey,
   deleteFieldFromObj,
+  setKeyToJson,
 };

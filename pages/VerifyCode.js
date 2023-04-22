@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -20,20 +21,21 @@ import {
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import { firebaseConfig } from '../firebaseConfig';
+import { auth, firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
+import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
+import { Screen } from 'react-native-screens';
+
+const DEBUGMODE = false;
 
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
-  const goToWriteJournal = () => {
-    if (textEntered) {
-      navigation.navigate('WriteJournal');
-    }
-  };
-
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [codeInput, setCode] = useState('');
-  const [verificationId, setVerificationId] = useState(route.params.id);
+  const [codeInput, setCodeInput] = useState('');
+  const [refreshCountdown, setRefreshCountdown] = useState(30);
+  const [verificationId, setVerificationId] = useState(
+    DEBUGMODE ? '123456' : route.params.id
+  );
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -45,22 +47,30 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   });
   const recaptchaVerifier = useRef(null);
 
-  const confirmCode = () => {
-    if (!codeInput) {
+  useEffect(() => {
+    if (refreshCountdown > 0) {
+      setTimeout(() => {
+        setRefreshCountdown(refreshCountdown - 1);
+      }, 1000);
+    }
+  }, [refreshCountdown]);
+
+  const confirmCode = async () => {
+    if (DEBUGMODE) navigation.navigate('Home');
+    if (!codeInput || codeInput.length < 6) {
       alert('Please enter the verification code.');
       return;
     }
 
-    const credential = firebase.auth.PhoneAuthProvider.credential(
+    const credential = await PhoneAuthProvider.credential(
       verificationId,
       codeInput
     );
 
-    firebase
-      .auth()
-      .signInWithCredential(credential)
+    signInWithCredential(auth, credential)
       .then(() => {
         alert('Signed in successfully');
+        navigation.navigate('Home');
       })
       .catch((error) => {
         alert(error);
@@ -78,7 +88,10 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
           style={styles.input}
           placeholderTextColor='#444444'
           placeholder='292910'
-          onChangeText={setCode}
+          onChangeText={(text) => {
+            setCodeInput(text);
+            codeInput.length === 5 && Keyboard.dismiss();
+          }}
           underlineColorAndroid='transparent'
           maxLength={6}
           keyboardType='phone-pad'
@@ -90,16 +103,26 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
           alignItems: 'center',
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate('PhoneNumber')}>
-          <Text style={styles.link}>Change Phone Number.</Text>
+        <TouchableOpacity
+          disabled={refreshCountdown === 0}
+          onPress={() => navigation.navigate('PhoneNumber')}
+        >
+          {refreshCountdown === 0 ? (
+            <Text style={styles.link}>Change Phone Number/Send Again.</Text>
+          ) : (
+            <Text style={styles.link}>
+              Please wait {refreshCountdown} seconds
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={() => navigation.navigate('WriteJournal')}          disabled={!textEntered}
-          bgColor={textEntered ? '#ffffff' : '#333333'}
-          textColor={textEntered ? '#333333' : '#ffffff'}
+          onPress={confirmCode}
+          disabled={codeInput.length < 6}
+          bgColor={codeInput.length < 6 ? '#ffffff' : '#333333'}
+          textColor={codeInput.length < 6 ? '#333333' : '#ffffff'}
           style={styles.button}
         />
       </View>

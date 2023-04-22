@@ -27,12 +27,14 @@ import {
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
+import { auth } from '../firebaseConfig';
+import { updateProfile } from 'firebase/auth';
+import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 
 export default function WriteJournal({ navigation }) {
 
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
-  const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
@@ -58,19 +60,35 @@ export default function WriteJournal({ navigation }) {
   useEffect(() => {
     //for debugging onboarding screen, comment this line out else it will show every time.
     // deleteFieldFromObj('misc', 'showOnboarding');
-    setTimeout(async () => {
-      setShowSplash(false);
-      const misc = await getObjFromKey('misc');
 
-      if (
-        misc === null ||
-        misc['showOnboarding'] === undefined ||
-        misc['showOnboarding'] === true
-      ) {
-        setShowOnboarding(true);
-        await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
-      }
-    }, 500);
+    const firstTimeOnload = async () => {
+      const registrationData = await getObjFromKey('registrationData');
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          // set logged in to true in async storage
+          await setFieldToKey('account', 'loggedIn', true);
+
+          updateProfile(auth.currentUser, {
+            displayName: registrationData['name'],
+          }).then(async () => {
+            const userObjExistInDB = await checkDocumentExists(
+              'users',
+              user.uid
+            );
+            if (!userObjExistInDB) {
+              // add user to db
+              await addData('users', user.uid, {
+                name: registrationData['name'],
+                phoneNumber: registrationData['phoneNumber'],
+              });
+            }
+          });
+        }
+      });
+    };
+
+    firstTimeOnload();
   }, []);
 
   const callAPI = async () => {
@@ -125,20 +143,21 @@ export default function WriteJournal({ navigation }) {
   
   
   if (!fontsLoaded) return null;
-  else {
-    if (showSplash) {
-      return <SplashScreen />;
-    }
 
-    if (showOnboarding) {
-      return (
-        <Onboarding
-          navigation={navigation}
-          setShowOnboarding={setShowOnboarding}
-        />
-      );
-    }
-  }
+  // else {
+  //   if (showSplash) {
+  //     return <SplashScreen />;
+  //   }
+
+  //   if (showOnboarding) {
+  //     return (
+  //       <Onboarding
+  //         navigation={navigation}
+  //         setShowOnboarding={setShowOnboarding}
+  //       />
+  //     );
+  //   }
+  // }
 
   return (
     <View
