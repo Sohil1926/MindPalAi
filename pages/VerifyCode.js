@@ -25,7 +25,7 @@ import { auth, firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
 import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
 
-const DEBUGMODE = true;
+const DEBUGMODE = false;
 
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   const [textEntered, setTextEntered] = useState(false);
