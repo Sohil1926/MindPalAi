@@ -32,6 +32,13 @@ const Name = ({ navigation, setShowOnboarding }) => {
 
   useEffect(() => {
     const fetch = async () => {
+      let accountData = await getObjFromKey('accountData');
+
+      if (accountData?.loggedIn) {
+        alert('You are already logged in');
+        navigation.navigate('Home');
+      }
+
       let registrationData = await getObjFromKey('registrationData');
 
       if (registrationData['name']) {

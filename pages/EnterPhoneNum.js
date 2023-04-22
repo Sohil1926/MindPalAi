@@ -52,15 +52,15 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
     // });
 
     const fetch = async () => {
-      let registrationData = await getObjFromKey('registrationData');
+      let accountData = await getObjFromKey('accountData');
 
-      if (registrationData['phoneNumber']) {
-        alert('We already have your phone number');
+      if (accountData?.loggedIn) {
+        alert('You are already logged in');
         navigation.navigate('Home');
       }
     };
 
-    fetch();
+    // fetch(); dont call
   }, []);
 
   const sendVerification = async () => {
@@ -71,6 +71,8 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         recaptchaVerifier.current
       );
       setVerificationId(id);
+
+      // cache the phone number
       setFieldToKey('registrationData', 'phoneNumber', phoneNumber);
       navigation.navigate('VerifyCode', { id });
     } catch (error) {

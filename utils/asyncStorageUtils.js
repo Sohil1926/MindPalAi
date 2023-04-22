@@ -142,6 +142,31 @@ const deleteFieldFromObj = async (key, field) => {
   }
 };
 
+const setKeyToJson = async (key, jsonData) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(jsonData));
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
+const getJsonFromKey = async (key) => {
+  try {
+    let values = await AsyncStorage.getItem(key);
+    if (values === null) {
+      return null;
+    }
+    values = JSON.parse(values);
+    return values;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
 export {
   appendDataToKey,
   setFieldToKey,
@@ -151,4 +176,5 @@ export {
   getObjFromKey,
   clearObjFromKey,
   deleteFieldFromObj,
+  setKeyToJson,
 };

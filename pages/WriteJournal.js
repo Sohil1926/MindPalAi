@@ -17,6 +17,8 @@ import {
 import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
 import { auth } from '../firebaseConfig';
+import { updateProfile } from 'firebase/auth';
+import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 
 export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
@@ -41,14 +43,34 @@ export default function WriteJournal({ navigation }) {
     // deleteFieldFromObj('misc', 'showOnboarding');
     setShowSplash(false);
 
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        alert("You're not logged in!");
-      } else {
-        alert('Welcome');
-        setFieldToKey('')
-      }
-    });
+    const cacheResult = async () => {
+      const registrationData = await getObjFromKey('registrationData');
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          // set logged in to true in async storage
+          await setFieldToKey('account', 'loggedIn', true);
+
+          updateProfile(auth.currentUser, {
+            displayName: registrationData['name'],
+          }).then(async () => {
+            const userObjExistInDB = await checkDocumentExists(
+              'users',
+              user.uid
+            );
+            if (!userObjExistInDB) {
+              await addData('users', user.uid, {
+                name: registrationData['name'],
+                phoneNumber: registrationData['phoneNumber'],
+              });
+            }
+          });
+          // console.log(registrationData);
+        }
+      });
+    };
+
+    cacheResult();
 
     // setTimeout(async () => {
     //   setShowSplash(false);
