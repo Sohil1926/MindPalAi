@@ -25,6 +25,7 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
 
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [code, setCode] = useState('');
   const [verificationId, setVerificationId] = useState(null);
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
@@ -37,23 +38,29 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
   });
   const recaptchaVerifier = useRef(null);
   
-  const confirmCode = () => { 
+  const confirmCode = () => {
+    if (!code) {
+      alert('Please enter the verification code.');
+      return;
+    }
+  
     const credential = firebase.auth.PhoneAuthProvider.credential(
-        verificationId,
-        code
+      verificationId,
+      code
     );
-    firebase.auth().signInWithCredential(credential)
-    .then(() => {
-      setCode('');
-    })
-    .catch((error) => { 
-        //show an alert in case of error
+  
+    firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then(() => {
+        setCode('');
+      })
+      .catch((error) => {
         alert(error);
-    })
-    Alert.alert(
-      'Login Successful. Welcome',
-    );
-}
+      });
+  };
+  
+
 
   return (
     <View style={styles.container}>
@@ -62,15 +69,15 @@ const VerifyCode = ({ navigation, setShowOnboarding }) => {
         <Text style={styles.heading}>MindPal.</Text>
         <Text style={styles.subHeading}>Enter the code we sent to +16478045565</Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="#444444" 
-          placeholder="292910"
-          onChangeText={setCode}
-          underlineColorAndroid="transparent"
-          maxLength={6} // add this to limit the length of input
-          keyboardType="phone-pad"
+  style={styles.input}
+  placeholderTextColor="#444444" 
+  placeholder="292910"
+  onChangeText={setCode} 
+  underlineColorAndroid="transparent"
+  maxLength={6}
+  keyboardType="phone-pad"
+/>
 
-        />
       </View>
       <View style={styles.bottomSection}>
         <PillButton
@@ -96,8 +103,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
     },
     topSection: {
-      flex: 1, // add this to take up remaining space
-      justifyContent: 'flex-start', // add this to align content to top
+      flex: 1, 
+      justifyContent: 'flex-start', 
       alignItems: 'center', 
     },
     heading: {
