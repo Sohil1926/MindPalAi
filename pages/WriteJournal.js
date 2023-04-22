@@ -43,7 +43,7 @@ export default function WriteJournal({ navigation }) {
     // deleteFieldFromObj('misc', 'showOnboarding');
     setShowSplash(false);
 
-    const cacheResult = async () => {
+    const firstTimeOnload = async () => {
       const registrationData = await getObjFromKey('registrationData');
 
       auth.onAuthStateChanged(async (user) => {
@@ -65,25 +65,11 @@ export default function WriteJournal({ navigation }) {
               });
             }
           });
-          // console.log(registrationData);
         }
       });
     };
 
-    cacheResult();
-
-    // setTimeout(async () => {
-    //   setShowSplash(false);
-    //   const misc = await getObjFromKey('misc');
-    //   if (
-    //     misc === null ||
-    //     misc['showOnboarding'] === undefined ||
-    //     misc['showOnboarding'] === true
-    //   ) {
-    //     setShowOnboarding(true);
-    //     await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
-    //   }
-    // }, 500);
+    firstTimeOnload();
   }, []);
 
   const callAPI = async () => {
