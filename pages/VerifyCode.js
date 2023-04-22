@@ -24,6 +24,7 @@ import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { auth, firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
 import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
+import { Screen } from 'react-native-screens';
 
 const DEBUGMODE = false;
 
