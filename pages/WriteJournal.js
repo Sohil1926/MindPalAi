@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { StatusBar } from 'expo-status-bar';
 import { Text, Button, Input } from '@rneui/themed';
 import {
@@ -27,6 +29,7 @@ import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
 
 export default function WriteJournal({ navigation }) {
+
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
@@ -34,6 +37,7 @@ export default function WriteJournal({ navigation }) {
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
   const [inputFilled, setInputFilled] = useState(false);
+  
 
   const BTNCOLOR = {
     save: '#fff',
@@ -104,11 +108,18 @@ export default function WriteJournal({ navigation }) {
     try {
       const date = new Date();
       appendDataToKey('journals', { date: date.toString(), entry: input });
-      Alert.alert('Success', 'Journal saved successfully');
+      Alert.alert('Success', 'Journal saved successfully', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('JournalCover'),
+        },
+      ]);
     } catch {
       Alert.alert('Error', 'Something went wrong');
     }
   };
+  
+  
   
   if (!fontsLoaded) return null;
   else {
@@ -200,7 +211,7 @@ export default function WriteJournal({ navigation }) {
           text='save journal'
           style={styles.button}
           bgColor={inputFilled ? BTNCOLOR.save : BTNCOLOR.submit}
-          
+          onPress={saveJournal}
         />
       </View>
     </View>
