@@ -56,6 +56,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   }, [refreshCountdown]);
 
   const confirmCode = async () => {
+    if (DEBUGMODE) navigation.navigate('Home');
     if (!codeInput || codeInput.length < 6) {
       alert('Please enter the verification code.');
       return;
