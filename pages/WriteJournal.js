@@ -40,7 +40,6 @@ export default function WriteJournal({ navigation }) {
   useEffect(() => {
     //for debugging onboarding screen, comment this line out else it will show every time.
     // deleteFieldFromObj('misc', 'showOnboarding');
-    setShowSplash(false);
 
     const firstTimeOnload = async () => {
       const registrationData = await getObjFromKey('registrationData');

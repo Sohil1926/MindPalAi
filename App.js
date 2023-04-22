@@ -23,6 +23,8 @@ const App = () => {
         <Stack.Screen name='VerifyCode' component={VerifyCode} />
 
         <Stack.Screen name='Onboarding' component={Onboarding} />
+      </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Home' component={WriteJournal} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
