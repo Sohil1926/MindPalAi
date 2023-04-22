@@ -6,6 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -20,19 +21,14 @@ import {
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import { firebaseConfig } from '../firebaseConfig';
+import { auth, firebaseConfig } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
+import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
 
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
-  const goToHome = () => {
-    if (textEntered) {
-      navigation.navigate('Home');
-    }
-  };
-
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [codeInput, setCode] = useState('');
+  const [codeInput, setCodeInput] = useState('');
   const [verificationId, setVerificationId] = useState(route.params.id);
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
@@ -45,22 +41,21 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   });
   const recaptchaVerifier = useRef(null);
 
-  const confirmCode = () => {
-    if (!codeInput) {
+  const confirmCode = async () => {
+    if (!codeInput || codeInput.length < 6) {
       alert('Please enter the verification code.');
       return;
     }
 
-    const credential = firebase.auth.PhoneAuthProvider.credential(
+    const credential = await PhoneAuthProvider.credential(
       verificationId,
       codeInput
     );
 
-    firebase
-      .auth()
-      .signInWithCredential(credential)
+    signInWithCredential(auth, credential)
       .then(() => {
         alert('Signed in successfully');
+        navigation.navigate('Home');
       })
       .catch((error) => {
         alert(error);
@@ -78,7 +73,10 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
           style={styles.input}
           placeholderTextColor='#444444'
           placeholder='292910'
-          onChangeText={setCode}
+          onChangeText={(text) => {
+            setCodeInput(text);
+            codeInput.length === 5 && Keyboard.dismiss();
+          }}
           underlineColorAndroid='transparent'
           maxLength={6}
           keyboardType='phone-pad'
@@ -97,7 +95,8 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={() => navigation.navigate('Home')}          disabled={!textEntered}
+          onPress={confirmCode}
+          disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
           textColor={textEntered ? '#333333' : '#ffffff'}
           style={styles.button}

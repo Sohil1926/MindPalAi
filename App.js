@@ -15,11 +15,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Name' component={Name} />
         <Stack.Screen name='PhoneNumber' component={EnterPhoneNumber} />
+        <Stack.Screen name='VerifyCode' component={VerifyCode} />
 
         <Stack.Screen name='Onboarding' component={Onboarding} />
-        <Stack.Screen name='Name' component={Name} />
-        <Stack.Screen name='VerifyCode' component={VerifyCode} />
         <Stack.Screen name='Home' component={Homepage} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />

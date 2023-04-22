@@ -1,5 +1,14 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from 'react-native';
 import { Button } from '@rneui/base';
 import {
   useFonts,
@@ -8,15 +17,16 @@ import {
   Manrope_200ExtraLight,
   Manrope_300Light,
   Manrope_500Medium,
-  Manrope_600SemiBold, 
-  Manrope_700Bold, 
+  Manrope_600SemiBold,
+  Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
-import { FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
-import { firebaseConfig } from '../firebaseConfig';
-import firebase from 'firebase/compat/app';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import { firebaseConfig, auth } from '../firebaseConfig';
+import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
+import { setFieldToKey } from '../utils/asyncStorageUtils';
 
-const PhoneNumber = ({ navigation, setShowOnboarding }) => {  
+const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   const [textEntered, setTextEntered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationId, setVerificationId] = useState(null);
@@ -29,28 +39,46 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
     Manrope_200ExtraLight,
     Manrope_300Light,
     Manrope_500Medium,
-    Manrope_600SemiBold, 
-    Manrope_700Bold, 
+    Manrope_600SemiBold,
+    Manrope_700Bold,
   });
 
+  useState(() => {
+    // // if user is logged in
+    // auth.onAuthStateChanged((user) => {
+    //   if (user) {
+    //     navigation.navigate('Home');
+    //   }
+    // });
+
+    const fetch = async () => {
+      let registrationData = await getObjFromKey('registrationData');
+
+      if (registrationData['phoneNumber']) {
+        alert('We already have your phone number');
+        navigation.navigate('Home');
+      }
+    };
+
+    fetch();
+  }, []);
+
   const sendVerification = async () => {
-    // try {
-    //   const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    //   const id = await phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier.current);
-    //   setVerificationId(id);
-    //   navigation.navigate('VerifyCode');
-    // } catch (error) {
-    //   console.log(error);
-    //   Alert.alert('Error', error.message);
-    // }
-
-    navigation.navigate('VerifyCode', { id: '123456' });
-
+    try {
+      const phoneProvider = new PhoneAuthProvider(auth);
+      const id = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current
+      );
+      setVerificationId(id);
+      setFieldToKey('registrationData', 'phoneNumber', phoneNumber);
+      navigation.navigate('VerifyCode', { id });
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', error.message);
+    }
+    // navigation.navigate('VerifyCode', { id: '123456' });
   };
-  
-
-  
-     
 
   const formatPhoneNumber = (input) => {
     // Strip all characters from the input except digits
@@ -65,11 +93,16 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
     } else if (size < 5) {
       phoneNumber = phoneNumber;
     } else if (size < 8) {
-      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(1, 4)}-${phoneNumber.slice(4)}`;
+      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(
+        1,
+        4
+      )}-${phoneNumber.slice(4)}`;
     } else {
-      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(1, 4)}-${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7)}`;
+      phoneNumber = `+${phoneNumber.slice(0, 1)}-${phoneNumber.slice(
+        1,
+        4
+      )}-${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7)}`;
     }
-    
 
     // Return the formatted phone number
     return phoneNumber;
@@ -80,42 +113,51 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   return (
     <View style={styles.container}>
       <FirebaseRecaptchaVerifierModal
-         ref={recaptchaVerifier}
-         firebaseConfig={firebaseConfig}
-        //  attemptInvisibleVerification={true}
-         />
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+        attemptInvisibleVerification={true}
+      />
 
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
-        <Text style={styles.subHeading}>Create your account using your phone number</Text>
+        <Text style={styles.subHeading}>
+          Create your account using your phone number
+        </Text>
         <TextInput
           style={styles.input}
-          placeholder="1-555-029-2932"
-          placeholderTextColor="#444444" 
+          placeholder='1-555-029-2932'
+          placeholderTextColor='#444444'
           onChangeText={(text) => {
             const formattedPhoneNumber = formatPhoneNumber(text);
             setPhoneNumber(formattedPhoneNumber);
-            setTextEntered(formattedPhoneNumber.length === 12);
+            setTextEntered(formattedPhoneNumber.length === 14);
+            textEntered && Keyboard.dismiss();
           }}
           value={phoneNumber}
-          keyboardType="phone-pad"
+          keyboardType='phone-pad'
           maxLength={15} // limit the length of input
         />
 
-<View style={styles.termsContainer}>
-  <Text style={styles.termsText}>
-    By tapping “Continue,” you agree to our <TouchableOpacity onPress={() => console.log('Privacy Policy pressed')}>
-      <Text style={styles.link}>Privacy Policy</Text>
-    </TouchableOpacity> and <TouchableOpacity onPress={() => console.log('Terms of Service pressed')}>
-      <Text style={styles.link}>Terms of Service.</Text>
-    </TouchableOpacity>
-  </Text>
-</View>
-
+        <View style={styles.termsContainer}>
+          <Text style={styles.termsText}>
+            By tapping “Continue,” you agree to our{' '}
+            <TouchableOpacity
+              onPress={() => console.log('Privacy Policy pressed')}
+            >
+              <Text style={styles.link}>Privacy Policy</Text>
+            </TouchableOpacity>{' '}
+            and{' '}
+            <TouchableOpacity
+              onPress={() => console.log('Terms of Service pressed')}
+            >
+              <Text style={styles.link}>Terms of Service.</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
       </View>
       <View style={styles.bottomSection}>
         <PillButton
-          text="continue"
+          text='continue'
           onPress={sendVerification}
           disabled={!textEntered}
           bgColor={textEntered ? '#ffffff' : '#333333'}
@@ -127,83 +169,78 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'black',
-      paddingTop: 50, // add this to push the content down
-      paddingHorizontal: 20, // add this for some horizontal padding
-    },
-    topSection: {
-      flex: 1, // add this to take up remaining space
-      justifyContent: 'flex-start', // add this to align content to top
-      alignItems: 'center', // center horizontally
-    },
-    heading: {
-      fontSize: 20,
-      marginTop: 10,
-      marginBottom: 20,
-      color: 'white',
-      fontFamily: 'Manrope_800ExtraBold',
-      textAlign: 'center',
-    },
-    subHeading: {
-      fontSize: 18,
-      paddingBottom: 20,
-      color: 'white',
-      fontFamily: 'Manrope_600SemiBold',
-      textAlign: 'center',
-    },
-    input: {
-        fontSize: 30,
-        fontFamily: 'Manrope_800ExtraBold',
-        color: 'white',
-        backgroundColor: '#020202',
-        borderRadius: 10,
-        paddingHorizontal: 30,
-        paddingVertical: 10,
-        textAlign: 'center',
-        marginBottom: 20,
-        marginTop: 5,
-        width: '100%'
-      },
-      
-    bottomSection: {
-      marginBottom: 50, 
-    },
-    button: { 
-        fontFamily: 'Manrope_600SemiBold',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    paddingTop: 50, // add this to push the content down
+    paddingHorizontal: 20, // add this for some horizontal padding
+  },
+  topSection: {
+    flex: 1, // add this to take up remaining space
+    justifyContent: 'flex-start', // add this to align content to top
+    alignItems: 'center', // center horizontally
+  },
+  heading: {
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 20,
+    color: 'white',
+    fontFamily: 'Manrope_800ExtraBold',
+    textAlign: 'center',
+  },
+  subHeading: {
+    fontSize: 18,
+    paddingBottom: 20,
+    color: 'white',
+    fontFamily: 'Manrope_600SemiBold',
+    textAlign: 'center',
+  },
+  input: {
+    fontSize: 30,
+    fontFamily: 'Manrope_800ExtraBold',
+    color: 'white',
+    backgroundColor: '#020202',
+    borderRadius: 10,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    textAlign: 'center',
+    marginBottom: 20,
+    marginTop: 5,
+    width: '100%',
+  },
 
-    termsText: {
-        fontSize: 16,
-        color: '#666666',
-        textAlign: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingHorizontal: 0,
-        fontFamily: 'Manrope_500Medium',
-        alignItems: 'center'
+  bottomSection: {
+    marginBottom: 50,
+  },
+  button: {
+    fontFamily: 'Manrope_600SemiBold',
+  },
 
-      },
-      link: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontFamily: 'Manrope_600SemiBold',
-        alignItems: 'center',
+  termsText: {
+    fontSize: 16,
+    color: '#666666',
+    textAlign: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 0,
+    fontFamily: 'Manrope_500Medium',
+    alignItems: 'center',
+  },
+  link: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontFamily: 'Manrope_600SemiBold',
+    alignItems: 'center',
+  },
 
-      },
-
-      termsContainer: { 
-        position: 'absolute',
-        bottom: 50, 
-        width: '100%',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }
-  });
-  
+  termsContainer: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});
 
 export default PhoneNumber;

@@ -16,6 +16,7 @@ import {
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
+import { auth } from '../firebaseConfig';
 
 export default function Homepage({ navigation }) {
   const [input, setInput] = useState('');
@@ -38,19 +39,29 @@ export default function Homepage({ navigation }) {
   useEffect(() => {
     //for debugging onboarding screen, comment this line out else it will show every time.
     // deleteFieldFromObj('misc', 'showOnboarding');
-    setTimeout(async () => {
-      setShowSplash(false);
-      const misc = await getObjFromKey('misc');
+    setShowSplash(false);
 
-      if (
-        misc === null ||
-        misc['showOnboarding'] === undefined ||
-        misc['showOnboarding'] === true
-      ) {
-        setShowOnboarding(true);
-        await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        alert("You're not logged in!");
+      } else {
+        alert('Welcome');
+        setFieldToKey('')
       }
-    }, 500);
+    });
+
+    // setTimeout(async () => {
+    //   setShowSplash(false);
+    //   const misc = await getObjFromKey('misc');
+    //   if (
+    //     misc === null ||
+    //     misc['showOnboarding'] === undefined ||
+    //     misc['showOnboarding'] === true
+    //   ) {
+    //     setShowOnboarding(true);
+    //     await setFieldToKey('misc', 'showOnboarding', false); // don't show onboarding screen again
+    //   }
+    // }, 500);
   }, []);
 
   const callAPI = async () => {
