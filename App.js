@@ -24,7 +24,6 @@ const App = () => {
           component={VerifyCode}
           options={{ gestureEnabled: false }}
         />
-        <Stack.Screen name='VerifyCode' component={VerifyCode} />
 
         <Stack.Screen name='WriteJournal' component={WriteJournal} />
         <Stack.Screen name='JournalCover' component={JournalCover} />
