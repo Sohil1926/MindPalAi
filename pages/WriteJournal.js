@@ -23,7 +23,6 @@ import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
-  const [showSplash, setShowSplash] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
@@ -113,20 +112,21 @@ export default function WriteJournal({ navigation }) {
     }
   };
   if (!fontsLoaded) return null;
-  else {
-    if (showSplash) {
-      return <SplashScreen />;
-    }
 
-    if (showOnboarding) {
-      return (
-        <Onboarding
-          navigation={navigation}
-          setShowOnboarding={setShowOnboarding}
-        />
-      );
-    }
-  }
+  // else {
+  //   if (showSplash) {
+  //     return <SplashScreen />;
+  //   }
+
+  //   if (showOnboarding) {
+  //     return (
+  //       <Onboarding
+  //         navigation={navigation}
+  //         setShowOnboarding={setShowOnboarding}
+  //       />
+  //     );
+  //   }
+  // }
 
   return (
     <View
