@@ -79,7 +79,6 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
         1,
         4
       )}-${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7)}`;
-      Keyboard.dismiss();
     }
 
     // Return the formatted phone number
@@ -108,7 +107,8 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
           onChangeText={(text) => {
             const formattedPhoneNumber = formatPhoneNumber(text);
             setPhoneNumber(formattedPhoneNumber);
-            setTextEntered(formattedPhoneNumber.length === 12);
+            setTextEntered(formattedPhoneNumber.length === 14);
+            textEntered && Keyboard.dismiss();
           }}
           value={phoneNumber}
           keyboardType='phone-pad'
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
 
   bottomSection: {
-    marginBottom: 500,
+    marginBottom: '20%',
   },
   button: {
     fontFamily: 'Manrope_600SemiBold',
