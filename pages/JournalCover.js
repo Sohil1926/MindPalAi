@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Image } from '
 import { Button } from '@rneui/base';
 import axios from 'axios';
 import qs from 'qs';
+import PillButton from '../components/PillButton';
+import JournalArchive from './JournalArchive';
 
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
@@ -53,16 +55,17 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
         {imageUrl !== null && (
           <Image
             source={{ uri: imageUrl }}
-            style={{ width: 319, height: 403, resizeMode: 'cover', borderRadius: 10, }}
+            style={{ width: 319, height: 403, resizeMode: 'cover', borderRadius: 10, borderWidth: 2, borderColor: '#FFF'}}
           />
         )}
       </View>
       <View style={styles.bottomSection}>
-    
-        <Button
-          text="Continue"
+        <PillButton
+          text="continue"
+          onPress={JournalArchive}
+          bgColor={'#ffffff'}
+          textColor={'#000000'}
           style={styles.button}
-          onPress={() => navigation.navigate('JournalEntry', { journalEntry })}
         />
       </View>
     </View>
