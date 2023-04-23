@@ -12,51 +12,55 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const goToTimeSelect = () => {
     navigation.navigate('TimeSelect');
   }
+
   useEffect(() => {
-    if (journalEntry !== '') {
-      generateImage();
-    }
-  }, [journalEntry]);
+    // Load image URL when component mounts
+    setImageUrl('https://example.com/image.jpg');
+  }, []);
+  // useEffect(() => {
+  //   if (journalEntry !== '') {
+  //     generateImage();
+  //   }
+  // }, [journalEntry]);
 
-  const generateImage = async () => {
-    setImageUrl('loading');
+  // const generateImage = async () => {
+  //   setImageUrl('loading');
 
-    let data = qs.stringify({
-      input: `This is my journal entry: "${journalEntry}"
-        I want an image that represents my mood.`,
-    });
+  //   let data = qs.stringify({
+  //     input: `This is my journal entry: "${journalEntry}"
+  //       I want an image that represents my mood.`,
+  //   });
 
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://openaibackend-nt11.onrender.com/dalle',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data,
-    };
+  //   let config = {
+  //     method: 'post',
+  //     maxBodyLength: Infinity,
+  //     url: 'https://openaibackend-nt11.onrender.com/dalle',
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded',
+  //     },
+  //     data,
+  //   };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setImageUrl(response.data.response);
-      })
-      .catch((error) => {
-        Alert.alert('Error', String(error));
-        console.error(error);
-      });
-  };
+  //   axios
+  //     .request(config)
+  //     .then((response) => {
+  //       console.log(JSON.stringify(response.data));
+  //       setImageUrl(response.data.response);
+  //     })
+  //     .catch((error) => {
+  //       Alert.alert('Error', String(error));
+  //       console.error(error);
+  //     });
+  // };
 
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.heading}>MindPal.</Text>
-        <Text style={styles.subHeading}>
-        say hello to your journal cover        </Text>
+        <Text style={styles.subHeading}>say hello to your journal cover</Text>
         {imageUrl !== null && (
           <Image
-            source={{ uri: imageUrl }}
+            source={{ uri: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80' }}
             style={{ width: 319, height: 403, resizeMode: 'cover', borderRadius: 10, borderWidth: 2, borderColor: '#FFF'}}
           />
         )}
