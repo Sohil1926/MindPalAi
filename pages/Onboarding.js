@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Button } from '@rneui/base';
 import {
@@ -12,6 +12,7 @@ import {
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
+import { getObjFromKey } from '../utils/asyncStorageUtils';
 
 const Onboarding = ({ navigation, setShowOnboarding }) => {
   const gotoName = () => {
@@ -19,6 +20,26 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
 
     navigation.navigate('Name');
   };
+
+  useEffect(() => {
+    const fetch = async () => {
+      let accountData = await getObjFromKey('account');
+
+      if (accountData?.loggedIn) {
+        // alert('You are already logged in');
+        return navigation.navigate('WriteJournal');
+      }
+
+      let registrationData = await getObjFromKey('registrationData');
+
+      if (registrationData['name']) {
+        alert('We already have your name');
+        return navigation.navigate('PhoneNumber');
+      }
+    };
+
+    fetch();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
