@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Button } from '@rneui/base';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Notifications } from 'expo-notifications';
 
 import {
   useFonts,
@@ -43,7 +44,29 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
         setShowPicker(false); // Add this line to close the date picker after selecting a new time
       }
     };
-  
+    const scheduleNotification = async () => {
+        try {
+          // Define the notification content
+          const notificationContent = {
+            title: "MindPal",
+            body: "Time to journal!",
+          };
+          
+          // Calculate the time for the next day's notification
+          const nextDay = selectedDate.getDate() + 1;
+          const notificationTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), nextDay, selectedDate.getHours(), selectedDate.getMinutes());
+      
+          // Schedule the notification
+          const schedulingOptions = {
+            content: notificationContent,
+            trigger: { date: notificationTime },
+          };
+          await Notifications.scheduleNotificationAsync(schedulingOptions);
+        } catch (error) {
+          console.log('Error scheduling notification', error);
+        }
+      };
+      
     return (
       <View style={styles.container}>
         <View style={styles.topSection}>
@@ -76,8 +99,11 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
         <View style={styles.bottomSection}>
           <PillButton
             text='continue'
-            onPress={JournalArchive}
-            bgColor={'#ffffff'}
+            onPress={() => {
+                scheduleNotification();
+                navigation.navigate('JournalArchive');
+            }}            
+              bgColor={'#ffffff'}
           />
         </View>
       </View>

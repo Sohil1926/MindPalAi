@@ -10,10 +10,30 @@ import VerifyCode from './pages/VerifyCode';
 import EnterPhoneNumber from './pages/EnterPhoneNum';
 import JournalCover from './pages/JournalCover';
 import TimeSelect from './pages/TimeSelect';
+import { Notifications } from 'expo';
+import { registerForPushNotificationsAsync } from 'expo-notifications';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  // React.useEffect(() => {
+  //   registerForPushNotificationsAsync();
+  // }, []);
+
+  // async function registerForPushNotificationsAsync() {
+  //   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  //   let finalStatus = existingStatus;
+  //   if (existingStatus !== 'granted') {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     finalStatus = status;
+  //   }
+  //   if (finalStatus !== 'granted') {
+  //     console.log('Failed to get push token for push notification!');
+  //     return;
+  //   }
+  //   console.log('Got push token for push notification:', token);
+  // }
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

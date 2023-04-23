@@ -9,8 +9,11 @@
     "splash": {
       "image": "./assets/splashPic.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "permissions": "NOTIFICATIONS"
+      
     },
+   
     "assetBundlePatterns": [
       "**/*"
     ],
