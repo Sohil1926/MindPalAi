@@ -19,6 +19,7 @@ import {
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
 import { getObjFromKey, setFieldToKey } from '../utils/asyncStorageUtils';
+import Homepage from './Homepage';
 
 const FindFriends = ({ navigation, setShowOnboarding }) => {
  
@@ -41,14 +42,13 @@ const FindFriends = ({ navigation, setShowOnboarding }) => {
   <Text style={styles.heading}>MindPal.</Text>
   <View     style={styles.skipButton}
 > 
-  <PillButton
+<PillButton
     text='Skip'
     bgColor={ 'transparent' }
     textColor={ '#939393' }
     style={styles.skipButton}
-    onPress={() => {
-      // handle skip button press
-    }}
+    onPress={() => navigation.navigate('Homepage')} // Update this line
+
   />
   </View>
 </View>
