@@ -136,7 +136,9 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       // Schedule the notification
       const schedulingOptions = {
         content: notificationContent,
-        trigger: null,
+        trigger: {
+          date: notificationTime,
+        },
       };
       await Notifications.scheduleNotificationAsync(schedulingOptions);
     } catch (error) {
