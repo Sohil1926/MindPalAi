@@ -9,6 +9,7 @@ import Name from './pages/Name';
 import VerifyCode from './pages/VerifyCode';
 import EnterPhoneNumber from './pages/EnterPhoneNum';
 import JournalCover from './pages/JournalCover';
+import TimeSelect from './pages/TimeSelect';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,8 @@ const App = () => {
         />
 
         <Stack.Screen name='WriteJournal' component={WriteJournal} />
+        <Stack.Screen name='TimeSelect' component={TimeSelect} />
+
         <Stack.Screen name='JournalCover' component={JournalCover} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />

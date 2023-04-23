@@ -9,7 +9,9 @@ import JournalArchive from './JournalArchive';
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
   const [imageUrl, setImageUrl] = useState(null);
-
+  const goToTimeSelect = () => {
+    navigation.navigate('TimeSelect');
+  }
   useEffect(() => {
     if (journalEntry !== '') {
       generateImage();
@@ -62,7 +64,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text="continue"
-          onPress={JournalArchive}
+          onPress={goToTimeSelect}
           bgColor={'#ffffff'}
           textColor={'#000000'}
           style={styles.button}
