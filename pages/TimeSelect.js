@@ -101,7 +101,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
             text='continue'
             onPress={() => {
                 scheduleNotification();
-                navigation.navigate('JournalArchive');
+                navigation.navigate('FindFriends');
             }}            
               bgColor={'#ffffff'}
           />

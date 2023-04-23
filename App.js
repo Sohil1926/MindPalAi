@@ -10,6 +10,7 @@ import VerifyCode from './pages/VerifyCode';
 import EnterPhoneNumber from './pages/EnterPhoneNum';
 import JournalCover from './pages/JournalCover';
 import TimeSelect from './pages/TimeSelect';
+import FindFriends from './pages/FindFriends';
 import { Notifications } from 'expo';
 import { registerForPushNotificationsAsync } from 'expo-notifications';
 
@@ -48,7 +49,7 @@ const App = () => {
 
         <Stack.Screen name='WriteJournal' component={WriteJournal} />
         <Stack.Screen name='TimeSelect' component={TimeSelect} />
-
+        <Stack.Screen name='FindFriends' component={FindFriends} />
         <Stack.Screen name='JournalCover' component={JournalCover} />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
