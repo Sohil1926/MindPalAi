@@ -44,6 +44,8 @@ export default function JournalArchive({ navigation }) {
   };
 
   useEffect(() => {
+    // delete all journals
+    // AsyncStorage.removeItem('journals');
     getAllJournals();
   }, []);
 
@@ -61,9 +63,7 @@ export default function JournalArchive({ navigation }) {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('JournalEntry', { key: item })
-            }
+            onPress={() => navigation.navigate('JournalEntry', { key: item })}
             style={styles.journalItemContainer}
           >
             <Text style={styles.journalItemText}>{item}</Text>
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginTop: 50,
+    color: '#fff',
   },
   journalItemContainer: {
     borderWidth: 2,
@@ -100,6 +101,6 @@ const styles = StyleSheet.create({
   journalItemText: {
     fontFamily: 'Manrope_400Regular',
     fontSize: 16,
-    color: '#fff'
+    color: '#fff',
   },
 });

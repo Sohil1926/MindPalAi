@@ -141,6 +141,11 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
         },
       };
       await Notifications.scheduleNotificationAsync(schedulingOptions);
+      alert(
+        "You'll be notified at " +
+          selectedDate.toLocaleTimeString() +
+          ' everyday'
+      );
     } catch (error) {
       console.log('Error scheduling notification', error);
     }

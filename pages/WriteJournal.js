@@ -30,16 +30,15 @@ import CustomModal from '../components/Modal';
 import { auth } from '../firebaseConfig';
 import { updateProfile } from 'firebase/auth';
 import { addData, checkDocumentExists } from '../utils/firebaseUtil';
+import { HideKeyboard } from '../components/HideKeyboard';
 
 export default function WriteJournal({ navigation }) {
-
   const [input, setInput] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showGPTInsight, setShowGPTInsight] = useState(false);
   const [loadingGPT, setLoadingGPT] = useState(false);
   const [inputFilled, setInputFilled] = useState(false);
-  
 
   const BTNCOLOR = {
     save: '#fff',
@@ -126,22 +125,23 @@ export default function WriteJournal({ navigation }) {
     try {
       const date = new Date();
       const newJournalEntry = { date: date.toString(), entry: input };
-      await AsyncStorage.setItem('newJournalEntry', JSON.stringify(newJournalEntry));
+      await AsyncStorage.setItem(
+        'newJournalEntry',
+        JSON.stringify(newJournalEntry)
+      );
       appendDataToKey('journals', newJournalEntry);
       Alert.alert('Success', 'Journal saved successfully', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('JournalCover', { journalEntry: input }),
+          onPress: () =>
+            navigation.navigate('JournalCover', { journalEntry: input }),
         },
       ]);
     } catch {
       Alert.alert('Error', 'Something went wrong');
     }
   };
-  
-  
-  
-  
+
   if (!fontsLoaded) return null;
 
   // else {
@@ -160,83 +160,86 @@ export default function WriteJournal({ navigation }) {
   // }
 
   return (
-    <View
-    style={styles.container}
-    >
-      <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
-        <Text style={styles.subHeading}>
-        try writing a journal         </Text>
-      </View>
-      <StatusBar style='auto' />
-      <Input
-        style={styles.input}
-        multiline={true}
-        placeholder='ex. today i learned how to cook spaghetti. it was such a nice experience and i felt really calm afterwards'
-        className='text-white '
-        onChangeText={(txt) => {
-          setInput(txt);
-          setInputFilled(txt !== '');
-        }}
-        
-      />
-      <View className='flex flex-col space-y-4'>
-        <View className='flex flex-row justify-between mb-5'>
-          {/* <TouchableOpacity // replace Button with TouchableOpacity
+    <HideKeyboard>
+      <View style={styles.container}>
+        <View style={styles.topSection}>
+          <Text style={styles.heading}>MindPal.</Text>
+          <Text style={styles.subHeading}>try writing a journal </Text>
+        </View>
+        <StatusBar style='auto' />
+        <Input
+          style={styles.input}
+          multiline={true}
+          placeholder='ex. today i learned how to cook spaghetti. it was such a nice experience and i felt really calm afterwards'
+          className='text-white '
+          onChangeText={(txt) => {
+            setInput(txt);
+            setInputFilled(txt !== '');
+          }}
+        />
+        <View className='flex flex-col'>
+          <View className='flex flex-row justify-between mb-5'>
+            {/* <TouchableOpacity // replace Button with TouchableOpacity
             style={[styles.button, styles.submitButton]} // add custom styles
             onPress={callAPI}
           >
             <Text style={styles.buttonText}>Request Insight</Text>
           </TouchableOpacity> */}
 
-          <PillButton
-            onPress={callAPI}
-            text={'Request Insight'}
-            bgColor={BTNCOLOR.save}
-            
-          />
+            <PillButton
+              onPress={callAPI}
+              text={'Request Insight'}
+              bgColor={BTNCOLOR.save}
+            />
 
-          {/* <TouchableOpacity // replace Button with TouchableOpacity
+            {/* <TouchableOpacity // replace Button with TouchableOpacity
             style={[styles.button, styles.saveButton]} // add custom styles
             onPress={saveJournal}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity> */}
-         
-        </View>
+          </View>
 
-        {/* <TouchableOpacity // replace Button with TouchableOpacity
+          {/* <TouchableOpacity // replace Button with TouchableOpacity
           style={[styles.button, styles.archiveButton]} // add custom styles
           onPress={() => navigation.navigate('JournalArchive')}
         >
           <Text style={styles.buttonText}>Go to Archive</Text>
         </TouchableOpacity> */}
-        {/* <PillButton
+          {/* <PillButton
           onPress={() => navigation.navigate('JournalArchive')}
           text={'See My Archive'}
           bgColor={BTNCOLOR.archive}
         /> */}
-      </View>
-      <CustomModal
-        modalVisible={showGPTInsight}
-        setModalVisible={setShowGPTInsight}
-        text={aiResponse}
-      />
-      <CustomModal
-        modalVisible={loadingGPT}
-        showHideButton={false}
-        text={'Loading...'}
-      />
-
-<View style={styles.bottomSection}>
-        <PillButton
-          text='save journal'
-          style={styles.button}
-          bgColor={inputFilled ? BTNCOLOR.save : BTNCOLOR.submit}
-          onPress={saveJournal}
+        </View>
+        <CustomModal
+          modalVisible={showGPTInsight}
+          setModalVisible={setShowGPTInsight}
+          text={aiResponse}
         />
+        <CustomModal
+          modalVisible={loadingGPT}
+          showHideButton={false}
+          text={'Loading...'}
+        />
+
+        <View style={styles.bottomSection}>
+          <PillButton
+            text='save journal'
+            style={styles.button}
+            bgColor={inputFilled ? BTNCOLOR.save : BTNCOLOR.submit}
+            onPress={saveJournal}
+          />
+
+          <PillButton
+            onPress={() => navigation.navigate('JournalArchive')}
+            text={'View my Journal Archives'}
+            bgColor={BTNCOLOR.save}
+            style={{ marginTop: 20 }}
+          />
+        </View>
       </View>
-    </View>
+    </HideKeyboard>
   );
 }
 
@@ -271,15 +274,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 200,
     color: '#FFFFFF',
-    textAlignVertical: 'top', 
-    paddingLeft: 10, 
+    textAlignVertical: 'top',
+    paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
     borderRadius: 8,
     fontFamily: 'Manrope_600SemiBold',
-   
-  },  
-  
+  },
+
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -290,11 +292,10 @@ const styles = StyleSheet.create({
   bottomSection: {
     marginBottom: '4%',
     flex: 1,
+    gap: 10,
     // justifyContent: 'flex-end'
   },
-
 });
-
 
 WriteJournal.navigationOptions = {
   headerShown: false,
