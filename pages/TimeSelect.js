@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import { Button } from '@rneui/base';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Notifications } from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
 import {
   useFonts,
@@ -25,7 +26,53 @@ import PillButton from '../components/PillButton';
 import { getObjFromKey, setFieldToKey } from '../utils/asyncStorageUtils';
 import JournalArchive from './JournalArchive';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  return token;
+}
+
 const TimeSelect = ({ navigation, setShowOnboarding }) => {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -38,6 +85,29 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   const handleDateChange = (event, date) => {
     if (date !== undefined) {
       setSelectedDate(date);
@@ -46,6 +116,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
   };
   const scheduleNotification = async () => {
     try {
+      console.log('trying to schedule');
       // Define the notification content
       const notificationContent = {
         title: 'MindPal',
@@ -65,7 +136,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       // Schedule the notification
       const schedulingOptions = {
         content: notificationContent,
-        trigger: { seconds: 15 },
+        trigger: null,
       };
       await Notifications.scheduleNotificationAsync(schedulingOptions);
     } catch (error) {
@@ -86,9 +157,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => {
-          console.log('test');
-        }}
+        onPress={() => setShowPicker(true)}
         style={styles.touchable}
       >
         <Text style={styles.input}>{selectedDate.toLocaleTimeString()}</Text>
@@ -100,16 +169,16 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
           mode='time'
           display='default'
           onChange={handleDateChange}
-          style={{ backgroundColor: 'black' }}
+          style={{ backgroundColor: 'white' }}
         />
       )}
 
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={() => {
-            scheduleNotification();
-            navigation.navigate('FindFriends');
+          onPress={async () => {
+            await scheduleNotification();
+            // navigation.navigate('FindFriends');
           }}
           bgColor={'#ffffff'}
         />
