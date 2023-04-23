@@ -1,13 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
+import React, { useState, useEffect } from 'react';
 import {
-  Text,
   View,
+  Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Alert,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
@@ -19,7 +18,6 @@ import {
 } from '@expo-google-fonts/manrope';
 import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
 
-// import { createCompletion } from './openAI';
 export default function JournalArchive({ navigation }) {
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
@@ -34,9 +32,7 @@ export default function JournalArchive({ navigation }) {
       if (allJournalKeys !== null) {
         const keys = allJournalKeys?.map((j) => j.date);
         // sort keys from newest to oldest
-        keys.sort((a, b) => {
-          return new Date(b) - new Date(a);
-        });
+        keys.sort((a, b) => new Date(b) - new Date(a));
         setJournalKeys(keys);
       }
     } catch (error) {
@@ -49,22 +45,15 @@ export default function JournalArchive({ navigation }) {
 
   useEffect(() => {
     getAllJournals();
-  });
+  }, []);
 
   if (!fontsLoaded) return null;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingVertical: 20,
-        paddingHorizontal: 10,
-        backgroundColor: 'black',
-      }}
-    >
+    <View style={styles.container}>
       {journalKeys.length === 0 && (
-        <Text style={{ color: 'white', fontFamily: 'Manrope_400Regular' }}>
-          You don't have any journals
+        <Text style={styles.emptyMessage}>
+          You haven't written any journals yet.
         </Text>
       )}
       <FlatList
@@ -72,16 +61,12 @@ export default function JournalArchive({ navigation }) {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('JournalEntry', { key: item })}
-            style={{
-              borderWidth: 2,
-              borderColor: 'white',
-              padding: 10,
-              borderRadius: 10,
-              marginVertical: 5,
-            }}
+            onPress={() =>
+              navigation.navigate('JournalEntry', { key: item })
+            }
+            style={styles.journalItemContainer}
           >
-            <Text style={{ color: 'white', fontSize: 16 }}>{item}</Text>
+            <Text style={styles.journalItemText}>{item}</Text>
           </TouchableOpacity>
         )}
       />
@@ -90,7 +75,31 @@ export default function JournalArchive({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'Manrope_800ExtraBold',
+  container: {
+    paddingTop: '40%',
+    flex: 1,
+    backgroundColor: '#000',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  emptyMessage: {
+    fontFamily: 'Manrope_400Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 50,
+  },
+  journalItemContainer: {
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 10,
+    marginVertical: 5,
+    padding: 10,
+    backgroundColor: '#000',
+    elevation: 3,
+  },
+  journalItemText: {
+    fontFamily: 'Manrope_400Regular',
+    fontSize: 16,
+    color: '#fff'
   },
 });
