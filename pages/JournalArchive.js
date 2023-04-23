@@ -47,7 +47,7 @@ export default function JournalArchive({ navigation }) {
     // delete all journals
     // AsyncStorage.removeItem('journals');
     getAllJournals();
-  }, []);
+  });
 
   if (!fontsLoaded) return null;
 

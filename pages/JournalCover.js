@@ -13,10 +13,11 @@ import axios from 'axios';
 import qs from 'qs';
 import PillButton from '../components/PillButton';
 import JournalArchive from './JournalArchive';
+import { addFieldToArrayOfObjects } from '../utils/asyncStorageUtils';
 
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const [journalEntry, setJournalEntry] = useState(
-    route.params.journalEntry || ''
+    route.params.journalEntry.entry || ''
   );
   const [imageUrl, setImageUrl] = useState(null);
   const goToTimeSelect = () => {
@@ -55,8 +56,15 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     axios
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
         setImageUrl(response.data.response);
+        addFieldToArrayOfObjects(
+          'journals',
+          'date',
+          route.params.journalEntry.date,
+          'journalCover',
+          response.data.response
+        );
       })
       .catch((error) => {
         Alert.alert('Error', String(error));

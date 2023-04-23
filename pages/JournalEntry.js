@@ -26,6 +26,7 @@ export default function JournalArchive({ navigation, route }) {
       );
       // console.log(journal);
       setJournalEntry(journal.entry);
+      setImageUrl(journal.journalCover);
     } catch (e) {
       // error reading value
       Alert.alert('Error', 'Something unexpected happened. Please try again.');
@@ -83,13 +84,18 @@ export default function JournalArchive({ navigation, route }) {
       <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
         {journalEntry}
       </Text>
-      <View>
-        <PillButton
-          text={'Show my mood'}
-          onPress={generateImage}
-          textColor='white'
-          bgColor='#1E5945'
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Image
+          source={{ uri: imageUrl }}
+          style={{
+            width: 300,
+            height: 300,
+            borderRadius: 20,
+          }}
         />
+      </View>
+
+      <View>
         <PillButton
           text={'Delete'}
           onPress={delEntry}
@@ -97,12 +103,6 @@ export default function JournalArchive({ navigation, route }) {
           bgColor='#ff0f00'
         />
       </View>
-      {imageUrl === 'loading' && (
-        <Text className='text-white'>loading your mood as a painting...</Text>
-      )}
-      {imageUrl !== '' && imageUrl !== 'loading' && (
-        <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />
-      )}
     </View>
   );
 }

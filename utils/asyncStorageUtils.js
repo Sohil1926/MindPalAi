@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const appendDataToKey = async (key, value) => {
   /*
@@ -25,6 +26,26 @@ const appendDataToKey = async (key, value) => {
     // saving error
     console.log(e);
     throw new Error(e);
+  }
+};
+
+const addFieldToArrayOfObjects = async (
+  key,
+  targetKey,
+  targetVal,
+  field,
+  value
+) => {
+  try {
+    // const keys = await AsyncStorage.getAllKeys();
+    const values = await getAllValuesFromKey(key);
+    const index = values.findIndex((j) => j[targetKey] === targetVal);
+    values[index][field] = value;
+    await AsyncStorage.setItem(key, JSON.stringify(values));
+  } catch (e) {
+    // console.log(e);
+    // throw new Error(e);
+    Alert.alert('Error', 'Something unexpected happened. Please try again.');
   }
 };
 
@@ -191,4 +212,5 @@ export {
   deleteFieldFromObj,
   setKeyToJson,
   deleteKey,
+  addFieldToArrayOfObjects,
 };

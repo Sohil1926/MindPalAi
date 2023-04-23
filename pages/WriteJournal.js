@@ -134,7 +134,9 @@ export default function WriteJournal({ navigation }) {
         {
           text: 'OK',
           onPress: () =>
-            navigation.navigate('JournalCover', { journalEntry: input }),
+            navigation.navigate('JournalCover', {
+              journalEntry: newJournalEntry,
+            }),
         },
       ]);
     } catch {
