@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     paddingRight: 70,
     paddingTop: 40,
-    justifyContent: 'flex-center',
-    alignItems: 'flex-center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   heading: {
     fontSize: 24,
