@@ -60,7 +60,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       }
     };
 
-    // fetch(); dont call
+    fetch();
   }, []);
 
   const sendVerification = async () => {
