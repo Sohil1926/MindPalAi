@@ -21,7 +21,10 @@ import {
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import {
+  FirebaseRecaptchaBanner,
+  FirebaseRecaptchaVerifierModal,
+} from 'expo-firebase-recaptcha';
 import { firebaseConfig, auth } from '../firebaseConfig';
 import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
 import { setFieldToKey } from '../utils/asyncStorageUtils';
@@ -167,6 +170,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
           style={styles.button}
         />
       </View>
+      {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
     </View>
   );
 };
