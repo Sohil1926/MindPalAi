@@ -29,13 +29,6 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
         // alert('You are already logged in');
         return navigation.navigate('WriteJournal');
       }
-
-      let registrationData = await getObjFromKey('registrationData');
-
-      if (registrationData['name']) {
-        alert('We already have your name');
-        return navigation.navigate('PhoneNumber');
-      }
     };
 
     fetch();
