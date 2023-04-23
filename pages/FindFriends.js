@@ -44,7 +44,7 @@ const FindFriends = ({ navigation, setShowOnboarding }) => {
   <PillButton
     text='Skip'
     bgColor={ 'transparent' }
-    textColor={'#fff'}
+    textColor={ '#939393' }
     style={styles.skipButton}
     onPress={() => {
       // handle skip button press
@@ -137,9 +137,7 @@ const styles = StyleSheet.create({
       width: '100%',
     },
     skipButton: {
-      paddingVertical: 20,
-      paddingHorizontal: 5,
- 
+    
     },
   });
   
