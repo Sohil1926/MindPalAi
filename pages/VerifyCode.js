@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import { Button } from '@rneui/base';
 import {
   useFonts,
   Manrope_800ExtraBold,

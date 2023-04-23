@@ -25,6 +25,15 @@ import { getObjFromKey, setFieldToKey } from '../utils/asyncStorageUtils';
 import JournalArchive from './JournalArchive';
 
 const TimeSelect = ({ navigation, setShowOnboarding }) => {
+    const [fontsLoaded] = useFonts({
+        Manrope_800ExtraBold,
+        Manrope_400Regular,
+        Manrope_200ExtraLight,
+        Manrope_300Light,
+        Manrope_500Medium,
+        Manrope_600SemiBold,
+        Manrope_700Bold,
+      });
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
   
@@ -131,6 +140,7 @@ justifyContent: 'center'
   bottomSection: {
     marginBottom: 50, // add this to create space for the button
     marginTop: '50%',
+    width: 300,
   },
   button: {
     fontFamily: 'Manrope_600SemiBold',
