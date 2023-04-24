@@ -21,7 +21,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   );
   const [imageUrl, setImageUrl] = useState(null);
   const goToTimeSelect = () => {
-    navigation.navigate('TimeSelect');
+    navigation.navigate('Homepage');
   };
 
   useEffect(() => {
