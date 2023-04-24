@@ -81,13 +81,29 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
           Your friends haven’t posted their journal yet. Add even more friends.{' '}
         </Text>
       </View>
-      <PillButton
-        text='+ ADD FRIENDS'
-        bgColor={'#fff'}
-        textColor={'#000'}
-        style={styles.skipButton}
-        onPress={() => navigation.navigate('FindFriends')}
-      />
+      <View style={{ gap: 10 }}>
+        <PillButton
+          text='WRITE A JOURNAL'
+          bgColor={'#fff'}
+          textColor={'#000'}
+          style={styles.skipButton}
+          onPress={() => navigation.navigate('WriteJournal')}
+        />
+        <PillButton
+          text='VIEW MY ARCHIVE'
+          bgColor={'#fff'}
+          textColor={'#000'}
+          style={styles.skipButton}
+          onPress={() => navigation.navigate('JournalArchive')}
+        />
+        <PillButton
+          text='+ ADD FRIENDS'
+          bgColor={'#fff'}
+          textColor={'#000'}
+          style={styles.skipButton}
+          onPress={() => navigation.navigate('FindFriends')}
+        />
+      </View>
       <View style={styles.bottomSection}></View>
     </View>
   );
