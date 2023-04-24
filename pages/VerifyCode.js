@@ -69,7 +69,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
     signInWithCredential(auth, credential)
       .then(() => {
         alert('Signed in successfully');
-        navigation.navigate('Homepage');
+        navigation.navigate('TimeSelect');
       })
       .catch((error) => {
         alert(error);

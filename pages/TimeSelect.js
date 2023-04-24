@@ -146,6 +146,8 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
           selectedDate.toLocaleTimeString() +
           ' everyday'
       );
+      alert('You can now start journaling!');
+      navigation.navigate('Homepage');
     } catch (error) {
       console.log('Error scheduling notification', error);
     }
