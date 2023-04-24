@@ -13,7 +13,14 @@ import axios from 'axios';
 import qs from 'qs';
 import PillButton from '../components/PillButton';
 import JournalArchive from './JournalArchive';
-import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
+import {
+  getAllValuesFromKey,
+  getObjFromKey,
+  setFieldToKey,
+} from '../utils/asyncStorageUtils';
+import { addData, checkDocumentExists } from '../utils/firebaseUtil';
+import { auth } from '../firebaseConfig';
+import { updateProfile } from 'firebase/auth';
 
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
