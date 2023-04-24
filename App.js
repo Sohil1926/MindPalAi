@@ -54,7 +54,6 @@ const App = () => {
         <Stack.Screen name='JournalCover' component={JournalCover} />
         <Stack.Screen name='FindFriends' component={FindFriends} />
         <Stack.Screen name='Homepage' component={Homepage} />
-
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>

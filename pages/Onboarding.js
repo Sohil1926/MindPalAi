@@ -27,7 +27,7 @@ const Onboarding = ({ navigation, setShowOnboarding }) => {
 
       if (accountData?.loggedIn) {
         // alert('You are already logged in');
-        return navigation.navigate('WriteJournal');
+        return navigation.navigate('Homepage');
       }
     };
 
