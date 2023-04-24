@@ -25,7 +25,7 @@ import firebase from 'firebase/compat/app';
 import { signInWithCredential, PhoneAuthProvider } from 'firebase/auth';
 import { Screen } from 'react-native-screens';
 
-const DEBUGMODE = false;
+const DEBUGMODE = false; // always false
 
 const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   const [textEntered, setTextEntered] = useState(false);

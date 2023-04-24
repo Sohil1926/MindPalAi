@@ -36,6 +36,34 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       const journal = journals[0];
       setImageUrl(journal.journalCover);
     };
+    const firstTimeOnload = async () => {
+      const registrationData = await getObjFromKey('registrationData');
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          // set logged in to true in async storage
+          await setFieldToKey('account', 'loggedIn', true);
+
+          updateProfile(auth.currentUser, {
+            displayName: registrationData['name'],
+          }).then(async () => {
+            const userObjExistInDB = await checkDocumentExists(
+              'users',
+              user.uid
+            );
+            if (!userObjExistInDB) {
+              // add user to db
+              await addData('users', user.uid, {
+                name: registrationData['name'],
+                phoneNumber: registrationData['phoneNumber'],
+              });
+            }
+          });
+        }
+      });
+    };
+
+    firstTimeOnload();
     fetch();
   }, []);
 

@@ -87,7 +87,8 @@ export default function WriteJournal({ navigation }) {
       });
     };
 
-    firstTimeOnload();
+    // note: this is now being called in homepage
+    // firstTimeOnload();
   }, []);
 
   const callAPI = async () => {
