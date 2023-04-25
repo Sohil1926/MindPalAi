@@ -2,7 +2,7 @@
   "expo": {
     "name": "MindPalAI",
     "slug": "MindPalAI",
-    "owner": "MindPalAI",
+    "owner": "lmaocope",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
