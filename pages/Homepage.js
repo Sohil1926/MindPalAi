@@ -21,10 +21,29 @@ import {
 import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 import { auth } from '../firebaseConfig';
 import { updateProfile } from 'firebase/auth';
+import {
+  useFonts,
+  Manrope_800ExtraBold,
+  Manrope_400Regular,
+  Manrope_200ExtraLight,
+  Manrope_300Light,
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+} from '@expo-google-fonts/manrope';
 
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
   const [imageUrl, setImageUrl] = useState(null);
+  const [fontsLoaded] = useFonts({
+    Manrope_800ExtraBold,
+    Manrope_400Regular,
+    Manrope_200ExtraLight,
+    Manrope_300Light,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
+  });
   const goToTimeSelect = () => {
     navigation.navigate('TimeSelect');
   };
@@ -47,7 +66,8 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       const registrationData = await getObjFromKey('registrationData');
 
       auth.onAuthStateChanged(async (user) => {
-        if (user) {
+        // edit this line in productions
+        if (true) {
           // set logged in to true in async storage
           await setFieldToKey('account', 'loggedIn', true);
 
@@ -74,6 +94,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     fetch();
   }, []);
 
+  if (!fontsLoaded) return null;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

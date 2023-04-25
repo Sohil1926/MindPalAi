@@ -21,10 +21,11 @@ import PillButton from '../components/PillButton';
 import { getObjFromKey, setFieldToKey } from '../utils/asyncStorageUtils';
 
 const Name = ({ navigation, setShowOnboarding }) => {
-  const goToPhoneNumber = async () => {
+  const onNext = async () => {
     if (name) {
       await setFieldToKey('registrationData', 'name', name);
-      navigation.navigate('PhoneNumber');
+      await setFieldToKey('registrationData', 'phoneNumber', 'NA');
+      navigation.navigate('Homepage');
     } else {
       alert('Please enter your name before continuing.');
     }
@@ -82,7 +83,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={goToPhoneNumber}
+          onPress={onNext}
           disabled={!name}
           bgColor={name ? '#ffffff' : '#333333'}
           textColor={name ? '#333333' : '#ffffff'}
