@@ -92,16 +92,16 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         console.log('user added to db');
       }
 
+      // auth.onAuthStateChanged(async (user) => {
+      //   // edit this line in productions
+      //   if (user) {
+
       // updateProfile(auth.currentUser, {
       //   displayName: registrationData['name'],
       // }).then(async () => {
 
       //   }
       // });
-
-      // auth.onAuthStateChanged(async (user) => {
-      //   // edit this line in productions
-      //   if (true) {
 
       //     });
       //   }
