@@ -14,9 +14,12 @@ import qs from 'qs';
 import PillButton from '../components/PillButton';
 import JournalArchive from './JournalArchive';
 import {
+  deleteKey,
   getAllValuesFromKey,
   getObjFromKey,
+  getVal,
   setFieldToKey,
+  setKeyToVal,
 } from '../utils/asyncStorageUtils';
 import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 import { auth } from '../firebaseConfig';
@@ -31,6 +34,8 @@ import {
   Manrope_600SemiBold,
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
+// import Constants from 'expo-constants';
+import uuid from 'react-native-uuid';
 
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
@@ -64,30 +69,42 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     };
     const firstTimeOnload = async () => {
       const registrationData = await getObjFromKey('registrationData');
+      // set logged in to true in async storage
+      await setFieldToKey('account', 'loggedIn', true);
+      let arbDeviceId = await getVal('deviceId');
+      // console.log(arbDeviceId === null);
+      if (arbDeviceId === null) {
+        arbDeviceId = uuid.v4();
+        // console.log(arb);
+        await setKeyToVal('deviceId', arbDeviceId);
+        console.log('Device registered', arbDeviceId);
+      } else {
+        console.log('Device registered', arbDeviceId);
+      }
 
-      auth.onAuthStateChanged(async (user) => {
-        // edit this line in productions
-        if (true) {
-          // set logged in to true in async storage
-          await setFieldToKey('account', 'loggedIn', true);
+      const userObjExistInDB = await checkDocumentExists('users', arbDeviceId);
+      if (!userObjExistInDB) {
+        // add user to db
+        await addData('users', arbDeviceId, {
+          name: registrationData['name'],
+          phoneNumber: registrationData['phoneNumber'],
+        });
+        console.log('user added to db');
+      }
 
-          updateProfile(auth.currentUser, {
-            displayName: registrationData['name'],
-          }).then(async () => {
-            const userObjExistInDB = await checkDocumentExists(
-              'users',
-              user.uid
-            );
-            if (!userObjExistInDB) {
-              // add user to db
-              await addData('users', user.uid, {
-                name: registrationData['name'],
-                phoneNumber: registrationData['phoneNumber'],
-              });
-            }
-          });
-        }
-      });
+      // updateProfile(auth.currentUser, {
+      //   displayName: registrationData['name'],
+      // }).then(async () => {
+
+      //   }
+      // });
+
+      // auth.onAuthStateChanged(async (user) => {
+      //   // edit this line in productions
+      //   if (true) {
+
+      //     });
+      //   }
     };
 
     firstTimeOnload();

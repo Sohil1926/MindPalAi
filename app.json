@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "privacy": "public",
     "splash": {
       "image": "./assets/splashPic.png",
       "resizeMode": "contain",

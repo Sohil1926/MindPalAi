@@ -92,7 +92,7 @@ const getObjFromKey = async (key) => {
   }
 };
 
-const getValueFromKey = async (key, field, value) => {
+const getValueUsingFieldVal = async (key, field, value) => {
   /* 
     key: [{field: value}, {field: not_this_value}]
     returns {field: value}
@@ -176,6 +176,31 @@ const setKeyToJson = async (key, jsonData) => {
   }
 };
 
+const setKeyToVal = async (key, value) => {
+  try {
+    await AsyncStorage.setItem(key, value);
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    Alert.alert('Error', 'Something unexpected happened. Please try again.');
+    // throw new Error(e);
+  }
+};
+
+const getVal = async (key) => {
+  try {
+    let values = await AsyncStorage.getItem(key);
+    if (values === null) {
+      return null;
+    }
+    return values;
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    Alert.alert('Error', 'Something unexpected happened. Please try again.');
+  }
+};
+
 const getJsonFromKey = async (key) => {
   try {
     let values = await AsyncStorage.getItem(key);
@@ -204,13 +229,15 @@ const deleteKey = async (key) => {
 export {
   appendDataToKey,
   setFieldToKey,
-  getValueFromKey,
+  getValueUsingFieldVal,
   getAllValuesFromKey,
   deleteValueFromArr,
   getObjFromKey,
   clearObjFromKey,
   deleteFieldFromObj,
   setKeyToJson,
+  setKeyToVal,
+  getVal,
   deleteKey,
   addFieldToArrayOfObjects,
 };
