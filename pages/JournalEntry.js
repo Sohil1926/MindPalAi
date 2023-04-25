@@ -7,7 +7,7 @@ import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   deleteValueFromArr,
-  getValueFromKey,
+  getValueUsingFieldVal,
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import { Image } from '@rneui/base';
@@ -19,7 +19,7 @@ export default function JournalArchive({ navigation, route }) {
 
   const getJournalEntry = async () => {
     try {
-      const journal = await getValueFromKey(
+      const journal = await getValueUsingFieldVal(
         'journals',
         'date',
         route.params.key
