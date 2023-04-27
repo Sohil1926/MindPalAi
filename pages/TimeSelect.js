@@ -23,7 +23,11 @@ import {
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
 import PillButton from '../components/PillButton';
-import { getObjFromKey, setFieldToKey } from '../utils/asyncStorageUtils';
+import {
+  deleteFieldFromObj,
+  getObjFromKey,
+  setFieldToKey,
+} from '../utils/asyncStorageUtils';
 import JournalArchive from './JournalArchive';
 
 Notifications.setNotificationHandler({
@@ -104,6 +108,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       Notifications.removeNotificationSubscription(
         notificationListener.current
       );
+      Notifications.cancelAllScheduledNotificationsAsync();
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
@@ -116,6 +121,17 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
   };
   const scheduleNotification = async () => {
     try {
+      // delete for debugging
+      // await deleteFieldFromObj('misc', 'notificationTime');
+
+      const misc = await getObjFromKey('misc');
+      if (misc?.notificationTime) {
+        alert('You already set a notification time!');
+        return navigation.navigate('Homepage');
+      } else {
+        await Notifications.cancelAllScheduledNotificationsAsync();
+      }
+
       console.log('trying to schedule');
       // Define the notification content
       const notificationContent = {
@@ -141,12 +157,15 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
         },
       };
       await Notifications.scheduleNotificationAsync(schedulingOptions);
+      await setFieldToKey('misc', 'notificationTime', notificationTime);
+
       alert(
         "You'll be notified at " +
           selectedDate.toLocaleTimeString() +
           ' everyday'
       );
       alert('You can now start journaling!');
+
       navigation.navigate('Homepage');
     } catch (error) {
       console.log('Error scheduling notification', error);
