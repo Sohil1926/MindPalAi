@@ -54,7 +54,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
 
     // check if currentdate is greater than last generated date
 
-    if (isOneDateAtLeastOneDayLater(lastJCoverGeneratedDate, new Date())) {
+    if (!isOneDateAtLeastOneDayLater(lastJCoverGeneratedDate, new Date())) {
       throw new Error(
         'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
       );
