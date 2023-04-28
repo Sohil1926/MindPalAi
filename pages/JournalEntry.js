@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, FlatList, Alert } from 'react-native';
+import { Text, View, FlatList, Alert, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
@@ -84,7 +84,7 @@ export default function JournalArchive({ navigation, route }) {
   });
 
   return (
-    <View className='flex-1 justify-top py-20 gap-5 bg-black'>
+    <ScrollView className='flex-1 justify-top py-20 gap-5 bg-black'>
       <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
         {journalEntry}
       </Text>
@@ -107,7 +107,7 @@ export default function JournalArchive({ navigation, route }) {
           bgColor='#ff0f00'
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
