@@ -63,8 +63,11 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       journals.sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
       });
-      // first journal
-      const journal = journals[0];
+      // get first journal where the journal cover is not null
+      const journal = journals.find((journal) => journal.journalCover !== null);
+      if (journal === undefined) {
+        return;
+      }
       setImageUrl(journal.journalCover);
     };
     const firstTimeOnload = async () => {
@@ -72,7 +75,6 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       // set logged in to true in async storage
       await setFieldToKey('account', 'loggedIn', true);
       let arbDeviceId = await getVal('deviceId');
-      // console.log(arbDeviceId === null);
       if (arbDeviceId === null) {
         arbDeviceId = uuid.v4();
         // console.log(arb);

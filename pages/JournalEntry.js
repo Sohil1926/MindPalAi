@@ -24,11 +24,12 @@ export default function JournalArchive({ navigation, route }) {
         'date',
         route.params.key
       );
-      // console.log(journal);
+      // console.log(journal.journalCover);
       setJournalEntry(journal.entry);
+
       setImageUrl(
         journal.journalCover ||
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Empty_set_symbol.svg/640px-Empty_set_symbol.svg.png'
+          'https://thumbs.dreamstime.com/b/letter-block-word-null-wood-background-187721938.jpg'
       );
     } catch (e) {
       // error reading value

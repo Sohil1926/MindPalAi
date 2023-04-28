@@ -48,22 +48,31 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     const misc = await getObjFromKey('misc');
     const lastJCoverGeneratedDate = misc?.lastJournalCoverGeneratedDate;
 
-    if (lastJCoverGeneratedDate === undefined) return; // first time generating, good to continue
+    if (lastJCoverGeneratedDate === undefined) return true; // first time generating, good to continue
 
     // check if currentdate is greater than last generated date
-
-    if (!isOneDateAtLeastOneDayLater(lastJCoverGeneratedDate, new Date())) {
-      throw new Error(
-        'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
-      );
+    console.log(lastJCoverGeneratedDate);
+    if (
+      !isOneDateAtLeastOneDayLater(
+        new Date(lastJCoverGeneratedDate),
+        new Date()
+      )
+    ) {
+      // throw new Error(
+      //   'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
+      // );
+      return false;
     }
+
+    return true; // generate image
   };
 
   const generateImage = async () => {
-    try {
-      await precheckBeforeGenerate();
-    } catch (e) {
-      alert(e.message);
+    const precheck = await precheckBeforeGenerate();
+    if (!precheck) {
+      alert(
+        'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
+      );
       await addFieldToArrayOfObjects(
         'journals',
         'date',
@@ -72,13 +81,14 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
         null
       );
       navigation.navigate('Homepage');
+      return;
     }
 
     setImageUrl('loading');
 
     let data = qs.stringify({
       input: `"${journalEntry}"
-        Generate an anime style art.`,
+        Generate a modern art cover for my journal entry`,
       // input: journalEntry,
     });
 
