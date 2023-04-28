@@ -26,7 +26,10 @@ export default function JournalArchive({ navigation, route }) {
       );
       // console.log(journal);
       setJournalEntry(journal.entry);
-      setImageUrl(journal.journalCover);
+      setImageUrl(
+        journal.journalCover ||
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Empty_set_symbol.svg/640px-Empty_set_symbol.svg.png'
+      );
     } catch (e) {
       // error reading value
       Alert.alert('Error', 'Something unexpected happened. Please try again.');
