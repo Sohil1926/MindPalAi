@@ -68,7 +68,9 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   };
 
   const generateImage = async () => {
-    const precheck = await precheckBeforeGenerate();
+    // const precheck = await precheckBeforeGenerate();
+    // for testing
+    const precheck = true;
     if (!precheck) {
       alert(
         'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
@@ -87,8 +89,9 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     setImageUrl('loading');
 
     let data = qs.stringify({
-      input: `"${journalEntry}"
-        Generate a modern art cover for my journal entry`,
+      input: `
+      Create a prompt for a AI art generator to make art based on the mood depicted in the following journal entry:
+      "${journalEntry}"`,
       // input: journalEntry,
     });
 
