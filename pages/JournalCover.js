@@ -24,7 +24,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     route.params.journalEntry.entry || ''
   );
   const [imageUrl, setImageUrl] = useState(null);
-  const goToTimeSelect = () => {
+  const onContinue = () => {
     navigation.navigate('Homepage');
   };
 
@@ -63,7 +63,15 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     try {
       await precheckBeforeGenerate();
     } catch (e) {
-      return alert(e.message);
+      alert(e.message);
+      await addFieldToArrayOfObjects(
+        'journals',
+        'date',
+        route.params.journalEntry.date,
+        'journalCover',
+        null
+      );
+      navigation.navigate('Homepage');
     }
 
     setImageUrl('loading');
@@ -135,7 +143,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
       <View style={styles.bottomSection}>
         <PillButton
           text='continue'
-          onPress={goToTimeSelect}
+          onPress={onContinue}
           bgColor={'#ffffff'}
           textColor={'#000000'}
           style={styles.button}
