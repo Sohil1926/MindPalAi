@@ -80,8 +80,6 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         // console.log(arb);
         await setKeyToVal('deviceId', arbDeviceId);
         console.log('Device registered', arbDeviceId);
-      } else {
-        console.log('Device registered', arbDeviceId);
       }
 
       const userObjExistInDB = await checkDocumentExists('users', arbDeviceId);
