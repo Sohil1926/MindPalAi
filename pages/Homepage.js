@@ -86,7 +86,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       if (!userObjExistInDB) {
         // add user to db
         await addData('users', arbDeviceId, {
-          name: registrationData['name'],
+          name: registrationData['name'] || 'Anonymous',
           phoneNumber: registrationData['phoneNumber'],
         });
         console.log('user added to db');
