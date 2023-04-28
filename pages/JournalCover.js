@@ -13,7 +13,11 @@ import axios from 'axios';
 import qs from 'qs';
 import PillButton from '../components/PillButton';
 import JournalArchive from './JournalArchive';
-import { addFieldToArrayOfObjects } from '../utils/asyncStorageUtils';
+import {
+  addFieldToArrayOfObjects,
+  getObjFromKey,
+  setFieldToKey,
+} from '../utils/asyncStorageUtils';
 
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const [journalEntry, setJournalEntry] = useState(
@@ -34,7 +38,36 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     }
   }, [journalEntry]);
 
+  const precheckBeforeGenerate = async () => {
+    function isOneDateAtLeastOneDayLater(date1, date2) {
+      const timestamp1 = date1.getTime();
+      const timestamp2 = date2.getTime();
+
+      return timestamp2 >= timestamp1 + 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    }
+    const misc = await getObjFromKey('misc');
+    const lastJCoverGeneratedDate = misc?.lastJournalCoverGeneratedDate;
+
+    if (lastJCoverGeneratedDate === undefined) return; // first time generating, good to continue
+    const currentDay = new Date().getDate();
+    const dayJCoversGenerated = lastJCoverGeneratedDate?.getDate();
+
+    // check if currentdate is greater than last generated date
+
+    if (isOneDateAtLeastOneDayLater(lastJCoverGeneratedDate, new Date())) {
+      throw new Error(
+        'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
+      );
+    }
+  };
+
   const generateImage = async () => {
+    try {
+      await precheckBeforeGenerate();
+    } catch (e) {
+      return alert(e.message);
+    }
+
     setImageUrl('loading');
 
     let data = qs.stringify({
@@ -55,7 +88,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
 
     axios
       .request(config)
-      .then((response) => {
+      .then(async (response) => {
         // console.log(JSON.stringify(response.data));
         setImageUrl(response.data.response);
         addFieldToArrayOfObjects(
@@ -64,6 +97,11 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
           route.params.journalEntry.date,
           'journalCover',
           response.data.response
+        );
+        await setFieldToKey(
+          'misc',
+          'lastJournalCoverGeneratedDate',
+          new Date()
         );
       })
       .catch((error) => {
