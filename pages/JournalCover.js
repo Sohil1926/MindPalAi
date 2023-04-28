@@ -49,8 +49,6 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     const lastJCoverGeneratedDate = misc?.lastJournalCoverGeneratedDate;
 
     if (lastJCoverGeneratedDate === undefined) return; // first time generating, good to continue
-    const currentDay = new Date().getDate();
-    const dayJCoversGenerated = lastJCoverGeneratedDate?.getDate();
 
     // check if currentdate is greater than last generated date
 
