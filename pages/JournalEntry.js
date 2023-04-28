@@ -84,7 +84,7 @@ export default function JournalArchive({ navigation, route }) {
   });
 
   return (
-    <ScrollView className='flex-1 justify-top py-20 gap-5 bg-black'>
+    <ScrollView className='flex-1 justify-top my-20 gap-5 bg-black'>
       <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
         {journalEntry}
       </Text>
