@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 
 // Initialize Firebase
 
-// Sohil Config
+// Sohil Config (Don't delete)
 // const firebaseConfig = {
 //   apiKey: "AIzaSyBQM-6jrv9xZ8c_p46fjsWDWFOsOn5_ayw",
 //   authDomain: "mindpal-1534b.firebaseapp.com",
@@ -15,7 +15,7 @@ import { getFirestore } from 'firebase/firestore';
 //   measurementId: "G-NE4WXFE10B"
 // };
 
-// Andrew config
+// Andrew config (Don't delete)
 const firebaseConfig = {
   apiKey: 'AIzaSyAtNFOR-YSTa_sGvcPaYgs63nQtApEtMYk',
   authDomain: 'mindpal-gpt.firebaseapp.com',
