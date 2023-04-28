@@ -54,22 +54,6 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const journals = await getAllValuesFromKey('journals');
-      if (journals === null || journals.length === 0) {
-        return;
-      }
-      // sort journal by journal date, newest first
-      journals.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
-      });
-      // get first journal where the journal cover is not null
-      const journal = journals.find((journal) => journal.journalCover !== null);
-      if (journal === undefined) {
-        return;
-      }
-      setImageUrl(journal.journalCover);
-    };
     const firstTimeOnload = async () => {
       const registrationData = await getObjFromKey('registrationData');
       // set logged in to true in async storage
@@ -108,8 +92,27 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     };
 
     firstTimeOnload();
-    fetch();
   }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const journals = await getAllValuesFromKey('journals');
+      if (journals === null || journals.length === 0) {
+        return;
+      }
+      // sort journal by journal date, newest first
+      journals.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      // get first journal where the journal cover is not null
+      const journal = journals.find((journal) => journal.journalCover !== null);
+      if (journal === undefined) {
+        return;
+      }
+      setImageUrl(journal.journalCover);
+    };
+    fetch();
+  });
 
   if (!fontsLoaded) return null;
   return (
