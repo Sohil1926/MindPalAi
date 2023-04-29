@@ -24,6 +24,7 @@ export default function JournalArchive({ navigation }) {
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
+  const [journalThumbnails, setJournalThumbnails] = useState({});
 
   const [journalKeys, setJournalKeys] = useState([]);
   const last14Days = [];
@@ -32,16 +33,21 @@ export default function JournalArchive({ navigation }) {
     date.setDate(date.getDate() - i);
     last14Days.push(date);
   }
-  
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
+      
       if (allJournals !== null) {
+       
         const journals = {};
+        const thumbnails = {};
         allJournals.forEach((j) => {
           journals[j.date] = { image: j.image, source: j.source };
+          thumbnails[j.date] = j.thumbnail;          
         });
         setJournalKeys(journals);
+        setJournalThumbnails(thumbnails);    
+
       }
     } catch (error) {
       Alert.alert(
@@ -49,38 +55,48 @@ export default function JournalArchive({ navigation }) {
         'Something unexpected happened. Please try again later.'
       );
     }
-  };
-  
-  
+  };    
 
   useEffect(() => {
-    // delete all journals
-    // AsyncStorage.removeItem('journals');
-    getAllJournals();
-  });
+    const fetchData = async () => {
+      await getAllJournals();
+    }
+    
+    fetchData();
+  }, []); // empty dependency array ensures this effect only runs on mount
 
   if (!fontsLoaded) return null;
 
   return (
+
+
+    
     <View style={styles.container}>
     <Text style={styles.header}>Your Journals</Text>
     <View style={styles.box}>
   <Text style={styles.boxHeader}>Last 14 Days</Text>
-  <View style={styles.calendar}>
-  {last14Days.map((date) => (
+  <View style={styles.calendar}>  
+  {last14Days.map((date) => ( 
   <TouchableOpacity key={date} style={styles.calendarItem}>
-  <Text style={styles.calendarDate}>{date.getDate()}</Text>
-  {journalKeys[date.toDateString()] ? (
-    <Image
-      source={journalKeys[date.toDateString()].image}
-      style={styles.calendarImage}
-    />
-  ) : (
-    <View style={styles.calendarPlaceholder} />
-  )}
-</TouchableOpacity>
+    <Text style={styles.calendarDate}>{date.getDate()} </Text>
+    {journalKeys[date.toDateString()] ? (
+      journalThumbnails[date.toDateString()] ? (
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fA%3D%3D&w=1000&q=80' }}
+          style={styles.calendarImage}
+        />
+      ) : (
+        <Image
+          source={journalKeys[date.toDateString()].image}
+          style={styles.calendarImage}
+        />
+      )
+    ) : (
+      <View style={styles.calendarPlaceholder} />
+    )}
+  </TouchableOpacity>
+))}
 
-  ))}
 </View>
 
 </View>
