@@ -71,7 +71,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         // add user to db
         await addData('users', arbDeviceId, {
           name: registrationData['name'] || 'Anonymous',
-          phoneNumber: registrationData['phoneNumber'] || 'No phone number',
+          phoneNumber: registrationData['phoneNumber'] || null,
         });
         console.log('user added to db');
       }
