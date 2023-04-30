@@ -48,7 +48,7 @@ export default function JournalArchive({ navigation }) {
         last14DaysJournals.forEach((j) => {
           journals_iterate[j.date] = { image: j.journalCover, entry: j.entry };
         });
-        setJournals(journals);
+        setJournals(journals_iterate);
       }
     } catch (error) {
       Alert.alert(
