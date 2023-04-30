@@ -25,27 +25,34 @@ export default function JournalArchive({ navigation }) {
     Manrope_400Regular,
   });
   const [journalThumbnails, setJournalThumbnails] = useState([]);
-
-  const [journalKeys, setJournalKeys] = useState([]);
+  const [journals, setJournals] = useState([]); //
   const last14Days = [];
   for (let i = 13; i >= 0; i--) {
-    const date = new Date();
+    let date = new Date();
     date.setDate(date.getDate() - i);
-    last14Days.push(date);
+    const dateStr = date.toISOString().split('T')[0];
+    last14Days.push(dateStr); // in YYYY-MM-DD format
   }
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
-        
+
       if (allJournals !== null) {
+        // sort by date, newest first
+        allJournals.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+
+        // get last 14 days of journal
+        const last14DaysJournals = allJournals.slice(0, 14);
         const journals = {};
         const thumbnails = {};
-        allJournals.forEach((j) => {
-          journals[j.date] = { image: j.image, source: j.source };
-          thumbnails[j.date] = j.thumbnail;          
+        last14DaysJournals.forEach((j) => {
+          journals[j.date] = { image: j.journalCover, entry: j.entry };
+          thumbnails[j.date] = j.journalCover;
         });
-        setJournalKeys(journals);
-        setJournalThumbnails(thumbnails);    
+        setJournals(journals);
+        setJournalThumbnails(thumbnails);
       }
     } catch (error) {
       Alert.alert(
@@ -53,91 +60,80 @@ export default function JournalArchive({ navigation }) {
         'Something unexpected happened. Please try again later.'
       );
     }
-  }; 
-  
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       await getAllJournals();
-    }
-    
+    };
+
     fetchData();
   }, []); // empty dependency array ensures this effect only runs on mount
 
   if (!fontsLoaded) return null;
 
   return (
-
-
-    
     <View style={styles.container}>
-    <Text style={styles.header}>Your Journals</Text>
-    <View style={styles.box}>
-  <Text style={styles.boxHeader}>Last 14 Days</Text>
-  <View style={styles.calendar}>  
-  {last14Days.map((date) => ( 
-  <TouchableOpacity
-  key={date}
-  style={styles.calendarItem}
-  onPress={() => {
-    const journalKey = date.toDateString();
-    navigation.navigate('JournalEntry', { key: journalKey });
-  }}
->
-    
-    
-  <Text style={styles.calendarDate}>{date.getDate()} </Text>
-  {journalKeys[date.toDateString()] ? (
-    journalThumbnails[date.toDateString()] ? (
-      <Image
-        source={{ uri: journalThumbnails[date.toDateString()] }}
-        style={styles.calendarImage}
-      />
-    ) : (
-      <Image
-        source={{ uri: journalKeys[date.toDateString()].image }}
-        style={styles.calendarImage}
-      />
-    )
-  ) : (
-    <View style={styles.calendarPlaceholder} />
-  )}
-  {journalKeys[date.toDateString()] && journalKeys[date.toDateString()].image && (
-    <Image
-      source={{ uri: journalKeys[date.toDateString()].image }}
-      style={styles.calendarImage}
-    />
-  )}
-</TouchableOpacity>
+      <Text style={styles.header}>Your Journals</Text>
+      <View style={styles.box}>
+        <Text style={styles.boxHeader}>Last 14 Days</Text>
+        <View style={styles.calendar}>
+          {last14Days.map((date) => (
+            // Note: date is in yyyy-mm-dd format
+            <TouchableOpacity
+              key={date}
+              style={styles.calendarItem}
+              onPress={() => {
+                navigation.navigate('JournalEntry', { key: date });
+              }}
+            >
+              <Text style={styles.calendarDate}>{date.split('-')[2]} </Text>
+              {journals[date] ? (
+                journalThumbnails[date] ? (
+                  <Image
+                    source={{ uri: journalThumbnails[date] }}
+                    style={styles.calendarImage}
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: journals[date].image }}
+                    style={styles.calendarImage}
+                  />
+                )
+              ) : (
+                <View style={styles.calendarPlaceholder} />
+              )}
+              {journals[date.toDateString()] &&
+                journals[date.toDateString()].image && (
+                  <Image
+                    source={{ uri: journals[date.toDateString()].image }}
+                    style={styles.calendarImage}
+                  />
+                )}
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
 
-))}
-
-</View>
-
-</View>
-
-
-    {journalKeys.length === 0 && (
-      <Text style={styles.emptyMessage}>
-        You haven't written any journals yet.
-      </Text>
-    )}
-    <FlatList
-      data={journalKeys}
-      keyExtractor={(item) => item}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('JournalEntry', { key: item })}
-          style={styles.journalItemContainer}
-        >
-          <Text style={styles.journalItemText}>{item}</Text>
-        </TouchableOpacity>
+      {journals.length === 0 && (
+        <Text style={styles.emptyMessage}>
+          You haven't written any journals yet.
+        </Text>
       )}
-    />
-  </View>
-  
+      <FlatList
+        data={journals}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JournalEntry', { key: item })}
+            style={styles.journalItemContainer}
+          >
+            <Text style={styles.journalItemText}>{item}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   );
-  
 }
 
 const styles = StyleSheet.create({
@@ -223,5 +219,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#555',
     borderRadius: 10,
   },
-  
 });

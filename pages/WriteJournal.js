@@ -124,8 +124,9 @@ export default function WriteJournal({ navigation }) {
       return Alert.alert('Wait...', 'Please write a journal entry first');
     }
     try {
-      const date = new Date();
-      const newJournalEntry = { date: date.toString(), entry: input };
+      // only get YYYY-MM-DD
+      const date = new Date().toISOString().split('T')[0];
+      const newJournalEntry = { date, entry: input };
       await AsyncStorage.setItem(
         'newJournalEntry',
         JSON.stringify(newJournalEntry)
