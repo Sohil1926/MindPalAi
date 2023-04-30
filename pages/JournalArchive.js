@@ -78,30 +78,25 @@ export default function JournalArchive({ navigation }) {
           {last14Days.map((date) => (
             // Note: date is in yyyy-mm-dd format
             <TouchableOpacity
-              key={date}
-              style={styles.calendarItem}
-              onPress={() => {
-                if (journals[date] !== undefined)
-                  navigation.navigate('JournalEntry', { key: date });
-                else alert(`No journal on ${date}`);
-              }}
-            >
-              <Text style={styles.calendarDate}>{date.split('-')[2]} </Text>
-              {journals[date] ? (
-                <Image
-                  source={{ uri: journals[date]?.image }}
-                  style={styles.calendarImage}
-                />
-              ) : (
-                <View style={styles.calendarPlaceholder} />
-              )}
-              {journals[date] && journals[date]?.image && (
-                <Image
-                  source={{ uri: journals[date]?.image }}
-                  style={styles.calendarImage}
-                />
-              )}
-            </TouchableOpacity>
+  key={date}
+  style={styles.calendarItem}
+  onPress={() => {
+    if (journals[date] !== undefined)
+      navigation.navigate('JournalEntry', { key: date });
+    else alert(`No journal on ${date}`);
+  }}
+>
+  <Text style={styles.calendarDate}>{date.split('-')[2]} </Text>
+  {journals[date] ? (
+    <Image
+      source={{ uri: journals[date]?.image }}
+      style={styles.calendarImage}
+    />
+  ) : (
+    <View style={styles.calendarPlaceholder} />
+  )}
+</TouchableOpacity>
+
           ))}
         </View>
       </View>
