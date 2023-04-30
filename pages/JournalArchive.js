@@ -12,6 +12,8 @@ import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesome } from 'react-native-vector-icons';
+
 import {
   useFonts,
   Manrope_800ExtraBold,
@@ -26,7 +28,10 @@ export default function JournalArchive({ navigation }) {
   });
   const [journals, setJournals] = useState([]);
   const [last14Days, setLast14Days] = useState([]);
-
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+  
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
@@ -71,6 +76,10 @@ export default function JournalArchive({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={handleBackPress}>
+  <FontAwesome name="arrow-left" size={24} color="#fff" />
+</TouchableOpacity>
+
       <Text style={styles.header}>Your Journals</Text>
       <View style={styles.box}>
         <Text style={styles.boxHeader}>Last 14 Days</Text>
