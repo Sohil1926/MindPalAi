@@ -140,19 +140,20 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: 'Manrope_800ExtraBold',
-    fontSize: 32,
+    fontSize: 24,
     color: '#fff',
     marginBottom: 20,
   },
   box: {
-    backgroundColor: '#333',
+    backgroundColor: '#101010',
     padding: 20,
+    paddingBottom: '60%',
     borderRadius: 10,
     marginBottom: 20,
   },
   boxHeader: {
     fontFamily: 'Manrope_800ExtraBold',
-    fontSize: 24,
+    fontSize: 17,
     color: '#fff',
     marginBottom: 10,
   },
@@ -202,16 +203,16 @@ const styles = StyleSheet.create({
   calendarImage: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
   },
 
   calendarPlaceholder: {
     width: 40,
-    height: 40,
+    height: 60,
     backgroundColor: '#555',
-    borderRadius: 20,
+    borderRadius: 10,
   },
   
 });
