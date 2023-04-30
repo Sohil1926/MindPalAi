@@ -195,8 +195,11 @@ const styles = StyleSheet.create({
   },
   calendarItem: {
     alignItems: 'center',
-    width: '14%',
-    aspectRatio: 1,
+  width: '14%',
+  aspectRatio: 1,
+  marginBottom: 10,
+
+ 
   },
   calendarDate: {
     fontFamily: 'Manrope_400Regular',
