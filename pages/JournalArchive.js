@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image,
 } from 'react-native';
 import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
@@ -23,17 +24,28 @@ export default function JournalArchive({ navigation }) {
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
+  const [journalThumbnails, setJournalThumbnails] = useState([]);
 
   const [journalKeys, setJournalKeys] = useState([]);
-
+  const last14Days = [];
+  for (let i = 13; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    last14Days.push(date);
+  }
   const getAllJournals = async () => {
     try {
-      const allJournalKeys = await getAllValuesFromKey('journals');
-      if (allJournalKeys !== null) {
-        const keys = allJournalKeys?.map((j) => j.date);
-        // sort keys from newest to oldest
-        keys.sort((a, b) => new Date(b) - new Date(a));
-        setJournalKeys(keys);
+      const allJournals = await getAllValuesFromKey('journals');
+        
+      if (allJournals !== null) {
+        const journals = {};
+        const thumbnails = {};
+        allJournals.forEach((j) => {
+          journals[j.date] = { image: j.image, source: j.source };
+          thumbnails[j.date] = j.thumbnail;          
+        });
+        setJournalKeys(journals);
+        setJournalThumbnails(thumbnails);    
       }
     } catch (error) {
       Alert.alert(
@@ -41,46 +53,123 @@ export default function JournalArchive({ navigation }) {
         'Something unexpected happened. Please try again later.'
       );
     }
-  };
+  }; 
+  
 
   useEffect(() => {
-    // delete all journals
-    // AsyncStorage.removeItem('journals');
-    getAllJournals();
-  });
+    const fetchData = async () => {
+      await getAllJournals();
+    }
+    
+    fetchData();
+  }, []); // empty dependency array ensures this effect only runs on mount
 
   if (!fontsLoaded) return null;
 
   return (
+
+
+    
     <View style={styles.container}>
-      {journalKeys.length === 0 && (
-        <Text style={styles.emptyMessage}>
-          You haven't written any journals yet.
-        </Text>
-      )}
-      <FlatList
-        data={journalKeys}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('JournalEntry', { key: item })}
-            style={styles.journalItemContainer}
-          >
-            <Text style={styles.journalItemText}>{item}</Text>
-          </TouchableOpacity>
-        )}
+    <Text style={styles.header}>Your Journals</Text>
+    <View style={styles.box}>
+  <Text style={styles.boxHeader}>Last 14 Days</Text>
+  <View style={styles.calendar}>  
+  {last14Days.map((date) => ( 
+  <TouchableOpacity
+  key={date}
+  style={styles.calendarItem}
+  onPress={() => {
+    const journalKey = date.toDateString();
+    navigation.navigate('JournalEntry', { key: journalKey });
+  }}
+>
+    
+    
+  <Text style={styles.calendarDate}>{date.getDate()} </Text>
+  {journalKeys[date.toDateString()] ? (
+    journalThumbnails[date.toDateString()] ? (
+      <Image
+        source={{ uri: journalThumbnails[date.toDateString()] }}
+        style={styles.calendarImage}
       />
-    </View>
+    ) : (
+      <Image
+        source={{ uri: journalKeys[date.toDateString()].image }}
+        style={styles.calendarImage}
+      />
+    )
+  ) : (
+    <View style={styles.calendarPlaceholder} />
+  )}
+  {journalKeys[date.toDateString()] && journalKeys[date.toDateString()].image && (
+    <Image
+      source={{ uri: journalKeys[date.toDateString()].image }}
+      style={styles.calendarImage}
+    />
+  )}
+</TouchableOpacity>
+
+))}
+
+</View>
+
+</View>
+
+
+    {journalKeys.length === 0 && (
+      <Text style={styles.emptyMessage}>
+        You haven't written any journals yet.
+      </Text>
+    )}
+    <FlatList
+      data={journalKeys}
+      keyExtractor={(item) => item}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('JournalEntry', { key: item })}
+          style={styles.journalItemContainer}
+        >
+          <Text style={styles.journalItemText}>{item}</Text>
+        </TouchableOpacity>
+      )}
+    />
+  </View>
+  
   );
+  
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: '40%',
     flex: 1,
     backgroundColor: '#000',
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  header: {
+    fontFamily: 'Manrope_800ExtraBold',
+    fontSize: 24,
+    color: '#fff',
+    marginBottom: 20,
+  },
+  box: {
+    backgroundColor: '#101010',
+    padding: 20,
+    paddingBottom: '60%',
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  boxHeader: {
+    fontFamily: 'Manrope_800ExtraBold',
+    fontSize: 17,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  calendar: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   emptyMessage: {
     fontFamily: 'Manrope_400Regular',
@@ -103,4 +192,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
   },
+  calendar: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  calendarItem: {
+    alignItems: 'center',
+    width: '14%',
+    aspectRatio: 1,
+  },
+  calendarDate: {
+    fontFamily: 'Manrope_400Regular',
+    fontSize: 18,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  calendarImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+
+  calendarPlaceholder: {
+    width: 40,
+    height: 60,
+    backgroundColor: '#555',
+    borderRadius: 10,
+  },
+  
 });
