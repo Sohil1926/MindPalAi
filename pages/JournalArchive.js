@@ -24,7 +24,6 @@ export default function JournalArchive({ navigation }) {
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
-  const [journalThumbnails, setJournalThumbnails] = useState([]);
   const [journals, setJournals] = useState([]); //
   const last14Days = [];
   for (let i = 13; i >= 0; i--) {
@@ -46,13 +45,10 @@ export default function JournalArchive({ navigation }) {
         // get last 14 days of journal
         const last14DaysJournals = allJournals.slice(0, 14);
         const journals = {};
-        const thumbnails = {};
         last14DaysJournals.forEach((j) => {
           journals[j.date] = { image: j.journalCover, entry: j.entry };
-          thumbnails[j.date] = j.journalCover;
         });
         setJournals(journals);
-        setJournalThumbnails(thumbnails);
       }
     } catch (error) {
       Alert.alert(
@@ -89,27 +85,19 @@ export default function JournalArchive({ navigation }) {
             >
               <Text style={styles.calendarDate}>{date.split('-')[2]} </Text>
               {journals[date] ? (
-                journalThumbnails[date] ? (
-                  <Image
-                    source={{ uri: journalThumbnails[date] }}
-                    style={styles.calendarImage}
-                  />
-                ) : (
-                  <Image
-                    source={{ uri: journals[date].image }}
-                    style={styles.calendarImage}
-                  />
-                )
+                <Image
+                  source={{ uri: journals[date].image }}
+                  style={styles.calendarImage}
+                />
               ) : (
                 <View style={styles.calendarPlaceholder} />
               )}
-              {journals[date.toDateString()] &&
-                journals[date.toDateString()].image && (
-                  <Image
-                    source={{ uri: journals[date.toDateString()].image }}
-                    style={styles.calendarImage}
-                  />
-                )}
+              {journals[date] && journals[date].image && (
+                <Image
+                  source={{ uri: journals[date].image }}
+                  style={styles.calendarImage}
+                />
+              )}
             </TouchableOpacity>
           ))}
         </View>
