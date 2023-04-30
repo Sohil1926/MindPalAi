@@ -24,13 +24,13 @@ export default function JournalArchive({ navigation }) {
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
-  const [journals, setJournals] = useState([]); //
-  const last14Days = [];
+  const [journals, setJournals] = useState([]);
+  const [last14Days, setLast14Days] = useState([]);
   for (let i = 13; i >= 0; i--) {
     let date = new Date();
     date.setDate(date.getDate() - i);
     const dateStr = date.toISOString().split('T')[0];
-    last14Days.push(dateStr); // in YYYY-MM-DD format
+    setLast14Days((last14Days) => [...last14Days, dateStr]); // YYYY-MM-DD format
   }
   const getAllJournals = async () => {
     try {
@@ -44,9 +44,9 @@ export default function JournalArchive({ navigation }) {
 
         // get last 14 days of journal
         const last14DaysJournals = allJournals.slice(0, 14);
-        const journals = {};
+        const journals_iterate = {};
         last14DaysJournals.forEach((j) => {
-          journals[j.date] = { image: j.journalCover, entry: j.entry };
+          journals_iterate[j.date] = { image: j.journalCover, entry: j.entry };
         });
         setJournals(journals);
       }
@@ -80,21 +80,23 @@ export default function JournalArchive({ navigation }) {
               key={date}
               style={styles.calendarItem}
               onPress={() => {
-                navigation.navigate('JournalEntry', { key: date });
+                if (journals[date] !== undefined)
+                  navigation.navigate('JournalEntry', { key: date });
+                else alert(`No journal on ${date}`);
               }}
             >
               <Text style={styles.calendarDate}>{date.split('-')[2]} </Text>
               {journals[date] ? (
                 <Image
-                  source={{ uri: journals[date].image }}
+                  source={{ uri: journals[date]?.image }}
                   style={styles.calendarImage}
                 />
               ) : (
                 <View style={styles.calendarPlaceholder} />
               )}
-              {journals[date] && journals[date].image && (
+              {journals[date] && journals[date]?.image && (
                 <Image
-                  source={{ uri: journals[date].image }}
+                  source={{ uri: journals[date]?.image }}
                   style={styles.calendarImage}
                 />
               )}
