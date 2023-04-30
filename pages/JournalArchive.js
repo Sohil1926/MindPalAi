@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   },
   calendarImage: {
     width: 40,
-    height: 40,
+    height: 60,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
