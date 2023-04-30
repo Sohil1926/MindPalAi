@@ -26,15 +26,16 @@ export default function JournalArchive({ navigation }) {
   });
   const [journals, setJournals] = useState([]);
   const [last14Days, setLast14Days] = useState([]);
-  for (let i = 13; i >= 0; i--) {
-    let date = new Date();
-    date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split('T')[0];
-    setLast14Days((last14Days) => [...last14Days, dateStr]); // YYYY-MM-DD format
-  }
+
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
+      for (let i = 13; i >= 0; i--) {
+        let date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        setLast14Days((last14Days) => [...last14Days, dateStr]); // YYYY-MM-DD format
+      }
 
       if (allJournals !== null) {
         // sort by date, newest first
