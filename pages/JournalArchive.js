@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     marginBottom: 20,
+    marginTop: 50,
   },
   box: {
     backgroundColor: '#101010',
