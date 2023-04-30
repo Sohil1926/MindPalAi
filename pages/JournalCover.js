@@ -88,9 +88,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     setImageUrl('loading');
 
     let data = qs.stringify({
-      input: `
-      Create a prompt for a AI art generator to make art based on the mood depicted in the following journal entry:
-      "${journalEntry}"`,
+      input: journalEntry,
       // input: journalEntry,
     });
 
