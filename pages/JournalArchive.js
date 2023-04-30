@@ -76,7 +76,16 @@ export default function JournalArchive({ navigation }) {
   <Text style={styles.boxHeader}>Last 14 Days</Text>
   <View style={styles.calendar}>  
   {last14Days.map((date) => ( 
-  <TouchableOpacity key={date} style={styles.calendarItem}>
+  <TouchableOpacity
+  key={date}
+  style={styles.calendarItem}
+  onPress={() => {
+    const journalKey = date.toDateString();
+    navigation.navigate('JournalEntry', { key: journalKey });
+  }}
+>
+    
+    
   <Text style={styles.calendarDate}>{date.getDate()} </Text>
   {journalKeys[date.toDateString()] ? (
     journalThumbnails[date.toDateString()] ? (
