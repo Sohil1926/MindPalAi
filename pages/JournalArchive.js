@@ -85,7 +85,6 @@ export default function JournalArchive({ navigation }) {
         <Text style={styles.boxHeader}>Last 14 Days</Text>
         <View style={styles.calendar}>
         {last14Days.map((date) => (
-  // Note: date is in yyyy-mm-dd format
   <TouchableOpacity
     key={date}
     style={styles.calendarItem}
@@ -95,17 +94,21 @@ export default function JournalArchive({ navigation }) {
       else alert(`No journal on ${date}`);
     }}
   >
-    <Text style={styles.calendarDate}>{date.split('-')[2]}</Text>
-    {journals[date] ? (
-      <Image
-        source={{ uri: journals[date]?.image }}
-        style={styles.calendarImage}
-      />
-    ) : (
-      <View style={styles.calendarPlaceholder} />
-    )}
+    {journals[date]?.image ? (
+  <Image
+    source={{ uri: journals[date]?.image }}
+    style={styles.calendarImage}
+  />
+) : (
+  <View style={styles.calendarPlaceholder} />
+)}
+
+    <View style={styles.calendarDateContainer}>
+      <Text style={styles.calendarDate}>{date.split('-')[2]}</Text>
+    </View>
   </TouchableOpacity>
 ))}
+
 
         </View>
       </View>
@@ -199,16 +202,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Manrope_400Regular',
     fontSize: 18,
     color: '#fff',
-    marginBottom: 10,
+    paddingTop: '40%'
   },
   calendarImage: {
     width: 40,
-    height: 60,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
+  height: 60,
+  borderRadius: 10,
+  borderWidth: 1,
+  borderColor: '#fff',
   },
-
+  calendarDateContainer: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   calendarPlaceholder: {
     width: 40,
     height: 60,
