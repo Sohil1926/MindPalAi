@@ -85,9 +85,14 @@ export default function JournalArchive({ navigation, route }) {
 
   return (
     <ScrollView className='flex-1 justify-top my-20 gap-5 bg-black'>
-      <Text className='text-black mx-5 bg-white p-5 m-5 rounded-lg'>
-        {journalEntry}
-      </Text>
+     <Text style={{textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: 'white', paddingTop: 30, paddingLeft: 30}}>
+  {route.params.key}
+</Text>
+
+<Text style={{ color: 'white', paddingLeft: '15%' }}>
+  {journalEntry}
+</Text>
+
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
           source={{ uri: imageUrl }}
@@ -98,7 +103,7 @@ export default function JournalArchive({ navigation, route }) {
           }}
         />
       </View>
-
+  
       <View>
         <PillButton
           text={'Delete'}
@@ -109,6 +114,7 @@ export default function JournalArchive({ navigation, route }) {
       </View>
     </ScrollView>
   );
+  
 }
 
 // const styles = StyleSheet.create({

@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginTop: 60,
+    marginLeft: 20
   },
   header: {
     fontFamily: 'Manrope_800ExtraBold',
