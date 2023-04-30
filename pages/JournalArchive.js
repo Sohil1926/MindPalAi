@@ -76,9 +76,9 @@ export default function JournalArchive({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleBackPress}>
-  <FontAwesome name="arrow-left" size={24} color="#fff" />
-</TouchableOpacity>
+       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+      <FontAwesome name="arrow-left" size={24} color="#fff" />
+    </TouchableOpacity>
 
       <Text style={styles.header}>Your Journals</Text>
       <View style={styles.box}>
@@ -140,6 +140,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  backButton: {
+    marginTop: 60,
   },
   header: {
     fontFamily: 'Manrope_800ExtraBold',
