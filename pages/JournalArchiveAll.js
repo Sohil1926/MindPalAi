@@ -21,6 +21,7 @@ import {
 } from '@expo-google-fonts/manrope';
 import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
 import Calendar from '../components/Calendar';
+import PillButton from '../components/PillButton';
 
 export default function JournalArchiveAll({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -50,14 +51,40 @@ export default function JournalArchiveAll({ navigation }) {
         allJournals.sort((a, b) => {
           return new Date(b.date) - new Date(a.date);
         });
-
-        setJournals(allJournals);
       }
     } catch (error) {
       Alert.alert(
         'Error',
         'Something unexpected happened. Please try again later.'
       );
+    }
+  };
+
+  const scroll = (direction) => {
+    if (direction === 'left') {
+      if (month === 1) {
+        setMonth(12);
+        setMonthLong('December');
+        setYear(year - 1);
+      } else {
+        setMonth(month - 1);
+        setMonthLong(
+          new Date(year, month - 2, 1).toLocaleString('default', {
+            month: 'long',
+          })
+        );
+      }
+    } else if (direction === 'right') {
+      if (month === 12) {
+        setMonth(1);
+        setMonthLong('January');
+        setYear(year + 1);
+      } else {
+        setMonth(month + 1);
+        setMonthLong(
+          new Date(year, month, 1).toLocaleString('default', { month: 'long' })
+        );
+      }
     }
   };
 
@@ -79,10 +106,28 @@ export default function JournalArchiveAll({ navigation }) {
 
       <Text style={styles.header}>Your Journals</Text>
       <View style={styles.box}>
-        <Text>
+        <Text style={{ color: '#fff' }}>
           {monthLong}, {year}
         </Text>
         <Calendar year={year} month={month} />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}
+      >
+        <PillButton
+          text='<-'
+          bgColor={'#fff'}
+          textColor='#000'
+          onPress={() => scroll('left')}
+        />
+        <PillButton
+          text='->'
+          bgColor={'#fff'}
+          textColor='#000'
+          onPress={() => scroll('right')}
+        />
       </View>
 
       {journals.length === 0 && (
@@ -127,9 +172,9 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: '#101010',
     padding: 20,
-    paddingBottom: '60%',
+    paddingBottom: '20%',
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   boxHeader: {
     fontFamily: 'Manrope_800ExtraBold',

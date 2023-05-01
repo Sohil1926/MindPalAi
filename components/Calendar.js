@@ -1,49 +1,86 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const Calendar = ({ year, month }) => {
+const Calendar = ({ year, month, journalData }) => {
   const weekdays = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ];
 
-  const totalDays = new Date(year, month + 1, 0).getDate();
-  const firstDayIndex = new Date(year, month, 1).getDay();
+  const [weeks, setWeeks] = useState([]);
 
-  const days = Array.from({ length: totalDays }, (_, index) => index + 1);
-  const emptyDays = Array.from({ length: firstDayIndex }, () => null);
+  useEffect(() => {
+    const calculateWeeks = () => {
+      const firstDay = new Date(year, month - 1, 1);
+      const firstDayIndex = firstDay.getDay();
+      const totalDays = new Date(year, month, 0).getDate();
+      const weeksArray = [];
+
+      //   console.log(firstDay, firstDayIndex, totalDays);
+
+      let day = 1;
+      let week = 0;
+      while (day <= totalDays) {
+        const daysArray = [];
+        if (week === 0) {
+          for (let i = 0; i < 7; i++) {
+            if (i < firstDayIndex) {
+              daysArray.push(null);
+            } else {
+              daysArray.push(day++);
+            }
+          }
+        } else {
+          for (let i = 0; i < 7; i++) {
+            if (day <= totalDays) {
+              daysArray.push(day++);
+            } else {
+              daysArray.push(null);
+            }
+          }
+        }
+        weeksArray.push(daysArray);
+        week++;
+      }
+
+      setWeeks(weeksArray);
+      console.log(weeksArray);
+    };
+
+    calculateWeeks();
+  }, [year, month]);
 
   return (
     <View style={styles.calendar}>
       <View style={styles.weekdays}>
         {weekdays.map((weekday) => (
           <View style={styles.weekday} key={weekday}>
-            <Text style={styles.weekdayText}>{weekday}</Text>
+            <Text style={styles.weekdayText}>{weekday[0]}</Text>
           </View>
         ))}
       </View>
-      <View style={styles.days}>
-        {emptyDays.map((_, index) => (
-          <View style={styles.emptyDay} key={`empty-${index}`} />
-        ))}
-        {days.map((day) => (
-          <View style={styles.day} key={`day-${day}`}>
-            <Text style={styles.dayText}>{day}</Text>
-          </View>
-        ))}
-      </View>
+      {weeks.map((week, index) => (
+        <View style={styles.week} key={index}>
+          {week.map((day, index) => (
+            <View style={styles.day} key={index}>
+              {<Text style={styles.dayText}>{day || ''}</Text>}
+            </View>
+          ))}
+        </View>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  calendar: {
-    flex: 1,
+  calendar: {},
+  week: {
+    flexDirection: 'row',
   },
   weekdays: {
     flexDirection: 'row',
@@ -56,23 +93,27 @@ const styles = StyleSheet.create({
   },
   weekdayText: {
     fontWeight: 'bold',
+    color: '#fff',
   },
   days: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   emptyDay: {
-    flex: 1,
+    // flex: 1,
     height: 40,
   },
   day: {
-    flex: 1,
+    // flex: 1,
+    width: 49,
+    flexDirection: 'row',
     height: 40,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   dayText: {
     fontSize: 18,
+    color: '#fff',
   },
 });
 

@@ -136,6 +136,8 @@ export default function JournalArchive({ navigation }) {
       />
       <PillButton
         text={'View All Archive'}
+        bgColor={'#fff'}
+        textColor='#000'
         onPress={() => navigation.navigate('JournalArchiveAll')}
       />
     </View>
