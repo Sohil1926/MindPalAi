@@ -24,7 +24,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
   const onNext = async () => {
     if (name) {
       await setFieldToKey('registrationData', 'name', name);
-      await setFieldToKey('registrationData', 'phoneNumber', 'NA'); // for temp release
+      // await setFieldToKey('registrationData', 'phoneNumber', null); // for temp release
       navigation.navigate('Homepage');
     } else {
       alert('Please enter your name before continuing.');
