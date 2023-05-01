@@ -126,7 +126,7 @@ export default function WriteJournal({ navigation }) {
     }
     try {
       // only get YYYY-MM-DD
-      const date = new Date().toISOString().split('T')[0];
+      const dateFormatted = new Date().toISOString().split('T')[0];
 
       // get all journals
       const journals = await getObjFromKey('journals');
@@ -135,18 +135,25 @@ export default function WriteJournal({ navigation }) {
         return new Date(b.date) - new Date(a.date);
       });
 
+      const newestJournalDateFormatted = new Date(sortedJournals[0].date)
+        .toISOString()
+        .split('T')[0];
+
       // if there is a journal entry for today, ask user if they want to overwrite it
-      if (sortedJournals.length > 0 && sortedJournals[0].date === date) {
+      if (
+        sortedJournals.length > 0 &&
+        newestJournalDateFormatted === dateFormatted
+      ) {
         if (confirm('Would you like to overwrite your journal for today?')) {
           // overwrite journal entry
-          await deleteValueFromArr('journals', 'date', date);
+          await deleteValueFromArr('journals', 'date', dateFormatted);
         } else {
           alert('Entry will be erased.');
           return navigation.navigate('Homepage'); // function ends
         }
       }
 
-      const newJournalEntry = { date, entry: input };
+      const newJournalEntry = { date: dateFormatted, entry: input };
       appendDataToKey('journals', newJournalEntry);
       Alert.alert('Success', 'Journal saved successfully', [
         {
