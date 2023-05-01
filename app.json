@@ -14,8 +14,9 @@
       "backgroundColor": "#ffffff",
       "permissions": "NOTIFICATIONS"
     },
-
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -41,7 +42,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-localization"
     ]
   }
 }
