@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-const Calendar = ({ year, month, journalData }) => {
+const JournalCalendar = ({ year, month, journalData, navigation }) => {
   const weekdays = [
     'Sunday',
     'Monday',
@@ -18,6 +18,7 @@ const Calendar = ({ year, month, journalData }) => {
     const calculateWeeks = () => {
       const firstDay = new Date(year, month - 1, 1);
       const firstDayIndex = firstDay.getDay();
+
       const totalDays = new Date(year, month, 0).getDate();
       const weeksArray = [];
 
@@ -49,12 +50,24 @@ const Calendar = ({ year, month, journalData }) => {
       }
 
       setWeeks(weeksArray);
-      console.log(weeksArray);
+      //   console.log(weeksArray);
     };
 
     calculateWeeks();
+    // console.log(journalData);
   }, [year, month]);
-
+  const goToJournalEntry = (day) => {
+    let monthPaddedWith0 = month < 10 ? `0${month}` : month;
+    let dayPaddedWith0 = day < 10 ? `0${day}` : day;
+    const fullDate = `${year}-${monthPaddedWith0}-${dayPaddedWith0}`;
+    const journal = journalData[fullDate];
+    if (journal) {
+      // console.log(journal);
+      navigation.navigate('JournalEntry', { key: fullDate });
+    } else {
+      alert(`No journal on ${fullDate}`);
+    }
+  };
   return (
     <View style={styles.calendar}>
       <View style={styles.weekdays}>
@@ -66,11 +79,26 @@ const Calendar = ({ year, month, journalData }) => {
       </View>
       {weeks.map((week, index) => (
         <View style={styles.week} key={index}>
-          {week.map((day, index) => (
-            <View style={styles.day} key={index}>
-              {<Text style={styles.dayText}>{day || ''}</Text>}
-            </View>
-          ))}
+          {week.map((day, index) => {
+            const formattedDate = `${year}-${
+              month < 10 ? `0${month}` : month
+            }-${day < 10 ? `0${day}` : day}`;
+            return (
+              <View style={styles.day} key={index}>
+                <TouchableOpacity onPress={() => goToJournalEntry(day)}>
+                  <Text style={styles.dayText}>{day || ''}</Text>
+                  {journalData[formattedDate] && (
+                    <Image
+                      source={{
+                        uri: journalData[formattedDate]?.image,
+                      }}
+                      style={styles.calendarImage}
+                    />
+                  )}
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         </View>
       ))}
     </View>
@@ -79,6 +107,13 @@ const Calendar = ({ year, month, journalData }) => {
 
 const styles = StyleSheet.create({
   calendar: {},
+  calendarImage: {
+    width: 40,
+    height: 60,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
   week: {
     flexDirection: 'row',
   },
@@ -117,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Calendar;
+export default JournalCalendar;

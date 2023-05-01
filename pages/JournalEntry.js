@@ -7,6 +7,7 @@ import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   deleteValueFromArr,
+  getAllValuesFromKey,
   getValueUsingFieldVal,
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
@@ -19,11 +20,19 @@ export default function JournalArchive({ navigation, route }) {
 
   const getJournalEntry = async () => {
     try {
-      const journal = await getValueUsingFieldVal(
-        'journals',
-        'date',
-        route.params.key
-      );
+      // outdated method
+      // const journal = await getValueUsingFieldVal(
+      //   'journals',
+      //   'date',
+      //   route.params.key
+      // );
+
+      const allJournals = await getAllValuesFromKey('journals');
+      const journal = allJournals.find((j) => {
+        const jDate = new Date(j.date).toISOString().split('T')[0];
+        return jDate === route.params.key;
+      });
+
       // console.log(journal.journalCover);
       setJournalEntry(journal.entry);
 
@@ -85,13 +94,20 @@ export default function JournalArchive({ navigation, route }) {
 
   return (
     <ScrollView className='flex-1 justify-top my-20 gap-5 bg-black'>
-     <Text style={{textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: 'white', paddingTop: 30, paddingLeft: 30}}>
-  {route.params.key}
-</Text>
+      <Text
+        style={{
+          textAlign: 'left',
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: 'white',
+          paddingTop: 30,
+          paddingLeft: 30,
+        }}
+      >
+        {route.params.key}
+      </Text>
 
-<Text style={{ color: 'white', paddingLeft: '15%' }}>
-  {journalEntry}
-</Text>
+      <Text style={{ color: 'white', paddingLeft: '15%' }}>{journalEntry}</Text>
 
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
@@ -103,7 +119,7 @@ export default function JournalArchive({ navigation, route }) {
           }}
         />
       </View>
-  
+
       <View>
         <PillButton
           text={'Delete'}
@@ -114,7 +130,6 @@ export default function JournalArchive({ navigation, route }) {
       </View>
     </ScrollView>
   );
-  
 }
 
 // const styles = StyleSheet.create({

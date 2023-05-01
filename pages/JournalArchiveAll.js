@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { Button, Input } from '@rneui/themed';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from 'react-native-vector-icons';
@@ -20,7 +20,7 @@ import {
   Manrope_400Regular,
 } from '@expo-google-fonts/manrope';
 import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
-import Calendar from '../components/Calendar';
+import JournalCalendar from '../components/JournalCalendar';
 import PillButton from '../components/PillButton';
 
 export default function JournalArchiveAll({ navigation }) {
@@ -28,30 +28,27 @@ export default function JournalArchiveAll({ navigation }) {
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
-  const [journals, setJournals] = useState([]);
+  const [journals, setJournals] = useState({});
   const date = new Date();
 
   const [month, setMonth] = useState(
-    date.toLocaleString('default', { month: 'numeric' })
+    Number(date.toLocaleString('default', { month: 'numeric' }))
   );
   const [monthLong, setMonthLong] = useState(
     date.toLocaleString('default', { month: 'long' })
   );
   const [year, setYear] = useState(date.getFullYear());
   const handleBackPress = () => {
-    navigation.goBack();
+    try {
+      navigation.goBack();
+    } catch (err) {
+      navigation.navigate('Homepage');
+    }
   };
 
   const getAllJournals = async () => {
     try {
-      const allJournals = await getAllValuesFromKey('journals');
-
-      if (allJournals !== null) {
-        // sort by date, newest first
-        allJournals.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date);
-        });
-      }
+      getJournalsMonthYear(year, month);
     } catch (error) {
       Alert.alert(
         'Error',
@@ -60,12 +57,33 @@ export default function JournalArchiveAll({ navigation }) {
     }
   };
 
-  const scroll = (direction) => {
+  const getJournalsMonthYear = async (year, month) => {
+    const allJournals = await getAllValuesFromKey('journals');
+    if (allJournals) {
+      const journalsMonthYear = allJournals.filter((j) => {
+        const jDate = new Date(j.date);
+        return jDate.getFullYear() === year && jDate.getMonth() + 1 === month;
+      });
+      const journalsMonthYearObj = {};
+      journalsMonthYear.forEach((j) => {
+        const jDate = new Date(j.date);
+        const dateStr = jDate.toISOString().split('T')[0];
+        journalsMonthYearObj[dateStr] = {
+          image: j.journalCover,
+          entry: j.entry,
+        };
+      });
+      setJournals(journalsMonthYearObj);
+    }
+  };
+
+  const scroll = async (direction) => {
     if (direction === 'left') {
       if (month === 1) {
         setMonth(12);
         setMonthLong('December');
         setYear(year - 1);
+        await getJournalsMonthYear(year - 1, 12);
       } else {
         setMonth(month - 1);
         setMonthLong(
@@ -73,17 +91,20 @@ export default function JournalArchiveAll({ navigation }) {
             month: 'long',
           })
         );
+        await getJournalsMonthYear(year, month - 1);
       }
     } else if (direction === 'right') {
       if (month === 12) {
         setMonth(1);
         setMonthLong('January');
         setYear(year + 1);
+        await getJournalsMonthYear(year + 1, 1);
       } else {
         setMonth(month + 1);
         setMonthLong(
           new Date(year, month, 1).toLocaleString('default', { month: 'long' })
         );
+        await getJournalsMonthYear(year, month + 1);
       }
     }
   };
@@ -109,7 +130,12 @@ export default function JournalArchiveAll({ navigation }) {
         <Text style={{ color: '#fff' }}>
           {monthLong}, {year}
         </Text>
-        <Calendar year={year} month={month} />
+        <JournalCalendar
+          year={year}
+          month={month}
+          journalData={journals}
+          navigation={navigation}
+        />
       </View>
       <View
         style={{
