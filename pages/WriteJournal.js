@@ -31,6 +31,7 @@ import { auth } from '../firebaseConfig';
 import { updateProfile } from 'firebase/auth';
 import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 import { HideKeyboard } from '../components/HideKeyboard';
+import { deleteValueFromArr } from '../utils/asyncStorageUtils';
 
 export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
@@ -126,11 +127,26 @@ export default function WriteJournal({ navigation }) {
     try {
       // only get YYYY-MM-DD
       const date = new Date().toISOString().split('T')[0];
+
+      // get all journals
+      const journals = await getObjFromKey('journals');
+      // sort journal to get the newest one
+      const sortedJournals = journals.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      // if there is a journal entry for today, ask user if they want to overwrite it
+      if (sortedJournals.length > 0 && sortedJournals[0].date === date) {
+        if (confirm('Would you like to overwrite your journal for today?')) {
+          // overwrite journal entry
+          await deleteValueFromArr('journals', 'date', date);
+        } else {
+          alert('Entry will be erased.');
+          return navigation.navigate('Homepage'); // function ends
+        }
+      }
+
       const newJournalEntry = { date, entry: input };
-      await AsyncStorage.setItem(
-        'newJournalEntry',
-        JSON.stringify(newJournalEntry)
-      );
       appendDataToKey('journals', newJournalEntry);
       Alert.alert('Success', 'Journal saved successfully', [
         {

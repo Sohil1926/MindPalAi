@@ -31,7 +31,7 @@ export default function JournalArchive({ navigation }) {
   const handleBackPress = () => {
     navigation.goBack();
   };
-  
+
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
@@ -76,40 +76,38 @@ export default function JournalArchive({ navigation }) {
 
   return (
     <View style={styles.container}>
-       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-      <FontAwesome name="arrow-left" size={24} color="#fff" />
-    </TouchableOpacity>
+      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        <FontAwesome name='arrow-left' size={24} color='#fff' />
+      </TouchableOpacity>
 
       <Text style={styles.header}>Your Journals</Text>
       <View style={styles.box}>
         <Text style={styles.boxHeader}>Last 14 Days</Text>
         <View style={styles.calendar}>
-        {last14Days.map((date) => (
-  <TouchableOpacity
-    key={date}
-    style={styles.calendarItem}
-    onPress={() => {
-      if (journals[date] !== undefined)
-        navigation.navigate('JournalEntry', { key: date });
-      else alert(`No journal on ${date}`);
-    }}
-  >
-    {journals[date]?.image ? (
-  <Image
-    source={{ uri: journals[date]?.image }}
-    style={styles.calendarImage}
-  />
-) : (
-  <View style={styles.calendarPlaceholder} />
-)}
+          {last14Days.map((date) => (
+            <TouchableOpacity
+              key={date}
+              style={styles.calendarItem}
+              onPress={() => {
+                if (journals[date] !== undefined)
+                  navigation.navigate('JournalEntry', { key: date });
+                else alert(`No journal on ${date}`);
+              }}
+            >
+              {journals[date]?.image ? (
+                <Image
+                  source={{ uri: journals[date]?.image }}
+                  style={styles.calendarImage}
+                />
+              ) : (
+                <View style={styles.calendarPlaceholder} />
+              )}
 
-    <View style={styles.calendarDateContainer}>
-      <Text style={styles.calendarDate}>{date.split('-')[2]}</Text>
-    </View>
-  </TouchableOpacity>
-))}
-
-
+              <View style={styles.calendarDateContainer}>
+                <Text style={styles.calendarDate}>{date.split('-')[2]}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
 
@@ -143,7 +141,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginTop: 60,
-    marginLeft: 20
+    marginLeft: 20,
   },
   header: {
     fontFamily: 'Manrope_800ExtraBold',
@@ -199,24 +197,22 @@ const styles = StyleSheet.create({
   },
   calendarItem: {
     alignItems: 'center',
-  width: '14%',
-  aspectRatio: 1,
-  marginBottom: 10,
-
- 
+    width: '14%',
+    aspectRatio: 1,
+    marginBottom: 10,
   },
   calendarDate: {
     fontFamily: 'Manrope_400Regular',
     fontSize: 18,
     color: '#fff',
-    paddingTop: '40%'
+    paddingTop: '40%',
   },
   calendarImage: {
     width: 40,
-  height: 60,
-  borderRadius: 10,
-  borderWidth: 1,
-  borderColor: '#fff',
+    height: 60,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
   },
   calendarDateContainer: {
     position: 'absolute',
