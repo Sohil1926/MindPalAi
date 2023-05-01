@@ -15,6 +15,7 @@ import Homepage from './pages/Homepage';
 import { Notifications } from 'expo';
 import { registerForPushNotificationsAsync } from 'expo-notifications';
 import { LogBox } from 'react-native';
+import JournalArchiveAll from './pages/JournalArchiveAll';
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,7 @@ const App = () => {
           options={{ gestureEnabled: false }}
         />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
+        <Stack.Screen name='JournalArchiveAll' component={JournalArchiveAll} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
     </NavigationContainer>

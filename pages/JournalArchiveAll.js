@@ -20,15 +20,23 @@ import {
   Manrope_400Regular,
 } from '@expo-google-fonts/manrope';
 import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
-import PillButton from '../components/PillButton';
+import Calendar from '../components/Calendar';
 
-export default function JournalArchive({ navigation }) {
+export default function JournalArchiveAll({ navigation }) {
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
   const [journals, setJournals] = useState([]);
-  const [last14Days, setLast14Days] = useState([]);
+  const date = new Date();
+
+  const [month, setMonth] = useState(
+    date.toLocaleString('default', { month: 'numeric' })
+  );
+  const [monthLong, setMonthLong] = useState(
+    date.toLocaleString('default', { month: 'long' })
+  );
+  const [year, setYear] = useState(date.getFullYear());
   const handleBackPress = () => {
     navigation.goBack();
   };
@@ -36,12 +44,6 @@ export default function JournalArchive({ navigation }) {
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
-      for (let i = 13; i >= 0; i--) {
-        let date = new Date();
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
-        setLast14Days((last14Days) => [...last14Days, dateStr]); // YYYY-MM-DD format
-      }
 
       if (allJournals !== null) {
         // sort by date, newest first
@@ -49,18 +51,7 @@ export default function JournalArchive({ navigation }) {
           return new Date(b.date) - new Date(a.date);
         });
 
-        // get last 14 days of journal
-        const last14DaysJournals = allJournals.slice(0, 14);
-        const journals_iterate = {};
-        last14DaysJournals.forEach((j) => {
-          const newDateFormat = new Date(j.date).toISOString().split('T')[0];
-          journals_iterate[newDateFormat] = {
-            image: j.journalCover,
-            entry: j.entry,
-          };
-        });
-        setJournals(journals_iterate);
-        console.log(journals);
+        setJournals(allJournals);
       }
     } catch (error) {
       Alert.alert(
@@ -88,33 +79,10 @@ export default function JournalArchive({ navigation }) {
 
       <Text style={styles.header}>Your Journals</Text>
       <View style={styles.box}>
-        <Text style={styles.boxHeader}>Last 14 Days</Text>
-        <View style={styles.calendar}>
-          {last14Days.map((date) => (
-            <TouchableOpacity
-              key={date}
-              style={styles.calendarItem}
-              onPress={() => {
-                if (journals[date] !== undefined)
-                  navigation.navigate('JournalEntry', { key: date });
-                else alert(`No journal on ${date}`);
-              }}
-            >
-              {journals[date]?.image ? (
-                <Image
-                  source={{ uri: journals[date]?.image }}
-                  style={styles.calendarImage}
-                />
-              ) : (
-                <View style={styles.calendarPlaceholder} />
-              )}
-
-              <View style={styles.calendarDateContainer}>
-                <Text style={styles.calendarDate}>{date.split('-')[2]}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <Text>
+          {monthLong}, {year}
+        </Text>
+        <Calendar year={year} month={month} />
       </View>
 
       {journals.length === 0 && (
@@ -133,10 +101,6 @@ export default function JournalArchive({ navigation }) {
             <Text style={styles.journalItemText}>{item}</Text>
           </TouchableOpacity>
         )}
-      />
-      <PillButton
-        text={'View All Archive'}
-        onPress={() => navigation.navigate('JournalArchiveAll')}
       />
     </View>
   );
