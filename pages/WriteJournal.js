@@ -129,43 +129,59 @@ export default function WriteJournal({ navigation }) {
       const dateFormatted = new Date().toISOString().split('T')[0];
 
       // get all journals
-      const journals = await getObjFromKey('journals');
-      // sort journal to get the newest one
-      const sortedJournals = journals.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
-      });
+      const allJournals = await getObjFromKey('journals');
 
-      const newestJournalDateFormatted = new Date(sortedJournals[0].date)
-        .toISOString()
-        .split('T')[0];
+      if (allJournals) {
+        // sort journal to get the newest one
+        const sortedJournals = allJournals?.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
 
-      // if there is a journal entry for today, ask user if they want to overwrite it
-      if (
-        sortedJournals.length > 0 &&
-        newestJournalDateFormatted === dateFormatted
-      ) {
-        if (confirm('Would you like to overwrite your journal for today?')) {
-          // overwrite journal entry
-          await deleteValueFromArr('journals', 'date', dateFormatted);
-        } else {
-          alert('Entry will be erased.');
-          return navigation.navigate('Homepage'); // function ends
+        const newestJournalDateFormatted = new Date(sortedJournals[0].date)
+          .toISOString()
+          .split('T')[0]; // although it is likely that the date is already in YYYY-MM-DD format, we still do this to be safe
+
+        // if there is a journal entry for today, ask user if they want to overwrite it
+        if (
+          sortedJournals.length > 0 &&
+          newestJournalDateFormatted === dateFormatted
+        ) {
+          if (confirm('Would you like to overwrite your journal for today?')) {
+            // overwrite journal entry
+            await deleteValueFromArr('journals', 'date', dateFormatted);
+          } else {
+            alert('Entry will be erased.');
+            return navigation.navigate('Homepage'); // function ends
+          }
         }
-      }
 
-      const newJournalEntry = { date: dateFormatted, entry: input };
-      appendDataToKey('journals', newJournalEntry);
-      Alert.alert('Success', 'Journal saved successfully', [
-        {
-          text: 'OK',
-          onPress: () =>
-            navigation.navigate('JournalCover', {
-              journalEntry: newJournalEntry,
-            }),
-        },
-      ]);
-    } catch {
-      Alert.alert('Error', 'Something went wrong');
+        const newJournalEntry = { date: dateFormatted, entry: input };
+        appendDataToKey('journals', newJournalEntry);
+        Alert.alert('Success', 'Journal saved successfully', [
+          {
+            text: 'OK',
+            onPress: () =>
+              navigation.navigate('JournalCover', {
+                journalEntry: newJournalEntry,
+              }),
+          },
+        ]);
+      } else {
+        // user's first journal!
+        const newJournalEntry = { date: dateFormatted, entry: input };
+        appendDataToKey('journals', newJournalEntry);
+        Alert.alert('Success', 'Journal saved successfully', [
+          {
+            text: 'OK',
+            onPress: () =>
+              navigation.navigate('JournalCover', {
+                journalEntry: newJournalEntry,
+              }),
+          },
+        ]);
+      }
+    } catch (err) {
+      Alert.alert('Error', err.message);
     }
   };
 
