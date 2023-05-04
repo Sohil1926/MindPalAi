@@ -33,6 +33,7 @@ import { updateProfile } from 'firebase/auth';
 import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 import { HideKeyboard } from '../components/HideKeyboard';
 import { deleteValueFromArr } from '../utils/asyncStorageUtils';
+import { reloadAsync } from 'expo-updates';
 
 export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
@@ -167,6 +168,7 @@ export default function WriteJournal({ navigation }) {
                       entry: input,
                     }
                   );
+                  reloadAsync();
                   return navigation.navigate('Homepage');
                 },
               },

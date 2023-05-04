@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Image,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import { Button } from '@rneui/base';
 import axios from 'axios';
@@ -40,6 +41,7 @@ import uuid from 'react-native-uuid';
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
   const [imageUrl, setImageUrl] = useState(null);
+  const [newestJournal, setNewestJournal] = useState(null);
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -113,9 +115,17 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       if (journal === undefined) {
         return;
       }
-      setImageUrl(journal.journalCover);
+
+      setNewestJournal(journal);
     };
     fetch();
+
+    const onBackHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      fetch
+    );
+
+    return () => onBackHandler.remove();
   });
 
   if (!fontsLoaded) return null;
@@ -132,21 +142,27 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
           onPress={() => navigation.navigate('FindFriends')}
         />
 
-        {imageUrl !== null && (
-          <Image
-            source={{
-              uri: imageUrl,
-            }}
-            style={{
-              width: 173,
-              height: 183,
-              resizeMode: 'cover',
-              borderRadius: 10,
-              borderWidth: 2,
-              borderColor: '#FFF',
-              marginTop: '8%',
-            }}
-          />
+        {newestJournal !== null && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('JournalEntry', { key: newestJournal.date })
+            }
+          >
+            <Image
+              source={{
+                uri: newestJournal.journalCover,
+              }}
+              style={{
+                width: 173,
+                height: 183,
+                resizeMode: 'cover',
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: '#FFF',
+                marginTop: '8%',
+              }}
+            />
+          </TouchableOpacity>
         )}
         <KeyboardAvoidingView behavior='padding' style={styles.inputContainer}>
           <PillButton
