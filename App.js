@@ -42,8 +42,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='JournalArchiveAll' component={JournalArchiveAll} />
-
         <Stack.Screen name='Onboarding' component={Onboarding} />
         <Stack.Screen name='Name' component={Name} />
         <Stack.Screen name='PhoneNumber' component={EnterPhoneNumber} />
@@ -62,6 +60,7 @@ const App = () => {
           options={{ gestureEnabled: false }}
         />
         <Stack.Screen name='JournalArchive' component={JournalArchive} />
+        <Stack.Screen name='JournalArchiveAll' component={JournalArchiveAll} />
         <Stack.Screen name='JournalEntry' component={JournalEntry} />
       </Stack.Navigator>
     </NavigationContainer>
