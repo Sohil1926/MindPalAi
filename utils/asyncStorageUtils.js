@@ -226,6 +226,19 @@ const deleteKey = async (key) => {
   }
 };
 
+const overwriteObjectInArray = async (key, field, targetVal, newObject) => {
+  try {
+    let allValues = await getAllValuesFromKey(key);
+    const index = allValues.findIndex((j) => j[field] === targetVal);
+    allValues[index] = newObject;
+    await setKeyToJson(key, allValues);
+  } catch (e) {
+    // error reading value
+    console.error(e);
+    throw new Error(e);
+  }
+};
+
 export {
   appendDataToKey,
   setFieldToKey,
@@ -240,4 +253,5 @@ export {
   getVal,
   deleteKey,
   addFieldToArrayOfObjects,
+  overwriteObjectInArray,
 };

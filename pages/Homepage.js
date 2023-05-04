@@ -55,6 +55,8 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
   useEffect(() => {
     const firstTimeOnload = async () => {
+      await deleteFieldFromObj('misc', 'lastJournalCoverGeneratedDate'); // remove for production
+
       const registrationData = await getObjFromKey('registrationData');
       // set logged in to true in async storage
       await setFieldToKey('account', 'loggedIn', true);
@@ -100,6 +102,8 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       if (journals === null || journals.length === 0) {
         return;
       }
+      // await deleteKey('journals'); // remove for production
+
       // sort journal by journal date, newest first
       journals.sort((a, b) => {
         return new Date(b.date) - new Date(a.date);

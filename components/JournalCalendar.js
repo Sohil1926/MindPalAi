@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
 
 const JournalCalendar = ({ year, month, journalData, navigation }) => {
   const weekdays = [
@@ -54,7 +61,6 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
     };
 
     calculateWeeks();
-    // console.log(journalData);
   }, [year, month]);
   const goToJournalEntry = (day) => {
     let monthPaddedWith0 = month < 10 ? `0${month}` : month;
@@ -86,7 +92,33 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
             return (
               <View style={styles.day} key={index}>
                 <TouchableOpacity onPress={() => goToJournalEntry(day)}>
-                  <Text style={styles.dayText}>{day || ''}</Text>
+                  {journalData[formattedDate]?.image ? (
+                    <ImageBackground
+                      source={{ uri: journalData[formattedDate]?.image }}
+                      style={{
+                        flex: 1,
+                        resizeMode: 'cover',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <View style={styles.calendarBlockComponent}>
+                        <Text style={styles.dayText}>{day || ''}</Text>
+                      </View>
+                    </ImageBackground>
+                  ) : (
+                    <View
+                      style={{
+                        width: 40,
+                        height: 60,
+                        backgroundColor: 'gray',
+                        borderRadius: 10,
+                        display: 'flex',
+                      }}
+                    >
+                      <Text style={styles.dayText}>{day || ''}</Text>
+                    </View>
+                  )}
+                  {/* <Text style={styles.dayText}>{day || ''}</Text>
                   {journalData[formattedDate] && (
                     <Image
                       source={{
@@ -94,7 +126,7 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
                       }}
                       style={styles.calendarImage}
                     />
-                  )}
+                  )} */}
                 </TouchableOpacity>
               </View>
             );
@@ -107,6 +139,9 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
 
 const styles = StyleSheet.create({
   calendar: {},
+  calendarBlockComponent: {
+    margin: 10,
+  },
   calendarImage: {
     width: 40,
     height: 60,
@@ -139,16 +174,18 @@ const styles = StyleSheet.create({
     height: 40,
   },
   day: {
-    // flex: 1,
     width: 49,
     flexDirection: 'row',
     height: 40,
     alignItems: 'center',
     justifyContent: 'space-around',
+    marginBottom: 25,
   },
   dayText: {
     fontSize: 18,
     color: '#fff',
+    textAlign: 'center',
+    justifyContent: 'center',
   },
 });
 

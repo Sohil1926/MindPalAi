@@ -29,6 +29,7 @@ export default function JournalArchiveAll({ navigation }) {
     Manrope_400Regular,
   });
   const [journals, setJournals] = useState({});
+  // const [loading, setLoading] = useState(false); // Set loading to true on component mount
   const date = new Date();
 
   const [month, setMonth] = useState(
@@ -46,7 +47,7 @@ export default function JournalArchiveAll({ navigation }) {
     }
   };
 
-  const getAllJournals = async () => {
+  const getAllJournalsOfCurrentMonth = async () => {
     try {
       getJournalsMonthYear(year, month);
     } catch (error) {
@@ -62,6 +63,8 @@ export default function JournalArchiveAll({ navigation }) {
     if (allJournals) {
       const journalsMonthYear = allJournals.filter((j) => {
         const jDate = new Date(j.date);
+        // console.log(jDate.getMonth());
+
         return jDate.getFullYear() === year && jDate.getMonth() + 1 === month;
       });
       const journalsMonthYearObj = {};
@@ -73,7 +76,9 @@ export default function JournalArchiveAll({ navigation }) {
           entry: j.entry,
         };
       });
+      console.log(journalsMonthYearObj);
       setJournals(journalsMonthYearObj);
+      // setLoading(false);
     }
   };
 
@@ -111,14 +116,13 @@ export default function JournalArchiveAll({ navigation }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAllJournals();
+      await getAllJournalsOfCurrentMonth();
     };
 
     fetchData();
   }, []); // empty dependency array ensures this effect only runs on mount
 
   if (!fontsLoaded) return null;
-
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>

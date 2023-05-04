@@ -15,6 +15,7 @@ import PillButton from '../components/PillButton';
 import JournalArchive from './JournalArchive';
 import {
   addFieldToArrayOfObjects,
+  deleteFieldFromObj,
   getObjFromKey,
   setFieldToKey,
 } from '../utils/asyncStorageUtils';
@@ -25,7 +26,8 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   );
   const [imageUrl, setImageUrl] = useState(null);
   const onContinue = () => {
-    navigation.navigate('Homepage');
+    if (imageUrl !== null) navigation.navigate('Homepage');
+    else alert('Please wait for the image to generate.');
   };
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     if (lastJCoverGeneratedDate === undefined) return true; // first time generating, good to continue
 
     // check if currentdate is greater than last generated date
-    console.log(lastJCoverGeneratedDate);
+    // console.log(lastJCoverGeneratedDate);
     if (
       !isOneDateAtLeastOneDayLater(
         new Date(lastJCoverGeneratedDate),
@@ -68,8 +70,8 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   };
 
   const generateImage = async () => {
-    const precheck = await precheckBeforeGenerate();
-    // const precheck = true; // for testing
+    // const precheck = await precheckBeforeGenerate();
+    const precheck = true; // for testing
     if (!precheck) {
       alert(
         'You already generated a journal cover for today, please come back tomorrow to generate a new one.'

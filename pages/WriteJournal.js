@@ -23,6 +23,7 @@ import {
   appendDataToKey,
   deleteFieldFromObj,
   getObjFromKey,
+  overwriteObjectInArray,
   setFieldToKey,
 } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
@@ -130,8 +131,7 @@ export default function WriteJournal({ navigation }) {
 
       // get all journals
       const allJournals = await getObjFromKey('journals');
-
-      if (allJournals) {
+      if (allJournals && allJournals.length) {
         // sort journal to get the newest one
         const sortedJournals = allJournals?.sort((a, b) => {
           return new Date(b.date) - new Date(a.date);
@@ -142,17 +142,36 @@ export default function WriteJournal({ navigation }) {
           .split('T')[0]; // although it is likely that the date is already in YYYY-MM-DD format, we still do this to be safe
 
         // if there is a journal entry for today, ask user if they want to overwrite it
-        if (
-          sortedJournals.length > 0 &&
-          newestJournalDateFormatted === dateFormatted
-        ) {
-          if (confirm('Would you like to overwrite your journal for today?')) {
-            // overwrite journal entry
-            await deleteValueFromArr('journals', 'date', dateFormatted);
-          } else {
-            alert('Entry will be erased.');
-            return navigation.navigate('Homepage'); // function ends
-          }
+        if (newestJournalDateFormatted === dateFormatted) {
+          return Alert.alert(
+            'Warning',
+            "Would you like to overwrite today's entry?",
+            [
+              {
+                text: 'Cancel',
+                onPress: () => navigation.navigate('Homepage'),
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: async () => {
+                  // today's journal
+                  const todayJournal = sortedJournals[0];
+                  // overwrite journal entry
+                  await overwriteObjectInArray(
+                    'journals',
+                    'date',
+                    dateFormatted,
+                    {
+                      ...todayJournal,
+                      entry: input,
+                    }
+                  );
+                  return navigation.navigate('Homepage');
+                },
+              },
+            ]
+          );
         }
 
         const newJournalEntry = { date: dateFormatted, entry: input };
