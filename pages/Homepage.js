@@ -37,11 +37,13 @@ import {
 } from '@expo-google-fonts/manrope';
 // import Constants from 'expo-constants';
 import uuid from 'react-native-uuid';
+import { useIsFocused } from '@react-navigation/native';
 
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
   const [imageUrl, setImageUrl] = useState(null);
   const [newestJournal, setNewestJournal] = useState(null);
+  const isFocused = useIsFocused();
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
@@ -100,6 +102,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
   useEffect(() => {
     const fetch = async () => {
+      console.log('calling fetch from Homepage');
       const journals = await getAllValuesFromKey('journals');
       if (journals === null || journals.length === 0) {
         return;
@@ -118,15 +121,9 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
       setNewestJournal(journal);
     };
-    fetch();
 
-    const onBackHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      fetch
-    );
-
-    return () => onBackHandler.remove();
-  });
+    if (isFocused) fetch();
+  }, []);
 
   if (!fontsLoaded) return null;
   return (

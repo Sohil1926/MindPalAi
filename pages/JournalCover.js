@@ -21,9 +21,7 @@ import {
 } from '../utils/asyncStorageUtils';
 
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
-  const [journalEntry, setJournalEntry] = useState(
-    route.params.journalEntry.entry || ''
-  );
+  const journalEntry = route.params.journalEntry.entry || '';
   const [imageUrl, setImageUrl] = useState(null);
   const onContinue = () => {
     if (imageUrl !== null) navigation.navigate('Homepage');
