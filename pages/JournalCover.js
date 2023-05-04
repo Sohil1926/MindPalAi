@@ -70,6 +70,8 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const generateImage = async () => {
     const precheck = await precheckBeforeGenerate();
     // const precheck = true; // remove for production
+
+    // Update as of May 4th, this will no longer be called, as new journals will simply gets overwritten and keeps the same journal cover
     if (!precheck) {
       alert(
         'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
