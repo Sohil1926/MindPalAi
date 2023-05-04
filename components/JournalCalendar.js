@@ -118,7 +118,7 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
                       style={{
                         width: 40,
                         height: 60,
-                        backgroundColor: day !== null && 'gray',
+                        backgroundColor: day !== null ? 'gray' : '#101010',
                         borderRadius: 10,
                         justifyContent: 'center',
                       }}
