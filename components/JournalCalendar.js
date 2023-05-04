@@ -63,6 +63,7 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
     calculateWeeks();
   }, [year, month]);
   const goToJournalEntry = (day) => {
+    if (day === null) return;
     let monthPaddedWith0 = month < 10 ? `0${month}` : month;
     let dayPaddedWith0 = day < 10 ? `0${day}` : day;
     const fullDate = `${year}-${monthPaddedWith0}-${dayPaddedWith0}`;
@@ -93,26 +94,33 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
               <View style={styles.day} key={index}>
                 <TouchableOpacity onPress={() => goToJournalEntry(day)}>
                   {journalData[formattedDate]?.image ? (
-                    <ImageBackground
-                      source={{ uri: journalData[formattedDate]?.image }}
+                    <View
                       style={{
-                        flex: 1,
-                        resizeMode: 'cover',
-                        justifyContent: 'center',
+                        borderRadius: 10,
+                        width: 40,
+                        height: 60,
+                        overflow: 'hidden',
                       }}
                     >
-                      <View style={styles.calendarBlockComponent}>
+                      <ImageBackground
+                        source={{ uri: journalData[formattedDate]?.image }}
+                        style={{
+                          flex: 1,
+                          resizeMode: 'cover',
+                          justifyContent: 'center',
+                        }}
+                      >
                         <Text style={styles.dayText}>{day || ''}</Text>
-                      </View>
-                    </ImageBackground>
+                      </ImageBackground>
+                    </View>
                   ) : (
                     <View
                       style={{
                         width: 40,
                         height: 60,
-                        backgroundColor: 'gray',
+                        backgroundColor: day !== null && 'gray',
                         borderRadius: 10,
-                        display: 'flex',
+                        justifyContent: 'center',
                       }}
                     >
                       <Text style={styles.dayText}>{day || ''}</Text>
@@ -139,9 +147,7 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
 
 const styles = StyleSheet.create({
   calendar: {},
-  calendarBlockComponent: {
-    margin: 10,
-  },
+  calendarBlockComponent: {},
   calendarImage: {
     width: 40,
     height: 60,
