@@ -63,8 +63,6 @@ export default function JournalArchiveAll({ navigation }) {
     if (allJournals) {
       const journalsMonthYear = allJournals.filter((j) => {
         const jDate = new Date(j.date);
-        // console.log(jDate.getMonth());
-
         return jDate.getFullYear() === year && jDate.getMonth() + 1 === month;
       });
       const journalsMonthYearObj = {};
@@ -76,7 +74,7 @@ export default function JournalArchiveAll({ navigation }) {
           entry: j.entry,
         };
       });
-      console.log(journalsMonthYearObj);
+      // console.log(journalsMonthYearObj);
       setJournals(journalsMonthYearObj);
       // setLoading(false);
     }
