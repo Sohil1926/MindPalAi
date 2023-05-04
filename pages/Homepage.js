@@ -57,7 +57,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
   useEffect(() => {
     const firstTimeOnload = async () => {
-      await deleteFieldFromObj('misc', 'lastJournalCoverGeneratedDate'); // remove for production
+      // await deleteFieldFromObj('misc', 'lastJournalCoverGeneratedDate'); // remove for production
 
       const registrationData = await getObjFromKey('registrationData');
       // set logged in to true in async storage

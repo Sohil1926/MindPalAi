@@ -70,8 +70,8 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   };
 
   const generateImage = async () => {
-    // const precheck = await precheckBeforeGenerate();
-    const precheck = true; // for testing
+    const precheck = await precheckBeforeGenerate();
+    // const precheck = true; // remove for production
     if (!precheck) {
       alert(
         'You already generated a journal cover for today, please come back tomorrow to generate a new one.'
