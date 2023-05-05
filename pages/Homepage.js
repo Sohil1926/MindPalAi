@@ -99,7 +99,6 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      console.log('calling fetch from Homepage');
       const journals = await getAllValuesFromKey('journals');
       if (journals === null || journals.length === 0) {
         return;
