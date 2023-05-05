@@ -21,12 +21,14 @@ import {
 } from '@expo-google-fonts/manrope';
 import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function JournalArchive({ navigation }) {
   const [fontsLoaded] = useFonts({
     Manrope_800ExtraBold,
     Manrope_400Regular,
   });
+  const isFocused = useIsFocused();
   const [journals, setJournals] = useState([]);
   const [last14Days, setLast14Days] = useState([]);
   const handleBackPress = () => {
@@ -36,12 +38,14 @@ export default function JournalArchive({ navigation }) {
   const getAllJournals = async () => {
     try {
       const allJournals = await getAllValuesFromKey('journals');
+      const _last14Days = [];
       for (let i = 13; i >= 0; i--) {
         let date = new Date();
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
-        setLast14Days((last14Days) => [...last14Days, dateStr]); // YYYY-MM-DD format
+        _last14Days.push(dateStr);
       }
+      setLast14Days(_last14Days);
 
       if (allJournals !== null) {
         // sort by date, newest first
@@ -60,7 +64,6 @@ export default function JournalArchive({ navigation }) {
           };
         });
         setJournals(journals_iterate);
-        console.log(journals);
       }
     } catch (error) {
       Alert.alert(
@@ -75,8 +78,8 @@ export default function JournalArchive({ navigation }) {
       await getAllJournals();
     };
 
-    fetchData();
-  }, []); // empty dependency array ensures this effect only runs on mount
+    if (isFocused) fetchData();
+  }, [navigation, isFocused]); // empty dependency array ensures this effect only runs on mount
 
   if (!fontsLoaded) return null;
 
