@@ -298,11 +298,11 @@ export default function WriteJournal({ navigation }) {
           <PillButton
             onPress={() => {
               Alert.alert(
-                'Help',
+                'guide',
                 "Write anything you feel like writing. It's your journal! We help provide insights to your journal entries if you are interested in exploring deeper into your thoughts."
               );
             }}
-            text={'help'}
+            text={'what do i do?'}
             bgColor={BTNCOLOR.save}
             style={{ marginTop: 20 }}
           />
