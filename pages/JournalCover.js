@@ -24,8 +24,9 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const journalEntry = route.params.journalEntry.entry || '';
   const [imageUrl, setImageUrl] = useState(null);
   const onContinue = () => {
-    if (imageUrl !== null) navigation.navigate('Homepage');
-    else alert('Please wait for the image to generate.');
+    if (imageUrl !== null && imageUrl !== 'loading')
+      navigation.navigate('Homepage');
+    else return alert('Please wait for the image to generate.');
   };
 
   useEffect(() => {
@@ -51,7 +52,6 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     if (lastJCoverGeneratedDate === undefined) return true; // first time generating, good to continue
 
     // check if currentdate is greater than last generated date
-    // console.log(lastJCoverGeneratedDate);
     if (
       !isOneDateAtLeastOneDayLater(
         new Date(lastJCoverGeneratedDate),
@@ -68,8 +68,9 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   };
 
   const generateImage = async () => {
-    const precheck = await precheckBeforeGenerate();
-    // const precheck = true; // remove for production
+    // const precheck = await precheckBeforeGenerate();
+    await deleteFieldFromObj('misc', 'lastJournalCoverGeneratedDate'); // remove for production
+    const precheck = true; // remove for production
 
     // Update as of May 4th, this will no longer be called, as new journals will simply gets overwritten and keeps the same journal cover
     if (!precheck) {
@@ -125,6 +126,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
       .catch((error) => {
         Alert.alert('Error', String(error));
         console.error(error);
+        navigation.navigate('Homepage');
       });
   };
 

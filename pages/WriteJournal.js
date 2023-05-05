@@ -146,7 +146,7 @@ export default function WriteJournal({ navigation }) {
         if (newestJournalDateFormatted === dateFormatted) {
           return Alert.alert(
             'Warning',
-            "Would you like to overwrite today's entry?",
+            "Would you like to overwrite today's entry? (Your artwork will remain)",
             [
               {
                 text: 'Cancel',

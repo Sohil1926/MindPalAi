@@ -101,6 +101,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     const fetch = async () => {
       const journals = await getAllValuesFromKey('journals');
       if (journals === null || journals.length === 0) {
+        setNewestJournal(null);
         return;
       }
       // await deleteKey('journals'); // remove for production
@@ -128,12 +129,13 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         <Text style={styles.heading}>InnerScribe.</Text>
       </View>
       <View style={styles.topSection}>
-        <PillButton
+        {/* Uncomment this for development */}
+        {/* <PillButton
           text='my friends'
           bgColor={'#fff'}
           textColor={'#000'}
           onPress={() => navigation.navigate('FindFriends')}
-        />
+        /> */}
 
         {newestJournal !== null && (
           <TouchableOpacity
@@ -185,13 +187,14 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
           style={styles.skipButton}
           onPress={() => navigation.navigate('JournalArchive')}
         />
-        <PillButton
+        {/* Uncomment this for development */}
+        {/* <PillButton
           text='+ ADD FRIENDS'
           bgColor={'#fff'}
           textColor={'#000'}
           style={styles.skipButton}
           onPress={() => navigation.navigate('FindFriends')}
-        />
+        /> */}
       </View>
       <View style={styles.bottomSection}></View>
     </View>
