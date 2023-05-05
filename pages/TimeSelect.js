@@ -154,6 +154,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
         content: notificationContent,
         trigger: {
           date: notificationTime,
+          repeats: true,
         },
       };
       await Notifications.scheduleNotificationAsync(schedulingOptions);

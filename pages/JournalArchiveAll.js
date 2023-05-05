@@ -82,6 +82,7 @@ export default function JournalArchiveAll({ navigation }) {
 
   const scroll = async (direction) => {
     if (direction === 'left') {
+      // navigate to previous month
       if (month === 1) {
         setMonth(12);
         setMonthLong('December');
@@ -97,6 +98,7 @@ export default function JournalArchiveAll({ navigation }) {
         await getJournalsMonthYear(year, month - 1);
       }
     } else if (direction === 'right') {
+      // navigate to next month
       if (month === 12) {
         setMonth(1);
         setMonthLong('January');

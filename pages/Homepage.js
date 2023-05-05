@@ -53,9 +53,6 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     Manrope_600SemiBold,
     Manrope_700Bold,
   });
-  const goToTimeSelect = () => {
-    navigation.navigate('TimeSelect');
-  };
 
   useEffect(() => {
     const firstTimeOnload = async () => {
@@ -123,7 +120,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
     };
 
     if (isFocused) fetch();
-  }, []);
+  }, [navigation, isFocused]);
 
   if (!fontsLoaded) return null;
   return (
