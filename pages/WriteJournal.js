@@ -296,8 +296,13 @@ export default function WriteJournal({ navigation }) {
           />
 
           <PillButton
-            onPress={() => navigation.navigate('JournalArchive')}
-            text={'View my Journal Archives'}
+            onPress={() => {
+              Alert.alert(
+                'Help',
+                "Write anything you feel like writing. It's your journal! We help provide insights to your journal entries if you are interested in exploring deeper into your thoughts."
+              );
+            }}
+            text={'help'}
             bgColor={BTNCOLOR.save}
             style={{ marginTop: 20 }}
           />
