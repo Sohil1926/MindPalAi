@@ -125,7 +125,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
       </View>
       <View style={styles.topSection}>
         <PillButton

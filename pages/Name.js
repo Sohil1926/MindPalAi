@@ -68,7 +68,7 @@ const Name = ({ navigation, setShowOnboarding }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
         <Text style={styles.subHeading}>
           let’s get started, what’s your name?
         </Text>

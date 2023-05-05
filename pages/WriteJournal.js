@@ -227,7 +227,7 @@ export default function WriteJournal({ navigation }) {
     <HideKeyboard>
       <View style={styles.container}>
         <View style={styles.topSection}>
-          <Text style={styles.heading}>MindPal.</Text>
+          <Text style={styles.heading}>InnerScribe.</Text>
           <Text style={styles.subHeading}>try writing a journal </Text>
         </View>
         <StatusBar style='auto' />

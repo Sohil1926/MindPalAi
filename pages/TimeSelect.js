@@ -135,7 +135,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       console.log('trying to schedule');
       // Define the notification content
       const notificationContent = {
-        title: 'MindPal',
+        title: 'InnerScribe',
         body: 'Time to journal!',
       };
 
@@ -178,7 +178,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
         <Text style={styles.subHeading}>
           Select one time every day that you can journal for 10 minutes. You
           won’t be able to change this so pick a time that works everyday.

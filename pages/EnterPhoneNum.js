@@ -124,7 +124,7 @@ const PhoneNumber = ({ navigation, setShowOnboarding }) => {
       />
 
       <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
         <Text style={styles.subHeading}>
           Create your account using your phone number
         </Text>

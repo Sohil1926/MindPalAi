@@ -79,7 +79,7 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
         <Text style={styles.subHeading}>
           Enter the code we sent to +16478045565
         </Text>

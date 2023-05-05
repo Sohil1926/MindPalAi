@@ -131,7 +131,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <Text style={styles.heading}>MindPal.</Text>
+        <Text style={styles.heading}>InnerScribe.</Text>
         <Text style={styles.subHeading}>say hello to your journal cover</Text>
         {imageUrl === 'loading' && (
           <Text style={styles.subHeading}>Generating image...</Text>
