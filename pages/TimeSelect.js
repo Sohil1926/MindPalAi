@@ -108,7 +108,7 @@ const TimeSelect = ({ navigation, setShowOnboarding }) => {
       Notifications.removeNotificationSubscription(
         notificationListener.current
       );
-      Notifications.cancelAllScheduledNotificationsAsync();
+      // Notifications.cancelAllScheduledNotificationsAsync(); // remove for production
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
