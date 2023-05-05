@@ -129,7 +129,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         <Text style={styles.heading}>InnerScribe.</Text>
       </View>
       <View style={styles.topSection}>
-        {/* Uncomment this for development */}
+        {/* Under development */}
         {/* <PillButton
           text='my friends'
           bgColor={'#fff'}
@@ -159,7 +159,8 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
             />
           </TouchableOpacity>
         )}
-        <KeyboardAvoidingView behavior='padding' style={styles.inputContainer}>
+        {/* Under development */}
+        {/* <KeyboardAvoidingView behavior='padding' style={styles.inputContainer}>
           <PillButton
             text='Add a caption...'
             bgColor={'transparent'}
@@ -170,7 +171,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
         </KeyboardAvoidingView>
         <Text style={styles.friendText}>
           Your friends haven’t posted their journal yet. Add even more friends.{' '}
-        </Text>
+        </Text> */}
       </View>
       <View style={{ gap: 10 }}>
         <PillButton
@@ -187,7 +188,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
           style={styles.skipButton}
           onPress={() => navigation.navigate('JournalArchive')}
         />
-        {/* Uncomment this for development */}
+        {/* Under development */}
         {/* <PillButton
           text='+ ADD FRIENDS'
           bgColor={'#fff'}
