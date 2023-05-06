@@ -93,19 +93,21 @@ export default function JournalArchive({ navigation, route }) {
   });
 
   return (
-    <ScrollView className='flex-1 justify-top my-20 gap-5 bg-black'>
-      <Text
-        style={{
-          textAlign: 'left',
-          fontSize: 20,
-          fontWeight: 'bold',
-          color: 'white',
-          paddingTop: 30,
-          paddingLeft: 30,
-        }}
-      >
-        {route.params.key}
-      </Text>
+    <View className='flex-1 justify-top my-20 gap-5 bg-black'>
+      <ScrollView>
+        <Text
+          style={{
+            textAlign: 'left',
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: 'white',
+            paddingTop: 30,
+            paddingLeft: 30,
+          }}
+        >
+          {route.params.key}
+        </Text>
+      </ScrollView>
 
       <Text style={{ color: 'white', paddingLeft: '15%' }}>{journalEntry}</Text>
 
@@ -128,7 +130,7 @@ export default function JournalArchive({ navigation, route }) {
           bgColor='#ff0f00'
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
