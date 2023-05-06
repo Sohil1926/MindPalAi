@@ -19,6 +19,7 @@ import {
   getObjFromKey,
   setFieldToKey,
 } from '../utils/asyncStorageUtils';
+import { deleteValueFromArr } from '../utils/asyncStorageUtils';
 
 const JournalCover = ({ navigation, setShowOnboarding, route }) => {
   const journalEntry = route.params.journalEntry.entry || '';
@@ -123,9 +124,11 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
           new Date()
         );
       })
-      .catch((error) => {
+      .catch(async (error) => {
         Alert.alert('Error', String(error));
         console.error(error);
+        // delete the current journal
+        await deleteValueFromArr('journals', 'date', route.params.key);
         navigation.navigate('Homepage');
       });
   };
