@@ -54,6 +54,12 @@ const VerifyCode = ({ navigation, route, setShowOnboarding }) => {
     }
   }, [refreshCountdown]);
 
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      return e.preventDefault();
+    });
+  }, [navigation]);
+
   const confirmCode = async () => {
     if (DEBUGMODE) return navigation.navigate('WriteJournal');
     if (!codeInput || codeInput.length < 6) {
