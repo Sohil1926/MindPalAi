@@ -99,7 +99,7 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
-      return;
+      return e.preventDefault();
     });
     const fetch = async () => {
       const journals = await getAllValuesFromKey('journals');
