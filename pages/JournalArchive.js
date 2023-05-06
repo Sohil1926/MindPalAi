@@ -32,7 +32,7 @@ export default function JournalArchive({ navigation }) {
   const [journals, setJournals] = useState([]);
   const [last14Days, setLast14Days] = useState([]);
   const handleBackPress = () => {
-    navigation.goBack();
+    navigation.navigate('Homepage');
   };
 
   const getAllJournals = async () => {
