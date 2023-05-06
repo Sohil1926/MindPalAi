@@ -99,7 +99,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://openaibackend-nt11.onrender.com/leapImage',
+      url: 'https://us-central1-mindpal-gpt.cloudfunctions.net/myApp/leapImage',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
