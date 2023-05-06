@@ -17,7 +17,6 @@ import { getObjFromKey } from '../utils/asyncStorageUtils';
 const Onboarding = ({ navigation, setShowOnboarding }) => {
   const gotoName = () => {
     // setShowOnboarding(false);
-
     navigation.navigate('Name');
   };
 
