@@ -93,23 +93,25 @@ export default function JournalArchive({ navigation, route }) {
   });
 
   return (
-    <View className='flex-1 justify-top my-20 gap-5 bg-black'>
-      <ScrollView>
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: 'white',
-            paddingTop: 30,
-            paddingLeft: 30,
-          }}
-        >
-          {route.params.key}
+    <View className='flex-1 bg-black pt-20'>
+      <Text
+        style={{
+          textAlign: 'left',
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: 'white',
+          paddingTop: 30,
+          paddingLeft: 30,
+        }}
+      >
+        {route.params.key}
+      </Text>
+
+      <ScrollView style={{ borderColor: 'white', border }}>
+        <Text style={{ color: 'white', paddingLeft: '15%' }}>
+          {journalEntry}
         </Text>
       </ScrollView>
-
-      <Text style={{ color: 'white', paddingLeft: '15%' }}>{journalEntry}</Text>
 
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
@@ -122,7 +124,7 @@ export default function JournalArchive({ navigation, route }) {
         />
       </View>
 
-      <View>
+      <View style={{ marginBottom: 30 }}>
         <PillButton
           text={'Delete'}
           onPress={delEntry}
