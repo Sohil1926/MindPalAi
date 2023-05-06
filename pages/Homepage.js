@@ -98,6 +98,9 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
   }, []);
 
   useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      return;
+    });
     const fetch = async () => {
       const journals = await getAllValuesFromKey('journals');
       if (journals === null || journals.length === 0) {
