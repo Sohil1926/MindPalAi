@@ -158,6 +158,8 @@ const deleteFieldFromObj = async (key, field) => {
   */
   try {
     const obj = await getObjFromKey(key);
+    // check if field in obj
+    if (!(field in obj)) return;
     delete obj[field];
     await AsyncStorage.setItem(key, JSON.stringify(obj));
   } catch (e) {
