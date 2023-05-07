@@ -89,7 +89,6 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
 
     let data = qs.stringify({
       input: journalEntry,
-      // input: journalEntry,
     });
 
     let config = {
