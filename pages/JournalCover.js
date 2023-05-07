@@ -82,8 +82,7 @@ const JournalCover = ({ navigation, setShowOnboarding, route }) => {
       //   null
       // );
       await setLastJournalCoverDate(route.params.journalEntry.date, null);
-      navigation.navigate('Homepage');
-      return;
+      return navigation.navigate('Homepage');
     }
 
     setImageUrl('loading');
