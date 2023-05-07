@@ -83,8 +83,7 @@ const getObjFromKey = async (key) => {
     if (values === null) {
       return null;
     }
-    values = JSON.parse(values);
-    return values;
+    return JSON.parse(values);
   } catch (e) {
     // error reading value
     console.error(e);
@@ -158,6 +157,8 @@ const deleteFieldFromObj = async (key, field) => {
   */
   try {
     const obj = await getObjFromKey(key);
+    // key arr
+    //
     // check if field in obj
     if (!(field in obj)) return;
     delete obj[field];
