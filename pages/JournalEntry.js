@@ -8,15 +8,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Button, Input } from '@rneui/themed';
 import axios from 'axios';
 import qs from 'qs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  deleteValueFromArr,
-  getAllValuesFromKey,
-  getValueUsingFieldVal,
-} from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import { Image } from '@rneui/base';
 import {
@@ -29,7 +22,7 @@ import {
   Manrope_600SemiBold,
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
-// import { createCompletion } from './openAI';
+import { deleteJournal, getAllJournals } from '../utils/journalUtils';
 
 export default function JournalArchive({ navigation, route }) {
   const [fontsLoaded] = useFonts({
@@ -54,7 +47,8 @@ export default function JournalArchive({ navigation, route }) {
       //   route.params.key
       // );
 
-      const allJournals = await getAllValuesFromKey('journals');
+      // const allJournals = await getAllValuesFromKey('journals');
+      const allJournals = await getAllJournals();
       const journal = allJournals.find((j) => {
         const jDate = new Date(j.date).toISOString().split('T')[0];
         return jDate === route.params.key;
@@ -104,7 +98,7 @@ export default function JournalArchive({ navigation, route }) {
 
   const delEntry = async () => {
     try {
-      await deleteValueFromArr('journals', 'date', route.params.key);
+      await deleteJournal(route.params.key);
       navigation.navigate('Homepage');
     } catch (e) {
       // error reading value

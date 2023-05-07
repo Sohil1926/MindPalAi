@@ -19,21 +19,15 @@ import axios from 'axios';
 import qs from 'qs';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding'; // import the Onboarding component
-import {
-  appendDataToKey,
-  deleteFieldFromObj,
-  getObjFromKey,
-  overwriteObjectInArray,
-  setFieldToKey,
-} from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import CustomModal from '../components/Modal';
-import { auth } from '../firebaseConfig';
-import { updateProfile } from 'firebase/auth';
-import { addData, checkDocumentExists } from '../utils/firebaseUtil';
 import { HideKeyboard } from '../components/HideKeyboard';
-import { deleteValueFromArr } from '../utils/asyncStorageUtils';
 import { reloadAsync } from 'expo-updates';
+import {
+  getAllJournals,
+  overwriteJournal,
+  writeJournal,
+} from '../utils/journalUtils';
 
 export default function WriteJournal({ navigation }) {
   const [input, setInput] = useState('');
@@ -58,41 +52,6 @@ export default function WriteJournal({ navigation }) {
     Manrope_600SemiBold,
     Manrope_700Bold,
   });
-
-  useEffect(() => {
-    //for debugging onboarding screen, comment this line out else it will show every time.
-    // deleteFieldFromObj('misc', 'showOnboarding');
-
-    const firstTimeOnload = async () => {
-      const registrationData = await getObjFromKey('registrationData');
-
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          // set logged in to true in async storage
-          await setFieldToKey('account', 'loggedIn', true);
-
-          updateProfile(auth.currentUser, {
-            displayName: registrationData['name'],
-          }).then(async () => {
-            const userObjExistInDB = await checkDocumentExists(
-              'users',
-              user.uid
-            );
-            if (!userObjExistInDB) {
-              // add user to db
-              await addData('users', user.uid, {
-                name: registrationData['name'],
-                phoneNumber: registrationData['phoneNumber'],
-              });
-            }
-          });
-        }
-      });
-    };
-
-    // note: this is now being called in homepage
-    // firstTimeOnload();
-  }, []);
 
   const callAPI = async () => {
     setLoadingGPT(true);
@@ -131,7 +90,7 @@ export default function WriteJournal({ navigation }) {
       const dateFormatted = new Date().toISOString().split('T')[0];
 
       // get all journals
-      const allJournals = await getObjFromKey('journals');
+      const allJournals = await getAllJournals();
       if (allJournals && allJournals.length) {
         // sort journal to get the newest one
         const sortedJournals = allJournals?.sort((a, b) => {
@@ -159,15 +118,10 @@ export default function WriteJournal({ navigation }) {
                   // today's journal
                   const todayJournal = sortedJournals[0];
                   // overwrite journal entry
-                  await overwriteObjectInArray(
-                    'journals',
-                    'date',
-                    dateFormatted,
-                    {
-                      ...todayJournal,
-                      entry: input,
-                    }
-                  );
+                  await overwriteJournal(dateFormatted, {
+                    ...todayJournal,
+                    entry: input,
+                  });
                   reloadAsync();
                   return navigation.navigate('Homepage');
                 },
@@ -177,7 +131,7 @@ export default function WriteJournal({ navigation }) {
         }
 
         const newJournalEntry = { date: dateFormatted, entry: input };
-        appendDataToKey('journals', newJournalEntry);
+        await writeJournal(newJournalEntry);
         Alert.alert('Success', 'Journal saved successfully', [
           {
             text: 'OK',
@@ -190,7 +144,7 @@ export default function WriteJournal({ navigation }) {
       } else {
         // user's first journal!
         const newJournalEntry = { date: dateFormatted, entry: input };
-        appendDataToKey('journals', newJournalEntry);
+        await writeJournal(newJournalEntry);
         Alert.alert('Success', 'Journal saved successfully', [
           {
             text: 'OK',

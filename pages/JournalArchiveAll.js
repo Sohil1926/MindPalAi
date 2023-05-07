@@ -8,10 +8,6 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { Button, Input } from '@rneui/themed';
-import axios, { all } from 'axios';
-import qs from 'qs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from 'react-native-vector-icons';
 
 import {
@@ -19,9 +15,9 @@ import {
   Manrope_800ExtraBold,
   Manrope_400Regular,
 } from '@expo-google-fonts/manrope';
-import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
 import JournalCalendar from '../components/JournalCalendar';
 import PillButton from '../components/PillButton';
+import { getAllJournals } from '../utils/journalUtils';
 
 export default function JournalArchiveAll({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -59,7 +55,8 @@ export default function JournalArchiveAll({ navigation }) {
   };
 
   const getJournalsMonthYear = async (year, month) => {
-    const allJournals = await getAllValuesFromKey('journals');
+    // const allJournals = await getAllValuesFromKey('journals');
+    const allJournals = await getAllJournals();
     if (allJournals) {
       const journalsMonthYear = allJournals.filter((j) => {
         const jDate = new Date(j.date);

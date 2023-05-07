@@ -8,10 +8,6 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { Button, Input } from '@rneui/themed';
-import axios from 'axios';
-import qs from 'qs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from 'react-native-vector-icons';
 
 import {
@@ -19,9 +15,9 @@ import {
   Manrope_800ExtraBold,
   Manrope_400Regular,
 } from '@expo-google-fonts/manrope';
-import { getAllValuesFromKey } from '../utils/asyncStorageUtils';
 import PillButton from '../components/PillButton';
 import { useIsFocused } from '@react-navigation/native';
+import { getAllJournals } from '../utils/journalUtils';
 
 export default function JournalArchive({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -35,9 +31,10 @@ export default function JournalArchive({ navigation }) {
     navigation.navigate('Homepage');
   };
 
-  const getAllJournals = async () => {
+  const getJournalsOfLast14Days = async () => {
     try {
-      const allJournals = await getAllValuesFromKey('journals');
+      // const allJournals = await getAllValuesFromKey('journals');
+      const allJournals = await getAllJournals();
       const _last14Days = [];
       for (let i = 13; i >= 0; i--) {
         let date = new Date();
@@ -75,7 +72,7 @@ export default function JournalArchive({ navigation }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAllJournals();
+      await getJournalsOfLast14Days();
     };
 
     if (isFocused) fetchData();

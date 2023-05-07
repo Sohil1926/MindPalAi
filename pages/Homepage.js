@@ -38,6 +38,7 @@ import {
 // import Constants from 'expo-constants';
 import uuid from 'react-native-uuid';
 import { useIsFocused } from '@react-navigation/native';
+import { getAllJournals } from '../utils/journalUtils';
 
 const Homepage = ({ navigation, setShowOnboarding, route }) => {
   //   const [journalEntry, setJournalEntry] = useState(route.params.journalEntry || '');
@@ -102,7 +103,9 @@ const Homepage = ({ navigation, setShowOnboarding, route }) => {
       return e.preventDefault();
     });
     const fetch = async () => {
-      const journals = await getAllValuesFromKey('journals');
+      // outdated
+      // const journals = await getAllValuesFromKey('journals');
+      const journals = await getAllJournals();
       if (journals === null || journals.length === 0) {
         setNewestJournal(null);
         return;
