@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   backButton: {
-    marginTop: 60,
+    marginTop: '9%',
     marginLeft: 20,
   },
   header: {
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 20,
     marginTop: 50,
+    marginLeft: 20,
   },
   box: {
     backgroundColor: '#101010',
