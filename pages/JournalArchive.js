@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   backButton: {
-    marginTop: '9%',
+    marginTop: '15%',
     marginLeft: 20,
   },
   header: {
