@@ -117,15 +117,6 @@ const JournalCalendar = ({ year, month, journalData, navigation }) => {
                   ) : (
                     <View
                       style={{
-                        ...Platform.select({
-                          
-                          ios: {
-                            backgroundColor: 'red',
-                          },
-                          android: {
-                            backgroundColor: 'blue',
-                          },
-                        }),
                         width: 40,
                         height: 60,
                         backgroundColor: day !== null ? 'gray' : '#101010',
